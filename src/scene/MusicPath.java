@@ -1151,6 +1151,25 @@ public class MusicPath implements Runnable, ActionListener {
 				s
 			);
 		}
+		
+		// icônes
+		gw.setColor(1, 1, 1);
+		// corps
+		gw.drawLine(200, 200, 300, 200);
+		gw.drawLine(200, 200, 200, 300);
+		gw.drawLine(300, 200, 300, 300);
+		gw.drawLine(200, 300, 300, 300);
+		// clés
+		gw.drawLine(200 + 100 / 3, 200, 200 + 100 / 3, 300);
+		gw.drawLine(200 + (100 / 3) * 2, 200, 200 + (100 / 3) * 2, 300);
+		gw.drawRect(200 + 100 / 3 - 10, 200, 20, 60, true);
+		gw.drawRect(200 + (100 / 3) * 2 - 10, 200, 20, 60, true);
+		
+		// icônes
+		gw.setColor(1, 1, 1);
+		// corps
+		gw.drawLine(200, 200, 300, 200);
+		// clés
 
 	}
 
@@ -1218,10 +1237,13 @@ public class MusicPath implements Runnable, ActionListener {
 		/*boolean redrawRequested = userContexts[indexOfUserContext].processMultitouchInputEvent( id, x, y, type, gw, doOtherUserContextsHaveCursors );
 		if ( redrawRequested )
 			multitouchFramework.requestRedraw();*/
-		
-		if (type == MultitouchFramework.TOUCH_EVENT_UP) {
+
+		// afficher le menu à la position du souris
+		if (type == MultitouchFramework.TOUCH_EVENT_DOWN) {
 			menu.setPosition(x, y);
+			multitouchFramework.requestRedraw();
 		}
+		
 	}
 	
 }

@@ -18,6 +18,6 @@ public class MenuRadial {
 	
 	public void draw(GraphicsWrapper gw) {
 		gw.setColor(1,1,1);
-		gw.drawCircle(position.x(), position.y(), radius, true);
+		gw.drawCircle(position.x() - radius, position.y() - radius, radius, true);
 	}
 }
