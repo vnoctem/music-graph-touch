@@ -1,9 +1,6 @@
 
-import javax.sound.midi.MidiChannel;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.Synthesizer;
+
 import javax.sound.midi.*;
-import java.util.Vector;
 
 // Voici, ci-dessous, quelques valeurs pour le "MIDI note number".
 // Veuillez noter que # veut dire diese (en anglais, "sharp")
@@ -41,7 +38,7 @@ public class SynthesizerTest {
 
 	public static void main( String[] args ) {
 
-		int channel = 0; // 0 is a piano, 9 is percussion, other channels are for other instruments
+		int channel = 15; // 0 is a piano, 9 is percussion, other channels are for other instruments
 
 		int volume = 80; // entre 0 et 127
 		int duration = 200; // en millisecondes
@@ -53,23 +50,30 @@ public class SynthesizerTest {
 		boolean playChromaticScale = true;
 
 		try {
+			// Récupérer le synthétiseur et l'ouvrir
 			Synthesizer synth = MidiSystem.getSynthesizer();
 			synth.open();
+			
+			// récupérer les canaux du synthétiseur pour jouer un son
 			MidiChannel[] channels = synth.getChannels();
 			
+			// Array d'instruments
+			Instrument[] instruments = synth.getLoadedInstruments();
 			
-			// Lister la liste d'instruments disponible
-			// (http://stackoverflow.com/questions/7809581/midi-instrument-listing
-			Instrument[] orchestra = synth.getAvailableInstruments();
-//			for (Instrument i : orchestra) {
-//				System.out.println(i);
-//			}
 			
-			// Lister les instruments chargés
-			Instrument[] loadedInstruments = synth.getLoadedInstruments();
-			for (Instrument i : loadedInstruments) {
-				System.out.println(i);
+			int counter = 0;
+			for (Instrument inst : instruments) {
+				counter++;
+				System.out.println(counter + " - " + inst);
 			}
+			
+			channels[channel].programChange(0, 53);
+			
+			
+//			channels[0].programChange(67);
+//			channels[0].noteOn(60, volume);
+//			Thread.sleep(duration);
+//			channels[0].noteOff(60);
 			
 
 			// --------------------------------------
