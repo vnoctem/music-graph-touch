@@ -1,3 +1,4 @@
+package scene;
 
 import java.lang.Math;
 

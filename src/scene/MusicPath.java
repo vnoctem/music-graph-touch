@@ -1,3 +1,4 @@
+package scene;
 
 import java.util.ArrayList;
 import java.awt.event.KeyEvent;
@@ -6,12 +7,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JButton;
+//import javax.swing.JMenu;
+//import javax.swing.JMenuItem;
+//import javax.swing.JButton;
 import javax.swing.JPanel;
 //import javax.swing.SwingUtilities;
-import javax.swing.BoxLayout;
+//import javax.swing.BoxLayout;
+
+import widget.MenuRadial;
 
 
 
@@ -977,11 +980,12 @@ public class MusicPath implements Runnable, ActionListener {
 
 	public MultitouchFramework multitouchFramework = null;
 	public GraphicsWrapper gw = null;
-	JMenuItem testMenuItem1;
+	public MenuRadial menu;
+	/*JMenuItem testMenuItem1;
 	JMenuItem testMenuItem2;
 	JButton frameAllButton;
 	JButton testButton1;
-	JButton testButton2;
+	JButton testButton2;*/
 
 	Thread thread = null;
 	boolean threadSuspended;
@@ -996,6 +1000,8 @@ public class MusicPath implements Runnable, ActionListener {
 		multitouchFramework = mf;
 		this.gw = gw;
 		multitouchFramework.setPreferredWindowSize(Constant.INITIAL_WINDOW_WIDTH,Constant.INITIAL_WINDOW_HEIGHT);
+		
+		menu = new MenuRadial(10, 10, 50);
 
 		//userContexts = new UserContext[ Constant.NUM_USERS ];
 		// Compute a circular layout of the palettes
@@ -1013,8 +1019,8 @@ public class MusicPath implements Runnable, ActionListener {
 		gw.frame( new AlignedRectangle2D( new Point2D(-100,-100), new Point2D(100,100) ), true );
 	}
 
-	/*public void actionPerformed(ActionEvent e) {
-		Object source = e.getSource();
+	public void actionPerformed(ActionEvent e) {
+		/*Object source = e.getSource();
 		if ( source == testMenuItem1 ) {
 			System.out.println("testMenuItem1 has been selected");
 		}
@@ -1030,27 +1036,27 @@ public class MusicPath implements Runnable, ActionListener {
 		}
 		else if ( source == testButton2 ) {
 			System.out.println("testButton2 has been selected");
-		}
-	}*/
+		}*/
+	}
 
 	// Called by the framework when creating widgets.
 	public JMenuBar createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
-			JMenu menu = new JMenu("File");
+			/*JMenu menu = new JMenu("File");
 				testMenuItem1 = new JMenuItem("Test 1");
 				testMenuItem1.addActionListener(this);
 				menu.add(testMenuItem1);
 				testMenuItem2 = new JMenuItem("Test 2");
 				testMenuItem2.addActionListener(this);
 				menu.add(testMenuItem2);
-			menuBar.add(menu);
+			menuBar.add(menu);*/
 		return menuBar;
 	}
 
 	// Called by the framework when creating widgets.
 	public JPanel createPanelOfWidgets() {
 		JPanel panelOfWidgets = new JPanel();
-		panelOfWidgets.setLayout( new BoxLayout( panelOfWidgets, BoxLayout.Y_AXIS ) );
+		/*panelOfWidgets.setLayout( new BoxLayout( panelOfWidgets, BoxLayout.Y_AXIS ) );
 		frameAllButton = new JButton("Frame All");
 		frameAllButton.addActionListener(this);
 		panelOfWidgets.add( frameAllButton );
@@ -1059,7 +1065,7 @@ public class MusicPath implements Runnable, ActionListener {
 		panelOfWidgets.add( testButton1 );
 		testButton2 = new JButton("Test number 2 ...");
 		testButton2.addActionListener(this);
-		panelOfWidgets.add( testButton2 );
+		panelOfWidgets.add( testButton2 );*/
 		return panelOfWidgets;
 	}
 
@@ -1109,7 +1115,8 @@ public class MusicPath implements Runnable, ActionListener {
 	}
 
 	public synchronized void draw() {
-		gw.clear(1,1,1);
+		// mettre noir dans l'arrière plan
+		gw.clear(0,0,0);
 		gw.setColor(0,0,0);
 		gw.setupForDrawing();
 
@@ -1123,7 +1130,8 @@ public class MusicPath implements Runnable, ActionListener {
 		/*for ( int j = 0; j < Constant.NUM_USERS; ++j ) {
 			userContexts[j].draw(gw);
 		}*/
-
+		
+		menu.draw(gw);
 
 		// Draw some text to indicate the number of fingers touching the user interface.
 		// This is useful for debugging.
@@ -1143,7 +1151,6 @@ public class MusicPath implements Runnable, ActionListener {
 				s
 			);
 		}
-
 
 	}
 
@@ -1194,6 +1201,7 @@ public class MusicPath implements Runnable, ActionListener {
 		// multitouchFramework.requestRedraw();
 	}
 
+	// écouteur pour tous les événements
 	public synchronized void processMultitouchInputEvent( int id, float x, float y, int type ) {
 		//System.out.println("event: "+id+", "+x+", "+y+", "+type);
 
@@ -1210,13 +1218,12 @@ public class MusicPath implements Runnable, ActionListener {
 		/*boolean redrawRequested = userContexts[indexOfUserContext].processMultitouchInputEvent( id, x, y, type, gw, doOtherUserContextsHaveCursors );
 		if ( redrawRequested )
 			multitouchFramework.requestRedraw();*/
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		
+		if (type == MultitouchFramework.TOUCH_EVENT_UP) {
+			menu.setPosition(x, y);
+		}
 	}
+	
 }
 
 

@@ -1,3 +1,4 @@
+package scene;
 
 public class Constant {
 	public static final String PROGRAM_NAME = "Music Path";

@@ -1,3 +1,4 @@
+package scene;
 
 
 import javax.media.opengl.GL;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.awt.Color;
 
 
-class GraphicsWrapper {
+public class GraphicsWrapper {
 
 
 	private int windowWidthInPixels = 10; // must be initialized to something positive

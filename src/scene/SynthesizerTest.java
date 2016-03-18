@@ -1,3 +1,4 @@
+package scene;
 
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
