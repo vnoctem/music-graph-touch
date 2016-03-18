@@ -68,7 +68,7 @@ public class SynthesizerTest {
 				System.out.println(counter + " - " + inst);
 			}
 			
-			channels[channel].programChange(0, 53);
+			channels[channel].programChange(0, 0);
 			
 			
 //			channels[0].programChange(67);
@@ -91,7 +91,7 @@ public class SynthesizerTest {
 			channels[channel].noteOff( 62 );
 			channels[channel].noteOn( 64, volume ); // mi
 			Thread.sleep( duration );
-			channels[channel].noteOff( 64 );
+			//channels[channel].noteOff( 64 );
 
 			Thread.sleep( 500 );
 
