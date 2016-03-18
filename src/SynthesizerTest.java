@@ -2,6 +2,7 @@
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Synthesizer;
+import javax.sound.midi.*;
 import java.util.Vector;
 
 // Voici, ci-dessous, quelques valeurs pour le "MIDI note number".
@@ -55,6 +56,21 @@ public class SynthesizerTest {
 			Synthesizer synth = MidiSystem.getSynthesizer();
 			synth.open();
 			MidiChannel[] channels = synth.getChannels();
+			
+			
+			// Lister la liste d'instruments disponible
+			// (http://stackoverflow.com/questions/7809581/midi-instrument-listing
+			Instrument[] orchestra = synth.getAvailableInstruments();
+//			for (Instrument i : orchestra) {
+//				System.out.println(i);
+//			}
+			
+			// Lister les instruments chargés
+			Instrument[] loadedInstruments = synth.getLoadedInstruments();
+			for (Instrument i : loadedInstruments) {
+				System.out.println(i);
+			}
+			
 
 			// --------------------------------------
 			// Jouons quelques notes.
