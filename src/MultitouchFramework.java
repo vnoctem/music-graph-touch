@@ -88,7 +88,7 @@ public class MultitouchFramework
 	public static final int TOUCH_EVENT_UP = 2;
 
 	private GraphicsWrapper gw = new GraphicsWrapper();
-	private SimpleWhiteboard client = null;
+	private MusicPath client = null;
 
 	private int preferredWidth, preferredHeight;
 	private int width, height;
@@ -99,7 +99,7 @@ public class MultitouchFramework
 	}
 
 	private void createClient() {
-		client = new SimpleWhiteboard(this,gw);
+		client = new MusicPath(this,gw);
 	}
 
 	public MultitouchFramework( GLCapabilities caps ) {
