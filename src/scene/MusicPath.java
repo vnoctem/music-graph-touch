@@ -1152,6 +1152,8 @@ public class MusicPath implements Runnable, ActionListener {
 			);
 		}
 		
+		gw.setLineWidth(3);
+		
 		// icônes
 		gw.setColor(1, 1, 1);
 		// corps
@@ -1167,10 +1169,20 @@ public class MusicPath implements Runnable, ActionListener {
 		
 		// icônes
 		gw.setColor(1, 1, 1);
+		// bâton
+		gw.setLineWidth(6);
+		gw.drawLine(500, 500, 500, 600);
+		gw.setLineWidth(2);
+		gw.drawLine(500 - 10, 510, 500 + 10, 510);
+		gw.drawLine(500 - 10, 520, 500 + 10, 520);
 		// corps
-		gw.drawLine(200, 200, 300, 200);
-		// clés
-
+		gw.drawEllipse(500, 600 - 20, 23, 18);
+		gw.setColor(0, 0, 0);
+		gw.fillCircle(500 - 10 / 2, 600 - 20, 10);
+		gw.setColor(1, 1, 1);
+		//gw.drawEllipse(500, 600 + 18 - 10, 30, 22);
+		
+		gw.setLineWidth(1);
 	}
 
 	public synchronized void keyPressed( KeyEvent e ) {

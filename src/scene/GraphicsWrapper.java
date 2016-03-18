@@ -5,10 +5,10 @@ import javax.media.opengl.GL;
 //import javax.media.opengl.GLCanvas;
 //import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLAutoDrawable;
+
 // import javax.media.opengl.GLDrawableFactory;
 //import javax.media.opengl.GLEventListener;
 import com.sun.opengl.util.GLUT;
-
 
 import java.lang.Math;
 import java.util.ArrayList;
@@ -282,6 +282,18 @@ public class GraphicsWrapper {
 				gl.glVertex2fv( p.get(), 0 );
 			}
 		gl.glEnd();
+	}
+	
+	public void drawEllipse(float x, float y, float radiusX, float radiusY) {
+	   int i;
+	 
+	   gl.glBegin(GL.GL_TRIANGLE_FAN);
+		   for(i = 0; i < 360; i++) {
+		      double rad = Math.toRadians(i);
+		      gl.glVertex2d(x + Math.cos(rad) * radiusX,
+		                    y + Math.sin(rad) * radiusY);
+		   }
+	   gl.glEnd();
 	}
 
 	public void drawPolyline( ArrayList< Point2D > points ) {
