@@ -1,6 +1,7 @@
+package scene;
 
 public class Constant {
-	public static final String PROGRAM_NAME = "Simple Whiteboard";
+	public static final String PROGRAM_NAME = "Music Path";
 	public static final int INITIAL_WINDOW_WIDTH = 1000; // in pixels
 	public static final int INITIAL_WINDOW_HEIGHT = 900; // in pixels
 	public static final boolean HAS_MENUBAR = false; // true;

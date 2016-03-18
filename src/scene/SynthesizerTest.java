@@ -1,3 +1,4 @@
+package scene;
 
 
 import javax.sound.midi.*;

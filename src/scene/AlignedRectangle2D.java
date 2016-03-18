@@ -1,3 +1,4 @@
+package scene;
 
 public class AlignedRectangle2D {
 
