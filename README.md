@@ -3,6 +3,7 @@ Laboratoire 4 pour GTI745 (2016)
 
 
 Instruments (https://fr.wikipedia.org/wiki/General_MIDI)
+avec les icônes (1 point)
 Sûr : Piano (Chun), Guitare classique, Violon,
 Pas sûr : Clarinette, Flute, Percussion
 
@@ -16,18 +17,18 @@ Pas sûr : Clarinette, Flute, Percussion
   - connecteurs (sens et nombre de fois et vitesse) et le point de départ (le son du composant sera produit un fois atteint sa position) (Chun)
     - 5 connecteurs max
     - connecteur représente le patron joué en ce moment (Vincent)
-  - jouer en boucle (Vincent)
-  - parent-dossier
+  - jouer en boucle (Vincent) (plus tard....)
+  - parent-dossier (plus tard....)
 
 1 point (Chun)
 3 - contrôle (play et pause et la vitesse globale)
-  - aller à une position particulière
+  - aller à une position particulière (plus tard....)
 
 1 point (Vincent)
 4 - effet visuel pour représenter le chemin
 
 1 point
-5 - vue linéaire (Vincent)
+5 - vue linéaire (Vincent) (plus tard....)
 
 Optionnel
 6 - enregistrer la scène
