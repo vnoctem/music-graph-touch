@@ -1,9 +1,7 @@
 package scene;
 
-import javax.sound.midi.MidiChannel;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.Synthesizer;
-import java.util.Vector;
+
+import javax.sound.midi.*;
 
 // Voici, ci-dessous, quelques valeurs pour le "MIDI note number".
 // Veuillez noter que # veut dire diese (en anglais, "sharp")
@@ -41,7 +39,7 @@ public class SynthesizerTest {
 
 	public static void main( String[] args ) {
 
-		int channel = 0; // 0 is a piano, 9 is percussion, other channels are for other instruments
+		int channel = 15; // 0 is a piano, 9 is percussion, other channels are for other instruments
 
 		int volume = 80; // entre 0 et 127
 		int duration = 200; // en millisecondes
@@ -53,9 +51,31 @@ public class SynthesizerTest {
 		boolean playChromaticScale = true;
 
 		try {
+			// Récupérer le synthétiseur et l'ouvrir
 			Synthesizer synth = MidiSystem.getSynthesizer();
 			synth.open();
+			
+			// récupérer les canaux du synthétiseur pour jouer un son
 			MidiChannel[] channels = synth.getChannels();
+			
+			// Array d'instruments
+			Instrument[] instruments = synth.getLoadedInstruments();
+			
+			
+			int counter = 0;
+			for (Instrument inst : instruments) {
+				counter++;
+				System.out.println(counter + " - " + inst);
+			}
+			
+			channels[channel].programChange(0, 0);
+			
+			
+//			channels[0].programChange(67);
+//			channels[0].noteOn(60, volume);
+//			Thread.sleep(duration);
+//			channels[0].noteOff(60);
+			
 
 			// --------------------------------------
 			// Jouons quelques notes.
@@ -71,7 +91,7 @@ public class SynthesizerTest {
 			channels[channel].noteOff( 62 );
 			channels[channel].noteOn( 64, volume ); // mi
 			Thread.sleep( duration );
-			channels[channel].noteOff( 64 );
+			//channels[channel].noteOff( 64 );
 
 			Thread.sleep( 500 );
 
