@@ -32,8 +32,16 @@ public class MusicSynthesizer {
 		md[channel].programChange(instrument.getBank(), instrument.getProgram());
 	}
 	
-	public void playNote(int noteNumber, int velocity, int channel) {
+	
+	public void playNote(int noteNumber, int velocity, int channel, int duration){
 		md[channel].noteOn(noteNumber, velocity);
+		try {
+			Thread.sleep(300);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//md[channel].noteOff(noteNumber);
 	}
 	
 	public void stopNote(int noteNumber, int channel) {
