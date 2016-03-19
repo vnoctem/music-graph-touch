@@ -1,5 +1,7 @@
 package music.instruments;
 
+import scene.GraphicsWrapper;
+
 public abstract class MusicInstrument {
 	
 	private int velocity; // entre 0 et 127, la rapidité avec laquelle la touche a été enfoncée
@@ -40,5 +42,7 @@ public abstract class MusicInstrument {
 	public int getProgram() {
 		return program;
 	}
+	
+	public abstract void drawIcon(GraphicsWrapper gw, float transX, float transY, float scaleX, float scaleY);
 
 }
