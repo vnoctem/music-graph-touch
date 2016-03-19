@@ -319,6 +319,16 @@ public class GraphicsWrapper {
 			gl.glVertex2f( x+w, y );
 		gl.glEnd();
 	}
+	
+	public void localWorldTrans(float transX, float transY, float scaleX, float scaleY) {
+		gl.glPushMatrix();
+		gl.glScaled(scaleX, scaleY, 0);
+		gl.glTranslated(transX, transY, 0);
+	}
+	
+	public void popMatrix() {
+		gl.glPopMatrix();
+	}
 
 	public void fillRect( float x, float y, float w, float h ) {
 		gl.glBegin( GL.GL_QUADS );

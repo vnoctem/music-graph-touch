@@ -1153,34 +1153,42 @@ public class MusicPath implements Runnable, ActionListener {
 		}
 		
 		gw.setLineWidth(3);
+
+		gw.localWorldTrans(200f, 200f, 0.5f, 0.5f);
+			// icônes "Piano"
+			gw.setColor(1, 1, 1);
+			// corps
+			gw.drawLine(0, 0, 100, 0);
+			gw.drawLine(0, 0, 0, 100);
+			gw.drawLine(100, 0, 100, 100);
+			gw.drawLine(0, 100, 100, 100);
+			// clés
+			gw.drawLine(100 / 3, 0, 100 / 3, 100);
+			gw.drawLine((100 / 3) * 2, 0, (100 / 3) * 2, 100);
+			gw.drawRect(100 / 3 - 10, 0, 20, 60, true);
+			gw.drawRect((100 / 3) * 2 - 10, 0, 20, 60, true);
+		gw.popMatrix();
 		
-		// icônes
-		gw.setColor(1, 1, 1);
-		// corps
-		gw.drawLine(200, 200, 300, 200);
-		gw.drawLine(200, 200, 200, 300);
-		gw.drawLine(300, 200, 300, 300);
-		gw.drawLine(200, 300, 300, 300);
-		// clés
-		gw.drawLine(200 + 100 / 3, 200, 200 + 100 / 3, 300);
-		gw.drawLine(200 + (100 / 3) * 2, 200, 200 + (100 / 3) * 2, 300);
-		gw.drawRect(200 + 100 / 3 - 10, 200, 20, 60, true);
-		gw.drawRect(200 + (100 / 3) * 2 - 10, 200, 20, 60, true);
-		
-		// icônes
-		gw.setColor(1, 1, 1);
-		// bâton
-		gw.setLineWidth(6);
-		gw.drawLine(500, 500, 500, 600);
-		gw.setLineWidth(2);
-		gw.drawLine(500 - 10, 510, 500 + 10, 510);
-		gw.drawLine(500 - 10, 520, 500 + 10, 520);
-		// corps
-		gw.drawEllipse(500, 600 - 20, 23, 18);
-		gw.setColor(0, 0, 0);
-		gw.fillCircle(500 - 10 / 2, 600 - 20, 10);
-		gw.setColor(1, 1, 1);
-		//gw.drawEllipse(500, 600 + 18 - 10, 30, 22);
+		gw.localWorldTrans(500f, 500f, 0.5f, 0.5f);
+			// icônes "Guitare"
+			gw.setColor(1, 1, 1);
+			// bâton
+			gw.setLineWidth(6);
+			gw.drawLine(0, 0, 0, 100);
+			gw.setLineWidth(2);
+			gw.drawLine(-10, 10, 10, 10);
+			gw.drawLine(-10, 20, 10, 20);
+			// corps
+			gw.drawEllipse(0, 100 - 20, 23, 18);
+			gw.drawEllipse(0, 100 + 18 - 10, 30, 22);
+			gw.setColor(0, 0, 0);
+			gw.fillCircle(-(8 / 2) - (6 / 2), 100 - 20 - 8, 8);
+			gw.setColor(0, 0, 0);
+			gw.setLineWidth(4);
+			gw.drawLine(-30 / 2, 100 + 18 - 10 + 5, 30 / 2, 100 + 18 - 10 + 5);
+			gw.setLineWidth(2);
+			gw.setColor(1, 1, 1);
+		gw.popMatrix();
 		
 		gw.setLineWidth(1);
 	}
