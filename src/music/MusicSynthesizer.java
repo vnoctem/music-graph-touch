@@ -48,5 +48,8 @@ public class MusicSynthesizer {
 		md[channel].noteOff(noteNumber);
 	}
 	
+	public Synthesizer getSynthesizer() {
+		return synth;
+	}
 
 }

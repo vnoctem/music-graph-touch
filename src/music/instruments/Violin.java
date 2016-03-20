@@ -1,5 +1,8 @@
 package music.instruments;
 
+import javax.sound.midi.Sequencer;
+
+import music.MusicSequencer;
 import scene.GraphicsWrapper;
 
 public class Violin extends MusicInstrument {
@@ -9,6 +12,11 @@ public class Violin extends MusicInstrument {
 		this.setDuration(150);
 		this.setBank(0);
 		this.setProgram(40);
+	}
+	
+	@Override
+	public void playSample(int sample, int channel, Sequencer sequencer) {
+		
 	}
 
 	@Override

@@ -1,5 +1,12 @@
 package music.instruments;
 
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiEvent;
+import javax.sound.midi.Sequencer;
+import javax.sound.midi.ShortMessage;
+import javax.sound.midi.Track;
+
+import music.MusicSequencer;
 import scene.GraphicsWrapper;
 
 public class Guitar extends MusicInstrument {
@@ -11,6 +18,24 @@ public class Guitar extends MusicInstrument {
 		this.setBank(0);
 		this.setProgram(25);
 	}
+	
+	@Override
+	public void playSample(int sample, int channel, Sequencer sequencer) {
+		
+	}
+	
+	// Pour ajouter une note à la 'track' (source : http://archive.oreilly.com/pub/a/onjava/excerpt/jenut3_ch17/index1.html)
+	@Override
+    public void addNote(Track track, int startTick, int tickLength, int key, int velocity, int channel)
+        throws InvalidMidiDataException
+    {
+		// changer l'instrument pour une guitare
+		ShortMessage instrument = new ShortMessage();
+        instrument.setMessage(ShortMessage.PROGRAM_CHANGE, channel, getProgram(), getBank());
+        track.add(new MidiEvent(instrument, startTick));
+        
+		super.addNote(track, startTick, tickLength, key, velocity, channel);
+    }
 
 	@Override
 	public void drawIcon(GraphicsWrapper gw, float transX, float transY, float scaleX, float scaleY) {
