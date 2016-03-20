@@ -18,16 +18,20 @@ public class Piano extends MusicInstrument {
 		gw.localWorldTrans(transX, transY, scaleX, scaleY);
 			// icônes "Piano"
 			gw.setColor(1, 1, 1);
+			int width = 100;
+			int height = 100;
 			// corps
-			gw.drawLine(0, 0, 100, 0);
-			gw.drawLine(0, 0, 0, 100);
-			gw.drawLine(100, 0, 100, 100);
-			gw.drawLine(0, 100, 100, 100);
+			gw.drawLine(-width / 2, -height / 2, width / 2, -height / 2);
+			gw.drawLine(-width / 2, -height / 2, -width / 2, height / 2);
+			gw.drawLine(width / 2, -height / 2, width / 2, height / 2);
+			gw.drawLine(-width / 2, height / 2, width / 2, height / 2);
 			// clés
-			gw.drawLine(100 / 3, 0, 100 / 3, 100);
-			gw.drawLine((100 / 3) * 2, 0, (100 / 3) * 2, 100);
-			gw.drawRect(100 / 3 - 10, 0, 20, 60, true);
-			gw.drawRect((100 / 3) * 2 - 10, 0, 20, 60, true);
+			int keyWidth = 20;
+			int keyHeight = 60;
+			gw.drawLine(width / 3 - width / 2, -height / 2, width / 3 - width / 2, height / 2);
+			gw.drawLine(width / 3 * 2 - width / 2, -height / 2, width / 3 * 2 - width / 2, height / 2);
+			gw.drawRect(width / 3 - width / 2 - keyWidth / 2, -height / 2, keyWidth, keyHeight, true);
+			gw.drawRect(width / 3 * 2 - width / 2 - keyWidth / 2, -height / 2, keyWidth, keyHeight, true);
 		gw.popMatrix();
 		gw.setLineWidth(1);
 	}
