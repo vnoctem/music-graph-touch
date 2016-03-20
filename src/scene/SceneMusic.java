@@ -56,12 +56,40 @@ public class SceneMusic {
 		
 		// dessiner le connecteur
 		if (posConnector != null) {
-			gw.drawLine(position.x(), position.y(), posConnector.x(), posConnector.y());
+			if (!isInside(posConnector.x(), posConnector.y())) {
+				// vecteur utilisé pour que le connnecteur commence au bord
+				// même longueur pour connected et position, car supposé d'avoir les mêmes longueurs
+				Vector2D v = Point2D.diff(position, posConnector);
+				float angle = v.angle();
+				gw.setLineWidth(5);
+				gw.setColor(0.7f,0.7f,0f);
+				gw.drawLine(
+						(float) (position.x() - Math.cos(angle) * radius), 
+						(float) (position.y() - Math.sin(angle) * radius), 
+						(float) (posConnector.x()), 
+						(float) (posConnector.y())
+				);
+				gw.setLineWidth(1);
+				gw.setColor(1f,1f,1f);
+			}
 		}
 		
 		// s'il y a un composant connecté
 		if (connected != null) {
-			gw.drawLine(position.x(), position.y(), connected.getPosition().x(), connected.getPosition().y());
+			// vecteur utilisé pour que le connnecteur commence au bord
+			// même longueur pour connected et position, car supposé d'avoir les mêmes longueurs
+			Vector2D v = Point2D.diff(position, connected.getPosition());
+			float angle = v.angle();
+			gw.setLineWidth(5);
+			gw.setColor(0.7f,0.7f,0f);
+			gw.drawLine(
+					(float) (position.x() - Math.cos(angle) * radius), 
+					(float) (position.y() - Math.sin(angle) * radius), 
+					(float) (connected.getPosition().x() + Math.cos(angle) * radius), 
+					(float) (connected.getPosition().y() + Math.sin(angle) * radius)
+			);
+			gw.setLineWidth(1);
+			gw.setColor(1f,1f,1f);
 		}
 	}
 }
