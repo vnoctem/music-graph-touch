@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import music.instruments.Guitar;
 import music.instruments.Piano;
+import music.instruments.Violin;
 import scene.GraphicsWrapper;
 import scene.Point2D;
 
@@ -67,7 +68,7 @@ public class RadialMenu {
 								(float) Math.cos(Math.toRadians(midAngle)) * (innerRadius + DISTANCE / 2),
 								(float) Math.sin(Math.toRadians(midAngle)) * (innerRadius + DISTANCE / 2)
 						);
-						// gw.drawRect(central.x() - 5, central.y() - 5, 10, 10);
+
 						// Créer l'instrument
 						switch (level) {
 							case 1:
@@ -77,6 +78,7 @@ public class RadialMenu {
 								new Guitar().drawIcon(gw, central.x(), central.y(), 0.5f, 0.5f);
 								break;
 							case 3:
+								new Violin().drawIcon(gw, central.x(), central.y(), 0.5f, 0.5f);
 								break;
 							case 4:
 								break;
