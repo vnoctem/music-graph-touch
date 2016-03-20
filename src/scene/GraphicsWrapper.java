@@ -348,8 +348,8 @@ public class GraphicsWrapper {
 	
 	public void localWorldTrans(float transX, float transY, float scaleX, float scaleY) {
 		gl.glPushMatrix();
-		gl.glScaled(scaleX, scaleY, 0);
 		gl.glTranslated(transX, transY, 0);
+		gl.glScaled(scaleX, scaleY, 0);
 	}
 	
 	public void popMatrix() {

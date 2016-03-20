@@ -8,10 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-import javax.xml.ws.soap.MTOM;
 
-import music.instruments.Guitar;
-import music.instruments.Piano;
 import widget.MenuRadial;
 
 // This class stores the current position of a finger,
@@ -202,7 +199,7 @@ public class MusicPath implements Runnable, ActionListener {
 		multitouchFramework.setPreferredWindowSize(Constant.INITIAL_WINDOW_WIDTH,Constant.INITIAL_WINDOW_HEIGHT);
 		
 		// initialiser le menu
-		menu = new MenuRadial(20, 4);
+		menu = new MenuRadial(30, 4);
 
 		gw.setFontHeight( Constant.TEXT_HEIGHT );
 

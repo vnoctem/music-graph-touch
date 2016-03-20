@@ -2,8 +2,13 @@ package widget;
 
 import java.util.ArrayList;
 
+import music.instruments.Guitar;
+import music.instruments.MusicInstrument;
+import music.instruments.Piano;
 import scene.GraphicsWrapper;
 import scene.Point2D;
+import scene.Point2DUtil;
+import scene.Vector2D;
 
 public class MenuRadial {
 	private Point2D position;
@@ -11,10 +16,11 @@ public class MenuRadial {
 	private float outerRadius;
 	private boolean onShown = false;
 	private int nb; // nombre d'éléments dans le menu
+	private final int DISTANCE = 100;
 	
 	public MenuRadial(float radius, int nb) {
 		this.innerRadius = radius;
-		outerRadius = innerRadius + 100;
+		outerRadius = innerRadius + DISTANCE;
 		this.nb = nb;
 	}
 	
@@ -36,8 +42,6 @@ public class MenuRadial {
 			for (int angle = 0; angle < 360; angle++) {
 				// si l'angle est complet, dessine la partie
 				if (angle + 1 == (int) ((360 / nb) * level)) {
-					level++;
-					
 					// dessiner
 					gw.setColor(0.1f,0.1f,0.1f);			
 					gw.drawPartOfCircle(outerPoints, innerPoints);
@@ -45,8 +49,38 @@ public class MenuRadial {
 					gw.setColor(1,1,1);
 					gw.drawPartOfCircleLine(outerPoints, innerPoints);
 					
+					// trouver le point central entre les parties
+					ArrayList<Point2D> polygonPoints = new ArrayList<Point2D>();
+					polygonPoints.add(outerPoints.get(0));
+					polygonPoints.add(outerPoints.get(outerPoints.size() - 1));
+					polygonPoints.add(innerPoints.get(0));
+					polygonPoints.add(innerPoints.get(innerPoints.size() - 1));
+					Point2D central = Point2DUtil.computeCentroidOfPoints(polygonPoints);
+					Vector2D v = Point2D.diff(
+							Point2D.average(innerPoints.get(0), innerPoints.get(innerPoints.size() - 1)),
+							Point2D.average(outerPoints.get(0), outerPoints.get(outerPoints.size() - 1))
+					);
+					v.normalized();
+					// il faut soustraire une certaine distance pour tenir compte que c'est un cercle
+					gw.drawRect(central.x() - v.x() / 3, central.y() - v.y() / 3, 10, 10);
+					// Créer l'instrument
+					switch (level) {
+						case 1:
+							new Piano().drawIcon(gw, central.x(), central.y(), 0.5f, 0.5f);
+							break;
+						case 2:
+							new Guitar().drawIcon(gw, central.x(), central.y(), 0.5f, 0.5f);
+							break;
+						case 3:
+							break;
+						case 4:
+							break;
+					}
+					
 					outerPoints.clear();
 					innerPoints.clear();
+					
+					level++;
 				}
 				
 				double rad = Math.toRadians(angle);
