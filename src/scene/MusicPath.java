@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
-import widget.MenuRadial;
+import widget.RadialMenu;
 
 // This class stores the current position of a finger,
 // as well as the history of previous positions of that finger
@@ -186,7 +186,7 @@ public class MusicPath implements Runnable, ActionListener {
 	
 	// un seul menu pour l'instant
 	// si plusieurs menus possible (multiutilisateurs), utilise Arraylist
-	private MenuRadial menu;
+	private RadialMenu menu;
 
 	Thread thread = null;
 	boolean threadSuspended;
@@ -199,7 +199,7 @@ public class MusicPath implements Runnable, ActionListener {
 		multitouchFramework.setPreferredWindowSize(Constant.INITIAL_WINDOW_WIDTH,Constant.INITIAL_WINDOW_HEIGHT);
 		
 		// initialiser le menu
-		menu = new MenuRadial(30, 4);
+		menu = new RadialMenu(30, 3);
 
 		gw.setFontHeight( Constant.TEXT_HEIGHT );
 
@@ -209,7 +209,7 @@ public class MusicPath implements Runnable, ActionListener {
 	// méthode pour dessiner dans la scène
 	public synchronized void draw() {
 		// mettre noir dans l'arrière plan
-		gw.clear(0.3f,0.3f,0.3f);
+		gw.clear(0,0,0);
 		gw.setColor(0,0,0);
 		gw.setupForDrawing();
 
