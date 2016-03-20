@@ -5,10 +5,10 @@ import javax.media.opengl.GL;
 //import javax.media.opengl.GLCanvas;
 //import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLAutoDrawable;
+
 // import javax.media.opengl.GLDrawableFactory;
 //import javax.media.opengl.GLEventListener;
 import com.sun.opengl.util.GLUT;
-
 
 import java.lang.Math;
 import java.util.ArrayList;
@@ -283,6 +283,44 @@ public class GraphicsWrapper {
 			}
 		gl.glEnd();
 	}
+	
+	public void drawEllipse(float x, float y, float radiusX, float radiusY) {
+		gl.glBegin(GL.GL_TRIANGLE_FAN);
+			for (int i = 0; i < 360; i++) {
+				double rad = Math.toRadians(i);
+		        gl.glVertex2d(x + Math.cos(rad) * radiusX,
+		        			  y + Math.sin(rad) * radiusY);
+		    }
+		gl.glEnd();
+	}
+	
+	public void drawPartOfCircle(ArrayList<Point2D> outerPoints, ArrayList<Point2D> innerPoints) {
+		gl.glBegin(GL.GL_TRIANGLE_FAN);
+			// commencer avec la partie extérieure
+			for (Point2D point : outerPoints) {
+		        gl.glVertex2d(point.x(), point.y());
+		    }
+			// continuer avec la partie intérieure dans l'autre sens de parcours habituel
+			for (int i = innerPoints.size() - 1; i >= 0; i--) {
+				Point2D point = innerPoints.get(i);
+		        gl.glVertex2d(point.x(), point.y());
+		    }
+		gl.glEnd();
+	}
+	
+	public void drawPartOfCircleLine(ArrayList<Point2D> outerPoints, ArrayList<Point2D> innerPoints) {
+		gl.glBegin(GL.GL_LINE_LOOP);
+			// commencer avec la partie extérieure
+			for (Point2D point : outerPoints) {
+		        gl.glVertex2d(point.x(), point.y());
+		    }
+			// continuer avec la partie intérieure dans l'autre sens de parcours habituel
+			for (int i = innerPoints.size() - 1; i >= 0; i--) {
+				Point2D point = innerPoints.get(i);
+		        gl.glVertex2d(point.x(), point.y());
+		    }
+		gl.glEnd();
+	}
 
 	public void drawPolyline( ArrayList< Point2D > points ) {
 		drawPolyline( points, false, false );
@@ -306,6 +344,21 @@ public class GraphicsWrapper {
 			gl.glVertex2f( x+w, y+h );
 			gl.glVertex2f( x+w, y );
 		gl.glEnd();
+	}
+	
+	public void localWorldTrans(float transX, float transY, float scaleX, float scaleY) {
+		gl.glPushMatrix();
+		gl.glTranslated(transX, transY, 0);
+		gl.glScaled(scaleX, scaleY, 0);
+	}
+	
+	public void localWorldTrans(float transX, float transY) {
+		gl.glPushMatrix();
+		gl.glTranslated(transX, transY, 0);
+	}
+	
+	public void popMatrix() {
+		gl.glPopMatrix();
 	}
 
 	public void fillRect( float x, float y, float w, float h ) {

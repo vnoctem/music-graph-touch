@@ -64,7 +64,7 @@ public class Point2D {
 		return diff( this, otherPoint ).length();
 	}
 
-	static Point2D average( Point2D a, Point2D b ) {
+	public static Point2D average( Point2D a, Point2D b ) {
 		// return new Point2D( Vector2D.mult( Vector2D.sum( new Vector2D(a), new Vector2D(b) ), 0.5f ) );
 		return new Point2D( (a.x()+b.x())*0.5f, (a.y()+b.y())*0.5f );
 	}
