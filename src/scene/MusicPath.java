@@ -187,6 +187,9 @@ public class MusicPath implements Runnable, ActionListener {
 	// un seul menu pour l'instant
 	// si plusieurs menus possible (multiutilisateurs), utilise Arraylist
 	private RadialMenu menu;
+	
+	// liste des composant graphique et musical
+	private ArrayList<SceneMusic> lSm = new ArrayList<SceneMusic>(); 
 
 	Thread thread = null;
 	boolean threadSuspended;
@@ -199,7 +202,7 @@ public class MusicPath implements Runnable, ActionListener {
 		multitouchFramework.setPreferredWindowSize(Constant.INITIAL_WINDOW_WIDTH,Constant.INITIAL_WINDOW_HEIGHT);
 		
 		// initialiser le menu
-		menu = new RadialMenu(30, 3);
+		menu = new RadialMenu(30, 3, 50);
 
 		gw.setFontHeight( Constant.TEXT_HEIGHT );
 
@@ -218,6 +221,13 @@ public class MusicPath implements Runnable, ActionListener {
 
 		gw.setCoordinateSystemToPixels();
 		
+		// tous les composants graphiques et musicals
+		for (SceneMusic sm : lSm) {
+			sm.draw(gw);
+		}
+		
+		// menu
+		// doit toujours être la dernière à dessiner pour qu'il soit toujours par dessus de tout
 		menu.draw(gw);
 	}
 
@@ -226,19 +236,20 @@ public class MusicPath implements Runnable, ActionListener {
 		switch (type) {
 			case MultitouchFramework.TOUCH_EVENT_DOWN:
 				// afficher le menu
-				menu.setPosition(x, y);
-				menu.setOnShown(true);
+				menu.show(x, y);
 				
 				// forcer le rafraîchissement pour faire apparaître le menu
 				multitouchFramework.requestRedraw();
 			break;
 			case MultitouchFramework.TOUCH_EVENT_UP:
 				// cacher le menu
-				menu.setOnShown(false);
+				SceneMusic sm = menu.close();
+				
+				if (sm != null)
+					lSm.add(sm);
 			break;
 			case MultitouchFramework.TOUCH_EVENT_MOVE:
-				//menu.createInstrument(120f, 120f);
-				menu.createInstrument(x, y);
+				menu.onMove(x, y);
 				
 				// pour changer l'apparence
 				multitouchFramework.requestRedraw();
