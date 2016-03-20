@@ -285,15 +285,41 @@ public class GraphicsWrapper {
 	}
 	
 	public void drawEllipse(float x, float y, float radiusX, float radiusY) {
-	   int i;
-	 
-	   gl.glBegin(GL.GL_TRIANGLE_FAN);
-		   for(i = 0; i < 360; i++) {
-		      double rad = Math.toRadians(i);
-		      gl.glVertex2d(x + Math.cos(rad) * radiusX,
-		                    y + Math.sin(rad) * radiusY);
-		   }
-	   gl.glEnd();
+		gl.glBegin(GL.GL_TRIANGLE_FAN);
+			for (int i = 0; i < 360; i++) {
+				double rad = Math.toRadians(i);
+		        gl.glVertex2d(x + Math.cos(rad) * radiusX,
+		        			  y + Math.sin(rad) * radiusY);
+		    }
+		gl.glEnd();
+	}
+	
+	public void drawPartOfCircle(ArrayList<Point2D> outerPoints, ArrayList<Point2D> innerPoints) {
+		gl.glBegin(GL.GL_TRIANGLE_FAN);
+			// commencer avec la partie extérieure
+			for (Point2D point : outerPoints) {
+		        gl.glVertex2d(point.x(), point.y());
+		    }
+			// continuer avec la partie intérieure dans l'autre sens de parcours habituel
+			for (int i = innerPoints.size() - 1; i >= 0; i--) {
+				Point2D point = innerPoints.get(i);
+		        gl.glVertex2d(point.x(), point.y());
+		    }
+		gl.glEnd();
+	}
+	
+	public void drawPartOfCircleLine(ArrayList<Point2D> outerPoints, ArrayList<Point2D> innerPoints) {
+		gl.glBegin(GL.GL_LINE_LOOP);
+			// commencer avec la partie extérieure
+			for (Point2D point : outerPoints) {
+		        gl.glVertex2d(point.x(), point.y());
+		    }
+			// continuer avec la partie intérieure dans l'autre sens de parcours habituel
+			for (int i = innerPoints.size() - 1; i >= 0; i--) {
+				Point2D point = innerPoints.get(i);
+		        gl.glVertex2d(point.x(), point.y());
+		    }
+		gl.glEnd();
 	}
 
 	public void drawPolyline( ArrayList< Point2D > points ) {

@@ -14,6 +14,7 @@ public class Piano extends MusicInstrument {
 
 	@Override
 	public void drawIcon(GraphicsWrapper gw, float transX, float transY, float scaleX, float scaleY) {
+		gw.setLineWidth(3);
 		gw.localWorldTrans(transX, transY, scaleX, scaleY);
 			// icônes "Piano"
 			gw.setColor(1, 1, 1);
@@ -28,5 +29,6 @@ public class Piano extends MusicInstrument {
 			gw.drawRect(100 / 3 - 10, 0, 20, 60, true);
 			gw.drawRect((100 / 3) * 2 - 10, 0, 20, 60, true);
 		gw.popMatrix();
+		gw.setLineWidth(1);
 	}
 }

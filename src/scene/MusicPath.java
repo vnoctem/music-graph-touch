@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.xml.ws.soap.MTOM;
 
 import music.instruments.Guitar;
 import music.instruments.Piano;
@@ -188,7 +189,7 @@ public class MusicPath implements Runnable, ActionListener {
 	
 	// un seul menu pour l'instant
 	// si plusieurs menus possible (multiutilisateurs), utilise Arraylist
-	public MenuRadial menu;
+	private MenuRadial menu;
 
 	Thread thread = null;
 	boolean threadSuspended;
@@ -200,7 +201,8 @@ public class MusicPath implements Runnable, ActionListener {
 		this.gw = gw;
 		multitouchFramework.setPreferredWindowSize(Constant.INITIAL_WINDOW_WIDTH,Constant.INITIAL_WINDOW_HEIGHT);
 		
-		menu = new MenuRadial(50);
+		// initialiser le menu
+		menu = new MenuRadial(20, 4);
 
 		gw.setFontHeight( Constant.TEXT_HEIGHT );
 
@@ -220,20 +222,26 @@ public class MusicPath implements Runnable, ActionListener {
 		gw.setCoordinateSystemToPixels();
 		
 		menu.draw(gw);
-		
-		// icônes
-		gw.setLineWidth(3);
-			new Guitar().drawIcon(gw, 200f, 200f, 0.5f, 0.5f);
-			new Piano().drawIcon(gw, 500f, 500f, 0.5f, 0.5f);
-		gw.setLineWidth(1);
 	}
 
 	// écouteur pour tous les événements de multitouch
 	public synchronized void processMultitouchInputEvent( int id, float x, float y, int type ) {
-		// afficher le menu à la position du souris
-		if (type == MultitouchFramework.TOUCH_EVENT_DOWN) {
-			menu.setPosition(x, y);
-			multitouchFramework.requestRedraw();
+		switch (type) {
+			case MultitouchFramework.TOUCH_EVENT_DOWN:
+				// afficher le menu
+				menu.setPosition(x, y);
+				menu.setOnShown(true);
+				
+				// forcer le rafraîchissement pour faire apparaître le menu
+				multitouchFramework.requestRedraw();
+			break;
+			case MultitouchFramework.TOUCH_EVENT_UP:
+				// cacher le menu
+				menu.setOnShown(false);
+			break;
+			case MultitouchFramework.TOUCH_EVENT_MOVE:
+				
+			break;
 		}
 	}
 	

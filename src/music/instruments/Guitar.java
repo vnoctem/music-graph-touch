@@ -14,6 +14,7 @@ public class Guitar extends MusicInstrument {
 
 	@Override
 	public void drawIcon(GraphicsWrapper gw, float transX, float transY, float scaleX, float scaleY) {
+		gw.setLineWidth(3);
 		gw.localWorldTrans(transX, transY, scaleX, scaleY);
 			// icônes "Guitare"
 			gw.setColor(1, 1, 1);
@@ -34,5 +35,6 @@ public class Guitar extends MusicInstrument {
 			gw.setLineWidth(2);
 			gw.setColor(1, 1, 1);
 		gw.popMatrix();
+		gw.setLineWidth(1);
 	}
 }
