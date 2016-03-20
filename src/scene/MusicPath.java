@@ -190,6 +190,8 @@ public class MusicPath implements Runnable, ActionListener {
 	
 	// liste des composant graphique et musical
 	private ArrayList<SceneMusic> lSm = new ArrayList<SceneMusic>(); 
+	
+	private SceneMusic selectedSM = null;
 
 	Thread thread = null;
 	boolean threadSuspended;
@@ -235,21 +237,52 @@ public class MusicPath implements Runnable, ActionListener {
 	public synchronized void processMultitouchInputEvent( int id, float x, float y, int type ) {
 		switch (type) {
 			case MultitouchFramework.TOUCH_EVENT_DOWN:
-				// afficher le menu
-				menu.show(x, y);
+				// si clic sur un des composants graphiques, fait l'action
+				for (SceneMusic sm : lSm) {
+					if (sm.isInside(x, y)) {
+						sm.connect(x, y);
+						
+						selectedSM = sm;
+						break;
+					}
+				}
+				
+				// sinon, afficher le menu
+				if (selectedSM == null) {
+					menu.show(x, y);
+				}
 				
 				// forcer le rafraîchissement pour faire apparaître le menu
 				multitouchFramework.requestRedraw();
 			break;
 			case MultitouchFramework.TOUCH_EVENT_UP:
-				// cacher le menu
-				SceneMusic sm = menu.close();
+				if (selectedSM != null) {
+					// si déposer le connecteur sur un composant, il faut les relier
+					for (SceneMusic sm : lSm) {
+						if (sm.isInside(x, y)) {
+							selectedSM.doneConnect(sm);
+							
+							selectedSM = null;
+							break;
+						}
+					}
+				}
 				
-				if (sm != null)
-					lSm.add(sm);
+				if (menu.isShown()) {
+					// cacher le menu
+					SceneMusic sm = menu.close();
+					
+					if (sm != null)
+						lSm.add(sm);
+				}
 			break;
 			case MultitouchFramework.TOUCH_EVENT_MOVE:
-				menu.onMove(x, y);
+				if (selectedSM != null) {
+					selectedSM.extendConnector(x, y);
+				}
+				
+				if (menu.isShown())
+					menu.onMove(x, y);
 				
 				// pour changer l'apparence
 				multitouchFramework.requestRedraw();

@@ -36,6 +36,10 @@ public class RadialMenu {
 		onShownMenu = true;
 	}
 	
+	public boolean isShown() {
+		return onShownMenu || onShownInstru;
+	}
+	
 	public SceneMusic close() {
 		onShownMenu = false;
 		onShownInstru = false;
@@ -67,7 +71,7 @@ public class RadialMenu {
 		selected = findSection(user, distance);
 		
 		// si rendu au bord du menu
-		if (selected != -1 && distance >= outerRadius - 5) {
+		if (selected != -1 && distance >= outerRadius - 20) {
 			switch (selected) {
 				case 0:
 					sm = new SceneMusic(new Piano(), radiusInstru);
