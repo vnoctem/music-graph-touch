@@ -7,6 +7,7 @@ import music.instruments.Piano;
 import music.instruments.Violin;
 import scene.GraphicsWrapper;
 import scene.Point2D;
+import scene.Vector2D;
 
 public class RadialMenu {
 	private Point2D position;
@@ -15,6 +16,7 @@ public class RadialMenu {
 	private boolean onShown = false;
 	private int nb; // nombre d'éléments dans le menu
 	private final int DISTANCE = 100;
+	private int selected = -1;
 	
 	public RadialMenu(float radius, int nb) {
 		this.innerRadius = radius;
@@ -28,6 +30,29 @@ public class RadialMenu {
 
 	public void setOnShown(boolean onShown) {
 		this.onShown = onShown;
+	}
+	
+	private int findSection(float x, float y) {
+		Point2D user = new Point2D(x, y);
+		
+		float distance = position.distance(user);
+		// si dans le menu
+		if (distance > innerRadius && distance < outerRadius) {
+			// vecteur entre la position du menu et de l'utilisateur
+			Vector2D v = Point2D.diff(user, position);
+			int range = 360 / nb;
+			// trouve le niveau avec l'angle
+			int level = (int) Math.toDegrees(v.angle()) / range;
+			
+			return level;
+		}
+		
+		// rien trouvé
+		return -1;
+	}
+	
+	public void createInstrument(float x, float y) {
+		selected = findSection(x, y);
 	}
 
 	public void draw(GraphicsWrapper gw) {
@@ -57,7 +82,11 @@ public class RadialMenu {
 						}
 						
 						// dessiner
-						gw.setColor(0.2f,0.2f,0.2f);		
+						System.out.println(selected);
+						if (selected + 1 == level)
+							gw.setColor(0.7f,0.7f,0f);
+						else
+							gw.setColor(0.2f,0.2f,0.2f);
 						gw.drawPartOfCircle(outerPoints, innerPoints);
 						// contour
 						gw.setColor(1,1,1);

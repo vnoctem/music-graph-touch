@@ -237,7 +237,11 @@ public class MusicPath implements Runnable, ActionListener {
 				menu.setOnShown(false);
 			break;
 			case MultitouchFramework.TOUCH_EVENT_MOVE:
+				//menu.createInstrument(120f, 120f);
+				menu.createInstrument(x, y);
 				
+				// pour changer l'apparence
+				multitouchFramework.requestRedraw();
 			break;
 		}
 	}

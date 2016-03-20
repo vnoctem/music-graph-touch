@@ -38,7 +38,6 @@ public class Guitar extends MusicInstrument {
 			gw.setColor(0, 0, 0);
 			int smallCircle = 10;
 			gw.fillCircle(-lineWidth / 2 - smallCircle, height / 8 - smallCircle, smallCircle);
-			gw.setLineWidth(4);
 			int bottomWidth = bottomCircleWidth / 2;
 			gw.drawLine(
 					-lineWidth / 2 - bottomWidth, 
@@ -46,7 +45,6 @@ public class Guitar extends MusicInstrument {
 					-lineWidth / 2 + bottomWidth, 
 					height / 8 + topCircleHeight + bottomCircleHeight - gap + bottomCircleHeight / 2
 			);
-			gw.setLineWidth(2);
 			gw.setColor(1, 1, 1);
 		gw.popMatrix();
 		gw.setLineWidth(1);
