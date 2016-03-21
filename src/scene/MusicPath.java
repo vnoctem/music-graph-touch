@@ -204,7 +204,7 @@ public class MusicPath implements Runnable, ActionListener {
 		multitouchFramework.setPreferredWindowSize(Constant.INITIAL_WINDOW_WIDTH,Constant.INITIAL_WINDOW_HEIGHT);
 		
 		// initialiser le menu
-		menu = new RadialMenu(30, 3, 50);
+		menu = new RadialMenu(30, 6, 40);
 
 		gw.setFontHeight( Constant.TEXT_HEIGHT );
 

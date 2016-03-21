@@ -58,8 +58,8 @@ public class SceneMusic {
 		gw.setColor(color[0],color[1],color[2]);
 		gw.setLineWidth(3);
 		gw.drawCircle(position.x() - radius, position.y() - radius, radius);
-		mi.drawIcon(gw, position.x(), position.y(), 0.5f, 0.5f);
-		gw.setLineWidth(1);
+		mi.drawIcon(gw, position.x(), position.y(), 0.4f, 0.4f);
+		gw.setLineWidth(3);
 		gw.setColor(1f,1f,1f);
 		
 		// dessiner le connecteur
@@ -69,7 +69,6 @@ public class SceneMusic {
 				// même longueur pour connected et position, car supposé d'avoir les mêmes longueurs
 				Vector2D v = Point2D.diff(position, posConnector);
 				float angle = v.angle();
-				gw.setLineWidth(5);
 				gw.setColor(0.7f,0.7f,0f);
 				gw.drawLine(
 						(float) (position.x() - Math.cos(angle) * radius), 
@@ -88,7 +87,6 @@ public class SceneMusic {
 			// même longueur pour connected et position, car supposé d'avoir les mêmes longueurs
 			Vector2D v = Point2D.diff(position, connected.getPosition());
 			float angle = v.angle();
-			gw.setLineWidth(5);
 			gw.setColor(0.7f,0.7f,0f);
 			gw.drawLine(
 					(float) (position.x() - Math.cos(angle) * radius), 
