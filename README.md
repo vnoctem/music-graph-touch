@@ -4,8 +4,7 @@ Laboratoire 4 pour GTI745 (2016)
 
 Instruments (https://fr.wikipedia.org/wiki/General_MIDI)
 avec les icônes (1 point)
-Sûr : Piano (Chun), Guitare classique, Violon,
-Pas sûr : Clarinette, Flute, Percussion
+Piano, Guitare classique, Violon, Clarinette, contrebasse, cor français
 
 2 points
 1 - Click
