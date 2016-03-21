@@ -2,6 +2,10 @@ package music.instruments;
 
 import scene.GraphicsWrapper;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -11,7 +15,6 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
-import music.MusicSequencer;
 
 public abstract class MusicInstrument {
 	
@@ -61,20 +64,35 @@ public abstract class MusicInstrument {
 	}
 	
 	// Pour jouer un patron de musique dans le séquenceur
-	public abstract void playSample(int sample, int channel, Sequencer sequencer);
+	public void playSample(String filePathName, int channel, Sequencer sequencer, Sequence sequence) 
+			throws InvalidMidiDataException {
+		// créer un File à partir du filePathName
+		File f = new File(filePathName);
+		try {
+			FileReader fr = new FileReader(f); // FileReader pour lire le fichier
+			
+			// créer un char array de la taille du fichier
+			char[] notes = new char[(int)f.length()];
+			
+			fr.read(notes);// lire le fichier et le mettre dans le char array
+			fr.close(); // fermer le fichier
+			
+			// Créer une séquence et une track
+			Track track = sequence.createTrack();
+			createTrack(track, channel, notes);
+			
+			// Assigner la séquence au séquenceur et démarrer
+			sequencer.setSequence(sequence);
+			sequencer.start();
+		} catch (FileNotFoundException e) {
+			System.out.println("Le fichier " + filePathName + " est introuvable.");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Erreur lors de la lecture de " + filePathName);
+			e.printStackTrace();
+		}
+	}
 	
-	// Pour ajouter une note à la 'track' (source : http://archive.oreilly.com/pub/a/onjava/excerpt/jenut3_ch17/index1.html)
-    public void addNote(Track track, int startTick, int tickLength, int key, int velocity, int channel)
-        throws InvalidMidiDataException
-    {
-    	ShortMessage on = new ShortMessage();
-        on.setMessage(ShortMessage.NOTE_ON,  channel, key, velocity);
-        ShortMessage off = new ShortMessage();
-        off.setMessage(ShortMessage.NOTE_OFF, channel, key, velocity);
-        track.add(new MidiEvent(on, startTick));
-        track.add(new MidiEvent(off, startTick + tickLength));
-    }
-    
     /*
      * (source : http://archive.oreilly.com/pub/a/onjava/excerpt/jenut3_ch17/index1.html)
      * This method parses the specified char[  ] of notes into a Track.
@@ -95,9 +113,9 @@ public abstract class MusicInstrument {
     public void createTrack(Track track, int channel, char[] notes)
         throws InvalidMidiDataException
     {
-    	 final int[  ] offsets = {  // add these amounts to the base value
-		        // A   B  C  D  E  F  G
-		          -4, -2, 0, 1, 3, 5, 7  
+    	 final int[] offsets = {  // add these amounts to the base value
+		       // A  B   C  D  E  F  G
+		          9, 11, 0, 2, 4, 5, 7  
 		    };
 
         int n = 0; // current character in notes[  ] array
@@ -109,6 +127,7 @@ public abstract class MusicInstrument {
         int basekey = 60;    // 60 is middle C. Adjusted up and down by octave
         int numnotes = 0;    // How many notes in current chord?
 
+        
         while(n < notes.length) {
             char c = notes[n++];
 
@@ -168,6 +187,18 @@ public abstract class MusicInstrument {
                 t += notelength;
             }
         }
+    }
+    
+ // Pour ajouter une note à la 'track' (source : http://archive.oreilly.com/pub/a/onjava/excerpt/jenut3_ch17/index1.html)
+    public void addNote(Track track, int startTick, int tickLength, int key, int velocity, int channel)
+        throws InvalidMidiDataException
+    {
+    	ShortMessage on = new ShortMessage();
+        on.setMessage(ShortMessage.NOTE_ON,  channel, key, velocity);
+        ShortMessage off = new ShortMessage();
+        off.setMessage(ShortMessage.NOTE_OFF, channel, key, velocity);
+        track.add(new MidiEvent(on, startTick));
+        track.add(new MidiEvent(off, startTick + tickLength));
     }
 
 	public abstract void drawIcon(GraphicsWrapper gw, float transX, float transY, float scaleX, float scaleY);

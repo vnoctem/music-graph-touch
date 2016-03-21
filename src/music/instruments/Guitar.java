@@ -2,15 +2,14 @@ package music.instruments;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
+import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
-import music.MusicSequencer;
 import scene.GraphicsWrapper;
 
 public class Guitar extends MusicInstrument {
-	
 	
 	public Guitar() {
 		this.setVelocity(80);
@@ -19,9 +18,13 @@ public class Guitar extends MusicInstrument {
 		this.setProgram(25);
 	}
 	
-	@Override
-	public void playSample(int sample, int channel, Sequencer sequencer) {
+	// Pour jouer un patron de musique dans le séquenceur
+	public void playSample(int sample, int channel, Sequencer sequencer, Sequence sequence) 
+			throws InvalidMidiDataException {
+		// créer un File à partir du filePathName
+		String filePathName = "samples/guitar/sample" + sample + ".txt";
 		
+		super.playSample(filePathName, channel, sequencer, sequence);
 	}
 	
 	// Pour ajouter une note à la 'track' (source : http://archive.oreilly.com/pub/a/onjava/excerpt/jenut3_ch17/index1.html)

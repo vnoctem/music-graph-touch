@@ -2,11 +2,6 @@ package music.instruments;
 
 import scene.GraphicsWrapper;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.Sequence;
@@ -14,7 +9,6 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
-import music.MusicSequencer;
 
 public class Piano extends MusicInstrument {
 
@@ -25,43 +19,13 @@ public class Piano extends MusicInstrument {
 		this.setProgram(0);
 	}
 	
-	@Override
-	public void playSample(int sample, int channel, Sequencer sequencer) {
-		String filePathName = "samples/piano/sample0" + sample + ".txt";
-		File f = new File(filePathName);
-		try {
-			FileReader fr = new FileReader(f);
-			
-			// créer un char array de la taille du fichier
-			char[] notes = new char[(int)f.length()];
-			
-			// lire le fichier et le mettre dans le char array
-			fr.read(notes);
-			// temporaire
-			for (int i = 0; i < f.length(); i++) {
-				System.out.println(notes[i]);
-			}
-			
-			// Créer une séquence et une track
-			Sequence sequence = new Sequence(Sequence.PPQ, 16);
-			Track track = sequence.createTrack();
-			createTrack(track, channel, notes);
-			
-			// Assigner la séquence au séquenceur et démarrer
-			sequencer.setSequence(sequence);
-			sequencer.start();
-			
+	// Pour jouer un patron de musique dans le séquenceur
+	public void playSample(int sample, int channel, Sequencer sequencer, Sequence sequence) 
+			throws InvalidMidiDataException {
+		// créer un File à partir du filePathName
+		String filePathName = "samples/piano/sample" + sample + ".txt";
 		
-		} catch (FileNotFoundException e) {
-			System.out.println("Le fichier " + filePathName + " est introuvable.");
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.out.println("Erreur lors de la lecture de " + filePathName);
-			e.printStackTrace();
-		} catch (InvalidMidiDataException e) {
-			e.printStackTrace();
-		}
-		
+		super.playSample(filePathName, channel, sequencer, sequence);
 	}
 	
 	// Pour ajouter une note à la 'track' (source : http://archive.oreilly.com/pub/a/onjava/excerpt/jenut3_ch17/index1.html)
