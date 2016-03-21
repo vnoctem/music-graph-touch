@@ -259,12 +259,17 @@ public class MusicPath implements Runnable, ActionListener {
 				if (selectedSM != null) {
 					// si déposer le connecteur sur un composant, il faut les relier
 					for (SceneMusic sm : lSm) {
-						if (sm.isInside(x, y)) {
+						if (sm.isInside(x, y) && sm != selectedSM) {
 							selectedSM.doneConnect(sm);
 							
 							selectedSM = null;
 							break;
 						}
+					}
+					
+					if (selectedSM != null) {
+						selectedSM.doneConnect();
+						selectedSM = null;
 					}
 				}
 				

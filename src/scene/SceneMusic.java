@@ -32,6 +32,14 @@ public class SceneMusic {
 		color[2] = 0f;
 	}
 	
+	public void doneConnect() {
+		posConnector = null;
+		
+		color[0] = 0.7f;
+		color[1] = 0.7f;
+		color[2] = 0f;
+	}
+	
 	public void extendConnector(float x, float y) {
 		posConnector = new Point2D(x, y);
 	}
