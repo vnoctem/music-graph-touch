@@ -1,0 +1,1 @@
+A B C D E F G +A /32 D E C D E C /1-->>CEG

@@ -1,16 +1,44 @@
 package music.instruments;
 
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiEvent;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Sequencer;
+import javax.sound.midi.ShortMessage;
+import javax.sound.midi.Track;
+
 import scene.GraphicsWrapper;
 
-public class Guitar extends MusicInstrument {
-	
+public class Guitar extends AbstractInstrument {
 	
 	public Guitar() {
 		this.setVelocity(80);
 		this.setDuration(500);
 		this.setBank(0);
-		this.setProgram(25);
+		this.setProgram(40);
 	}
+	
+	// Pour jouer un patron de musique dans le séquenceur
+	public void playSample(int sample, int channel, Sequencer sequencer, Sequence sequence) 
+			throws InvalidMidiDataException {
+		// créer un File à partir du filePathName
+		String filePathName = "samples/guitar/sample" + sample + ".txt";
+		
+		super.playSample(filePathName, channel, sequencer, sequence);
+	}
+	
+	// Pour ajouter une note à la 'track' (source : http://archive.oreilly.com/pub/a/onjava/excerpt/jenut3_ch17/index1.html)
+	@Override
+    public void addNote(Track track, int startTick, int tickLength, int key, int velocity, int channel)
+        throws InvalidMidiDataException
+    {
+		// changer l'instrument pour une guitare
+		ShortMessage instrument = new ShortMessage();
+        instrument.setMessage(ShortMessage.PROGRAM_CHANGE, channel, getProgram(), getBank());
+        track.add(new MidiEvent(instrument, startTick));
+        
+		super.addNote(track, startTick, tickLength, key, velocity, channel);
+    }
 
 	@Override
 	public void drawIcon(GraphicsWrapper gw, float transX, float transY, float scaleX, float scaleY) {
