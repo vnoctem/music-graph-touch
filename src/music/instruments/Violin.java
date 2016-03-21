@@ -1,10 +1,12 @@
 package music.instruments;
 
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 
 import scene.GraphicsWrapper;
 
-public class Violin extends MusicInstrument {
+public class Violin extends AbstractInstrument {
 
 	public Violin() {
 		this.setVelocity(80);
@@ -13,8 +15,15 @@ public class Violin extends MusicInstrument {
 		this.setProgram(40);
 	}
 	
+	// Pour jouer un patron de musique dans le séquenceur
+		public void playSample(int sample, int channel, Sequencer sequencer, Sequence sequence) 
+				throws InvalidMidiDataException {
+			// créer un File à partir du filePathName
+			String filePathName = "samples/violin/sample" + sample + ".txt";
+			
+			super.playSample(filePathName, channel, sequencer, sequence);
+		}
 	
-
 	@Override
 	public void drawIcon(GraphicsWrapper gw, float transX, float transY, float scaleX, float scaleY) {
 		gw.setLineWidth(3);

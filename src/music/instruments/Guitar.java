@@ -9,13 +9,13 @@ import javax.sound.midi.Track;
 
 import scene.GraphicsWrapper;
 
-public class Guitar extends MusicInstrument {
+public class Guitar extends AbstractInstrument {
 	
 	public Guitar() {
 		this.setVelocity(80);
 		this.setDuration(500);
 		this.setBank(0);
-		this.setProgram(25);
+		this.setProgram(40);
 	}
 	
 	// Pour jouer un patron de musique dans le séquenceur

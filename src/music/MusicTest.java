@@ -30,7 +30,7 @@ public class MusicTest {
 			
 			// créer une guitare et joueur un échantillon
 			Guitar guitar = new Guitar();
-			guitar.playSample(1, 0, sequencer, seq);
+			//guitar.playSample(1, 0, sequencer, seq);
 			
 			
 			Track[] tracks = seq.getTracks();

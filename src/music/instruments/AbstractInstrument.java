@@ -16,7 +16,7 @@ import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
 
-public abstract class MusicInstrument {
+public abstract class AbstractInstrument {
 	
 	// les paramètres qui définissent l'instrument
 	private int bank = 0;
@@ -63,7 +63,7 @@ public abstract class MusicInstrument {
 		return program;
 	}
 	
-	// Pour jouer un patron de musique dans le séquenceur
+	// Pour jouer un échantillon de musique dans le séquenceur
 	public void playSample(String filePathName, int channel, Sequencer sequencer, Sequence sequence) 
 			throws InvalidMidiDataException {
 		// créer un File à partir du filePathName
@@ -126,7 +126,6 @@ public abstract class MusicInstrument {
         int velocity = 64;   // default to middle volume
         int basekey = 60;    // 60 is middle C. Adjusted up and down by octave
         int numnotes = 0;    // How many notes in current chord?
-
         
         while(n < notes.length) {
             char c = notes[n++];

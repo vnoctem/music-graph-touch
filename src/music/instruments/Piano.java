@@ -10,13 +10,13 @@ import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
 
-public class Piano extends MusicInstrument {
+public class Piano extends AbstractInstrument {
 
 	public Piano() {
 		this.setVelocity(80);
 		this.setDuration(200);
 		this.setBank(0);
-		this.setProgram(0);
+		this.setProgram(71);
 	}
 	
 	// Pour jouer un patron de musique dans le séquenceur
