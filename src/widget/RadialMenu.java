@@ -2,6 +2,7 @@ package widget;
 
 import java.util.ArrayList;
 
+import music.instruments.Clarinet;
 import music.instruments.Guitar;
 import music.instruments.Piano;
 import music.instruments.Violin;
@@ -82,6 +83,9 @@ public class RadialMenu {
 				case 2:
 					sm = new SceneMusic(new Violin(), radiusInstru);
 					break;
+				case 3:
+					sm = new SceneMusic(new Clarinet(), radiusInstru);
+					break;
 			}
 			
 			onShownMenu = false;
@@ -144,15 +148,16 @@ public class RadialMenu {
 						// Créer l'instrument
 						switch (level) {
 							case 1:
-								new Piano().drawIcon(gw, central.x(), central.y(), 0.5f, 0.5f);
+								new Piano().drawIcon(gw, central.x(), central.y(), 0.4f, 0.4f);
 								break;
 							case 2:
-								new Guitar().drawIcon(gw, central.x(), central.y(), 0.5f, 0.5f);
+								new Guitar().drawIcon(gw, central.x(), central.y(), 0.4f, 0.4f);
 								break;
 							case 3:
-								new Violin().drawIcon(gw, central.x(), central.y(), 0.5f, 0.5f);
+								new Violin().drawIcon(gw, central.x(), central.y(), 0.4f, 0.4f);
 								break;
 							case 4:
+								new Clarinet().drawIcon(gw, central.x(), central.y(), 0.4f, 0.4f);
 								break;
 						}
 						

@@ -1,5 +1,13 @@
 package music.instruments;
 
-public class FrenchHorn {
+import scene.GraphicsWrapper;
+
+public class FrenchHorn extends AbstractInstrument {
+
+	@Override
+	public void drawIcon(GraphicsWrapper gw, float transX, float transY, float scaleX, float scaleY) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

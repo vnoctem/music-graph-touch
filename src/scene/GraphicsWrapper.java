@@ -284,6 +284,19 @@ public class GraphicsWrapper {
 		gl.glEnd();
 	}
 	
+	public void drawTrapeze(
+			float x1, float y1,
+			float x2, float y2,
+			float x3, float y3,
+			float x4, float y4) {
+		gl.glBegin(GL.GL_QUADS);
+			gl.glVertex2f(x1, y1);
+			gl.glVertex2f(x2, y2);
+			gl.glVertex2f(x3, y3);
+			gl.glVertex2f(x4, y4);
+		gl.glEnd();
+	}
+	
 	public void drawEllipse(float x, float y, float radiusX, float radiusY) {
 		gl.glBegin(GL.GL_TRIANGLE_FAN);
 			for (int i = 0; i < 360; i++) {

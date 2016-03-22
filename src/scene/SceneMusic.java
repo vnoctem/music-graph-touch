@@ -1,16 +1,16 @@
 package scene;
 
-import music.instruments.MusicInstrument;
+import music.instruments.AbstractInstrument;
 
 public class SceneMusic {
-	private MusicInstrument mi;
+	private AbstractInstrument mi;
 	private Point2D position;
 	private float radius;
 	private float[] color = {0.7f,0.7f,0f};
 	private Point2D posConnector = null; // connecteur utilisé pour esquisser
 	private SceneMusic connected; // le composant connecté
 	
-	public SceneMusic(MusicInstrument mi, float radius) {
+	public SceneMusic(AbstractInstrument mi, float radius) {
 		this.radius = radius;
 		this.mi = mi;
 	}
