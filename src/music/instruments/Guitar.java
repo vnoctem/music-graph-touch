@@ -58,11 +58,11 @@ public class Guitar extends AbstractInstrument {
 			// corps
 			int topCircleWidth = 26;
 			int topCircleHeight = 18;
-			gw.drawEllipse(-lineWidth / 2, height / 8, topCircleWidth, topCircleHeight);
+			gw.drawEllipse(-lineWidth / 2, height / 8, topCircleWidth, topCircleHeight, true);
 			int bottomCircleWidth = 35;
 			int bottomCircleHeight = 25;
 			int gap = 10;
-			gw.drawEllipse(-lineWidth / 2, height / 8 + topCircleHeight + bottomCircleHeight - gap, bottomCircleWidth, bottomCircleHeight);
+			gw.drawEllipse(-lineWidth / 2, height / 8 + topCircleHeight + bottomCircleHeight - gap, bottomCircleWidth, bottomCircleHeight, true);
 			gw.setColor(0, 0, 0);
 			int smallCircle = 10;
 			gw.fillCircle(-lineWidth / 2 - smallCircle, height / 8 - smallCircle, smallCircle);

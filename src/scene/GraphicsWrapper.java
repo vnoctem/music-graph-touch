@@ -297,8 +297,12 @@ public class GraphicsWrapper {
 		gl.glEnd();
 	}
 	
-	public void drawEllipse(float x, float y, float radiusX, float radiusY) {
-		gl.glBegin(GL.GL_TRIANGLE_FAN);
+	public void drawEllipse(float x, float y, float radiusX, float radiusY, boolean isFilled) {
+		if (isFilled)
+			gl.glBegin(GL.GL_TRIANGLE_FAN);
+		else
+			gl.glBegin(GL.GL_LINES);
+		
 			for (int i = 0; i < 360; i++) {
 				double rad = Math.toRadians(i);
 		        gl.glVertex2d(x + Math.cos(rad) * radiusX,
@@ -319,8 +323,12 @@ public class GraphicsWrapper {
 		gl.glEnd();
 	}
 	
-	public void drawPartOfCircle(ArrayList<Point2D> outerPoints, ArrayList<Point2D> innerPoints) {
-		gl.glBegin(GL.GL_TRIANGLE_FAN);
+	public void drawPartOfCircle(ArrayList<Point2D> outerPoints, ArrayList<Point2D> innerPoints, boolean isFilled) {
+		if (isFilled)
+			gl.glBegin(GL.GL_TRIANGLE_FAN);
+		else
+			gl.glBegin(GL.GL_LINE_LOOP);
+		
 			// commencer avec la partie extérieure
 			for (Point2D point : outerPoints) {
 		        gl.glVertex2d(point.x(), point.y());
@@ -334,29 +342,9 @@ public class GraphicsWrapper {
 	}
 	
 	public void drawPartOfCircleLine(float x, float y, float radius) {
-		gl.glBegin(GL.GL_LINES);
-			for (int i = 180; i < 360; i++) {
-				double rad = Math.toRadians(i);
-		        gl.glVertex2d(x + Math.cos(rad) * radius,
-		        			  y + Math.sin(rad) * radius);
-		    }
-		gl.glEnd();
+		drawEllipse(x, y, radius, radius, false);
 	}
 	
-	public void drawPartOfCircleLine(ArrayList<Point2D> outerPoints, ArrayList<Point2D> innerPoints) {
-		gl.glBegin(GL.GL_LINE_LOOP);
-			// commencer avec la partie extérieure
-			for (Point2D point : outerPoints) {
-		        gl.glVertex2d(point.x(), point.y());
-		    }
-			// continuer avec la partie intérieure dans l'autre sens de parcours habituel
-			for (int i = innerPoints.size() - 1; i >= 0; i--) {
-				Point2D point = innerPoints.get(i);
-		        gl.glVertex2d(point.x(), point.y());
-		    }
-		gl.glEnd();
-	}
-
 	public void drawPolyline( ArrayList< Point2D > points ) {
 		drawPolyline( points, false, false );
 	}
