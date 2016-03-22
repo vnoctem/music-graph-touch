@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
@@ -15,38 +14,16 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
+import music.MusicPlayer;
+import music.MusicSample;
+
 
 public abstract class AbstractInstrument {
 	
 	// les paramètres qui définissent l'instrument
 	private int bank = 0;
 	private int program = 0;
-	
-	private int velocity; // entre 0 et 127, la rapidité avec laquelle la touche a été enfoncée
-	private int duration; // durée des notes jouées
-	
-	private ArrayList<Sequence> samples; // les patrons de musique
-	
-	public Sequence getSample(int index) {
-		return samples.get(index);
-	}
-	
-	public void setVelocity(int velocity) {
-		this.velocity = velocity;
-	}
-	
-	public int getVelocity() {
-		return velocity;
-	}
-	
-	public void setDuration(int duration) {
-		this.duration = duration;
-	}
-	
-	public int getDuration() {
-		return duration;
-	}
-	
+
 	public void setBank(int bank) {
 		this.bank = bank;
 	}
@@ -63,35 +40,49 @@ public abstract class AbstractInstrument {
 		return program;
 	}
 	
-	// Pour jouer un échantillon de musique dans le séquenceur
-	public void playSample(String filePathName, int channel, Sequencer sequencer, Sequence sequence) 
+	
+	// Pour jouer un échantillon de musique
+	public void playMusicSample(MusicPlayer musicPlayer, MusicSample musicSample, int channel) 
 			throws InvalidMidiDataException {
-		// créer un File à partir du filePathName
-		File f = new File(filePathName);
-		try {
-			FileReader fr = new FileReader(f); // FileReader pour lire le fichier
-			
-			// créer un char array de la taille du fichier
-			char[] notes = new char[(int)f.length()];
-			
-			fr.read(notes);// lire le fichier et le mettre dans le char array
-			fr.close(); // fermer le fichier
-			
-			// Créer une séquence et une track
-			Track track = sequence.createTrack();
-			createTrack(track, channel, notes);
-			
-			// Assigner la séquence au séquenceur et démarrer
-			sequencer.setSequence(sequence);
-			sequencer.start();
-		} catch (FileNotFoundException e) {
-			System.out.println("Le fichier " + filePathName + " est introuvable.");
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.out.println("Erreur lors de la lecture de " + filePathName);
-			e.printStackTrace();
-		}
+		// changer l'instrument pour une guitare
+		ShortMessage instrument = new ShortMessage();
+        instrument.setMessage(ShortMessage.PROGRAM_CHANGE, channel, getProgram(), getBank());
+        musicSample.getTrack().add(new MidiEvent(instrument, 0)); // -1 pour changer l'instrument avant de jouer l'échantillon de musique
+        
+        //musicPlayer.getSequencer().setSequence(musicPlayer.getMusicSequence());
+		//musicPlayer.playAndStop();
+		musicPlayer.getMusicSequence().deleteTrack(musicSample.getTrack()); // supprimer la track une fois qu'elle est jouée
 	}
+	
+	// Pour jouer un échantillon de musique dans le séquenceur
+//	public void playSample(String filePathName, int channel, Sequencer sequencer, Sequence sequence) 
+//			throws InvalidMidiDataException {
+//		// créer un File à partir du filePathName
+//		File f = new File(filePathName);
+//		try {
+//			FileReader fr = new FileReader(f); // FileReader pour lire le fichier
+//			
+//			// créer un char array de la taille du fichier
+//			char[] notes = new char[(int)f.length()];
+//			
+//			fr.read(notes);// lire le fichier et le mettre dans le char array
+//			fr.close(); // fermer le fichier
+//			
+//			// Créer une séquence et une track
+//			Track track = sequence.createTrack();
+//			createTrack(track, channel, notes);
+//			
+//			// Assigner la séquence au séquenceur et démarrer
+//			sequencer.setSequence(sequence);
+//			sequencer.start();
+//		} catch (FileNotFoundException e) {
+//			System.out.println("Le fichier " + filePathName + " est introuvable.");
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			System.out.println("Erreur lors de la lecture de " + filePathName);
+//			e.printStackTrace();
+//		}
+//	}
 	
     /*
      * (source : http://archive.oreilly.com/pub/a/onjava/excerpt/jenut3_ch17/index1.html)
