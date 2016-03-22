@@ -9,8 +9,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
-import music.instruments.Clarinet;
-import music.instruments.Guitar;
 import widget.RadialMenu;
 
 // This class stores the current position of a finger,

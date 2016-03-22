@@ -307,6 +307,18 @@ public class GraphicsWrapper {
 		gl.glEnd();
 	}
 	
+	public void drawTriangle(
+			float x1, float y1, 
+			float x2, float y2,
+			float x3, float y3
+		) {
+		gl.glBegin(GL.GL_TRIANGLES);
+			gl.glVertex2d(x1, y1);
+			gl.glVertex2d(x2, y2);
+			gl.glVertex2d(x3, y3);
+		gl.glEnd();
+	}
+	
 	public void drawPartOfCircle(ArrayList<Point2D> outerPoints, ArrayList<Point2D> innerPoints) {
 		gl.glBegin(GL.GL_TRIANGLE_FAN);
 			// commencer avec la partie extérieure

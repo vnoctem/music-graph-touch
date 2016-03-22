@@ -3,6 +3,8 @@ package widget;
 import java.util.ArrayList;
 
 import music.instruments.Clarinet;
+import music.instruments.Contrabass;
+import music.instruments.FrenchHorn;
 import music.instruments.Guitar;
 import music.instruments.Piano;
 import music.instruments.Violin;
@@ -86,6 +88,12 @@ public class RadialMenu {
 				case 3:
 					sm = new SceneMusic(new Clarinet(), radiusInstru);
 					break;
+				case 4:
+					sm = new SceneMusic(new Contrabass(), radiusInstru);
+					break;
+				case 5:
+					sm = new SceneMusic(new FrenchHorn(), radiusInstru);
+					break;
 			}
 			
 			onShownMenu = false;
@@ -158,6 +166,12 @@ public class RadialMenu {
 								break;
 							case 4:
 								new Clarinet().drawIcon(gw, central.x(), central.y(), 0.4f, 0.4f);
+								break;
+							case 5:
+								new Contrabass().drawIcon(gw, central.x(), central.y(), 0.4f, 0.4f);
+								break;
+							case 6:
+								new FrenchHorn().drawIcon(gw, central.x(), central.y(), 0.4f, 0.4f);
 								break;
 						}
 						
