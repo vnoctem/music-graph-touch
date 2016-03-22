@@ -27,11 +27,11 @@ public class Violin extends AbstractInstrument {
 			// corps
 			int topCircleWidth = 26;
 			int topCircleHeight = 18;
-			gw.drawEllipse(-lineWidth / 2, height / 8, topCircleWidth, topCircleHeight);
+			gw.drawEllipse(-lineWidth / 2, height / 8, topCircleWidth, topCircleHeight, true);
 			int bottomCircleWidth = 35;
 			int bottomCircleHeight = 25;
 			int gap = 10;
-			gw.drawEllipse(-lineWidth / 2, height / 8 + topCircleHeight + bottomCircleHeight - gap, bottomCircleWidth, bottomCircleHeight);
+			gw.drawEllipse(-lineWidth / 2, height / 8 + topCircleHeight + bottomCircleHeight - gap, bottomCircleWidth, bottomCircleHeight, true);
 			int smallCircle = 8;
 			int space = 20;
 			gw.setColor(0.2f,0.2f,0.2f);

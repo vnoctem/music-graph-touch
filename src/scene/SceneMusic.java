@@ -7,8 +7,8 @@ public class SceneMusic {
 	private Point2D position;
 	private float radius;
 	private float[] color = {0.7f,0.7f,0f};
-	private Point2D posConnector = null; // connecteur utilisé pour esquisser
-	private SceneMusic connected; // le composant connecté
+	//private Point2D posConnector = null; // connecteur utilisé pour esquisser
+	//private SceneMusic connected; // le composant connecté
 	
 	public SceneMusic(AbstractInstrument mi, float radius) {
 		this.radius = radius;
@@ -23,7 +23,19 @@ public class SceneMusic {
 		return position.distance(new Point2D(x, y)) <= radius;
 	}
 	
-	public void doneConnect(SceneMusic sm) {
+	public void deselect() {
+		color[0] = 0.7f;
+		color[1] = 0.7f;
+		color[2] = 0f;
+	}
+	
+	public void select() {
+		color[0] = 0f;
+		color[1] = 0f;
+		color[2] = 0.8f;
+	}
+	
+	/*public void doneConnect(SceneMusic sm) {
 		posConnector = null;
 		connected = sm;
 		
@@ -48,7 +60,7 @@ public class SceneMusic {
 		color[0] = 0f;
 		color[1] = 0f;
 		color[2] = 0.8f;
-	}
+	}*/
 	
 	public Point2D getPosition() {
 		return position;
@@ -63,7 +75,7 @@ public class SceneMusic {
 		gw.setColor(1f,1f,1f);
 		
 		// dessiner le connecteur
-		if (posConnector != null) {
+		/*if (posConnector != null) {
 			if (!isInside(posConnector.x(), posConnector.y())) {
 				// vecteur utilisé pour que le connnecteur commence au bord
 				// même longueur pour connected et position, car supposé d'avoir les mêmes longueurs
@@ -79,10 +91,10 @@ public class SceneMusic {
 				gw.setLineWidth(1);
 				gw.setColor(1f,1f,1f);
 			}
-		}
+		}*/
 		
 		// s'il y a un composant connecté
-		if (connected != null) {
+		/*if (connected != null) {
 			// vecteur utilisé pour que le connnecteur commence au bord
 			// même longueur pour connected et position, car supposé d'avoir les mêmes longueurs
 			Vector2D v = Point2D.diff(position, connected.getPosition());
@@ -96,6 +108,6 @@ public class SceneMusic {
 			);
 			gw.setLineWidth(1);
 			gw.setColor(1f,1f,1f);
-		}
+		}*/
 	}
 }
