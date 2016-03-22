@@ -13,11 +13,14 @@ public abstract class AbstractRadial {
 	protected Point2D position;
 	protected boolean shown;
 	protected int selected = -1;
+	protected float[] color;
+	private int tolerance = 30;
 	
-	protected AbstractRadial(float innerRadius, float outerRadius, int nb) {
+	protected AbstractRadial(float innerRadius, float outerRadius, int nb, float[] color) {
 		this.innerRadius = innerRadius;
 		this.outerRadius = outerRadius;
 		this.nb = nb;
+		this.color = color;
 	}
 	
 	public void show(float x, float y) {
@@ -68,9 +71,12 @@ public abstract class AbstractRadial {
 		selected = findSection(user, distance);
 		
 		// si rendu au bord du menu
-		if (selected != -1 && distance >= outerRadius - 20) {
+		if (selected != -1 && distance >= outerRadius - tolerance) {
 			// fait l'action selon l'option choisi
 			actionOnSelect(selected);
+			
+			shown = false;
+			selected = -1;
 		}
 	}
 	
@@ -102,7 +108,7 @@ public abstract class AbstractRadial {
 						
 						// dessiner
 						if (selected + 1 == level)
-							gw.setColor(0.7f,0.7f,0f);
+							gw.setColor(color[0], color[1], color[2]);
 						else
 							gw.setColor(0.2f,0.2f,0.2f);
 						gw.drawPartOfCircle(outerPoints, innerPoints, true);
@@ -117,7 +123,7 @@ public abstract class AbstractRadial {
 						);
 		
 						// dessiner chacun des options
-						drawOptions(gw, level, central.x(), central.y());
+						drawOptions(gw, level - 1, central.x(), central.y());
 						
 						// inutile d'exécuter le reste
 						if (level == nb) {

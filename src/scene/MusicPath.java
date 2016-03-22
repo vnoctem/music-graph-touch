@@ -84,8 +84,8 @@ public class MusicPath implements Runnable, ActionListener {
 					if (sm.isInside(x, y)) {
 						// sm.connect(x, y);
 						menuSM.show(sm.getPosition().x(), sm.getPosition().y());
-						
 						selectedSM = sm;
+						selectedSM.select();
 						break;
 					}
 				}
@@ -101,6 +101,7 @@ public class MusicPath implements Runnable, ActionListener {
 			case MultitouchFramework.TOUCH_EVENT_UP:
 				if (selectedSM != null) {
 					menuSM.hide();
+					selectedSM.deselect();
 					selectedSM = null;
 				}
 				

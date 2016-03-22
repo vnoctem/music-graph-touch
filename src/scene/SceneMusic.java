@@ -7,8 +7,8 @@ public class SceneMusic {
 	private Point2D position;
 	private float radius;
 	private float[] color = {0.7f,0.7f,0f};
-	private Point2D posConnector = null; // connecteur utilisé pour esquisser
-	private SceneMusic connected; // le composant connecté
+	//private Point2D posConnector = null; // connecteur utilisé pour esquisser
+	//private SceneMusic connected; // le composant connecté
 	
 	public SceneMusic(AbstractInstrument mi, float radius) {
 		this.radius = radius;

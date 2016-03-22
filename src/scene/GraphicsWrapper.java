@@ -297,18 +297,22 @@ public class GraphicsWrapper {
 		gl.glEnd();
 	}
 	
-	public void drawEllipse(float x, float y, float radiusX, float radiusY, boolean isFilled) {
+	public void drawEllipse(float x, float y, float radiusX, float radiusY, int start, int end, boolean isFilled) {
 		if (isFilled)
 			gl.glBegin(GL.GL_TRIANGLE_FAN);
 		else
 			gl.glBegin(GL.GL_LINES);
 		
-			for (int i = 0; i < 360; i++) {
+			for (int i = start; i < end; i++) {
 				double rad = Math.toRadians(i);
 		        gl.glVertex2d(x + Math.cos(rad) * radiusX,
 		        			  y + Math.sin(rad) * radiusY);
 		    }
 		gl.glEnd();
+	}
+	
+	public void drawEllipse(float x, float y, float radiusX, float radiusY, boolean isFilled) {
+		drawEllipse(x, y, radiusX, radiusY, 0, 360, isFilled);
 	}
 	
 	public void drawTriangle(

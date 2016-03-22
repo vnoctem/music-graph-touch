@@ -16,7 +16,7 @@ public class RadialMenu extends AbstractRadial {
 	private float radiusInstru = 40;
 	
 	public RadialMenu() {
-		super(30, 100, 6);
+		super(30, 100, 6, new float[] {0.7f, 0.7f, 0f});
 	}
 	
 	public void show(float x, float y) {
@@ -40,22 +40,22 @@ public class RadialMenu extends AbstractRadial {
 	protected void drawOptions(GraphicsWrapper gw, int level, float x, float y) {
 		// Créer l'instrument
 		switch (level) {
-			case 1:
+			case 0:
 				new Piano().drawIcon(gw, x, y, 0.4f, 0.4f);
 				break;
-			case 2:
+			case 1:
 				new Guitar().drawIcon(gw, x, y, 0.4f, 0.4f);
 				break;
-			case 3:
+			case 2:
 				new Violin().drawIcon(gw, x, y, 0.4f, 0.4f);
 				break;
-			case 4:
+			case 3:
 				new Clarinet().drawIcon(gw, x, y, 0.4f, 0.4f);
 				break;
-			case 5:
+			case 4:
 				new Contrabass().drawIcon(gw, x, y, 0.4f, 0.4f);
 				break;
-			case 6:
+			case 5:
 				new FrenchHorn().drawIcon(gw, x, y, 0.4f, 0.4f);
 				break;
 		}
@@ -83,7 +83,6 @@ public class RadialMenu extends AbstractRadial {
 				break;
 		}
 		
-		super.shown = false;
 		onShownInstru = true;
 	}
 	
