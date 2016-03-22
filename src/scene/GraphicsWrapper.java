@@ -333,6 +333,16 @@ public class GraphicsWrapper {
 		gl.glEnd();
 	}
 	
+	public void drawPartOfCircleLine(float x, float y, float radius) {
+		gl.glBegin(GL.GL_LINES);
+			for (int i = 180; i < 360; i++) {
+				double rad = Math.toRadians(i);
+		        gl.glVertex2d(x + Math.cos(rad) * radius,
+		        			  y + Math.sin(rad) * radius);
+		    }
+		gl.glEnd();
+	}
+	
 	public void drawPartOfCircleLine(ArrayList<Point2D> outerPoints, ArrayList<Point2D> innerPoints) {
 		gl.glBegin(GL.GL_LINE_LOOP);
 			// commencer avec la partie extérieure

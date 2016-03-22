@@ -31,6 +31,16 @@ public class FrenchHorn extends AbstractInstrument {
 			int bottomWidth = 50;
 			gw.drawLine(bottomX, bottomY, bottomX + bottomWidth, bottomY);
 			gw.setColor(1, 1, 1);
+			// wire
+			int wireWidth = 2;
+			int space = 7;
+			gw.setLineWidth(wireWidth);
+			gw.drawLine(bottomX - space * 2, bottomY, bottomX - space * 2, bottomY - bodyRadius);
+			gw.drawLine(bottomX - space, bottomY, bottomX - space, bottomY - bodyRadius);
+			gw.drawLine(bottomX + space, bottomY, bottomX + space, bottomY - bodyRadius);
+			gw.drawLine(bottomX + space * 2, bottomY, bottomX + space * 2, bottomY - bodyRadius);
+			gw.drawPartOfCircleLine(space + space / 2, bottomY - bodyRadius, space / 2);
+			gw.drawPartOfCircleLine(-space - space / 2, bottomY - bodyRadius, space / 2);
 		gw.popMatrix();
 		gw.setLineWidth(1);
 	}
