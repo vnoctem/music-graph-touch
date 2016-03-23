@@ -11,7 +11,7 @@ import scene.Point2D;
 import scene.SceneMusic;
 
 public class RadialMenu extends AbstractRadial {
-	private boolean onShownInstru = false;
+	private boolean shownInstru = false;
 	private SceneMusic sm;
 	private float radiusInstru = 40;
 	
@@ -27,12 +27,12 @@ public class RadialMenu extends AbstractRadial {
 	}
 	
 	public boolean isShown() {
-		return super.shown || onShownInstru;
+		return super.shown || shownInstru;
 	}
 	
 	public SceneMusic close() {
 		super.hide();
-		onShownInstru = false;
+		shownInstru = false;
 		
 		return sm;
 	}
@@ -61,7 +61,7 @@ public class RadialMenu extends AbstractRadial {
 		}
 	}
 	
-	protected void actionOnSelect(int selected) {
+	protected void actionOnSelect(int selected, float x, float y) {
 		switch (selected) {
 			case 0:
 				sm = new SceneMusic(new Piano(), radiusInstru);
@@ -83,21 +83,19 @@ public class RadialMenu extends AbstractRadial {
 				break;
 		}
 		
-		onShownInstru = true;
+		shownInstru = true;
 	}
 	
-	public void onMove(float x, float y) {
-		super.onMove(x, y);
-		
+	protected void actionOnMove(float x, float y) {
 		// faire suivre le composant graphique à l'utilisateur
-		if (onShownInstru)
-			sm.setPosition(new Point2D(x, y));
+		if (shownInstru)
+			sm.setPosition(x, y);
 	}
 
 	public void draw(GraphicsWrapper gw) {
 		drawRadial(gw);
 		
-		if (onShownInstru) {
+		if (shownInstru) {
 			sm.draw(gw);
 		}
 	}

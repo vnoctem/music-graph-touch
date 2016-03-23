@@ -35,16 +35,23 @@ public abstract class AbstractRadial {
 	public void hide() {
 		position = null;
 		shown = false;
+		selected = -1;
 	}
+	
+	// appelé constamment
+	protected abstract void actionOnMove(float x, float y);
 	
 	protected abstract void drawOptions(GraphicsWrapper gw, int level, float x, float y);
 	
-	protected abstract void actionOnSelect(int selected);
+	// appelé une seule fois
+	protected abstract void actionOnSelect(int selected, float x, float y);
 	
 	public void onMove(float x, float y) {
 		// laisser sélectionner l'instrument
 		if (shown)
 			select(x, y);
+		
+		actionOnMove(x, y);
 	}
 	
 	protected int findSection(Point2D user, float distance) {
@@ -73,10 +80,9 @@ public abstract class AbstractRadial {
 		// si rendu au bord du menu
 		if (selected != -1 && distance >= outerRadius - tolerance) {
 			// fait l'action selon l'option choisi
-			actionOnSelect(selected);
+			actionOnSelect(selected, x, y);
 			
 			shown = false;
-			selected = -1;
 		}
 	}
 	
