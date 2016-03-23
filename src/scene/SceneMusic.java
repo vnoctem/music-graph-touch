@@ -25,6 +25,10 @@ public class SceneMusic {
 		return mi;
 	}
 	
+	public ArrayList<Connector> getConnectors() {
+		return conn;
+	}
+	
 	public float getRadius() {
 		return radius;
 	}
@@ -51,8 +55,8 @@ public class SceneMusic {
 		return position.distance(new Point2D(x, y)) <= radius;
 	}
 	
-	public void setStart() {
-		this.start = !start;
+	public void setStart(boolean isStart) {
+		this.start = isStart;
 	}
 	
 	public boolean isStart() {

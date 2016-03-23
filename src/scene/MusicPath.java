@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
+import music.MusicPlayer;
 import widget.RadialMenu;
 import widget.RadialSceneMusic;
 import widget.SoundBoard;
@@ -55,6 +56,19 @@ public class MusicPath implements Runnable, ActionListener {
 		gw.setFontHeight( Constant.TEXT_HEIGHT );
 
 		gw.frame( new AlignedRectangle2D( new Point2D(-100,-100), new Point2D(100,100) ), true );
+		
+		MusicPlayer mp = new MusicPlayer();
+		mp.playAndStop(lSm, getStartSceneMusic());
+	}
+	
+	// retourne le noeud de départ
+	public SceneMusic getStartSceneMusic() {
+		for (SceneMusic sm : lSm) {
+			if (sm.isStart()) {
+				return sm;
+			}
+		}
+		return null;
 	}
 
 	// méthode pour dessiner dans la scène

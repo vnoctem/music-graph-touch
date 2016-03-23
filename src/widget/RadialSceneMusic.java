@@ -152,7 +152,10 @@ public class RadialSceneMusic extends AbstractRadial {
 				lSm.remove(sm);
 				break;
 			case 2: // noeud de départ
-				sm.setStart();
+				for (SceneMusic sm : lSm) { // si un autre noeud est le noeud de départ, modifier pour qu'il ne le soit plus
+					sm.setStart(false);
+				}
+				sm.setStart(true);
 				break;
 			case 3: // afficher
 			case 5: // le panneau de son

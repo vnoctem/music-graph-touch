@@ -56,15 +56,9 @@ public class MusicPlayer {
 		sequencer.close();
 	}
 	
-	public void playAndStop(ArrayList<SceneMusic> sceneMusicList) {
-		for (SceneMusic sm : sceneMusicList) {
-			ArrayList<Connector> listConn = null;
-			//listConn = sm.getConnectors(); // Pour chaque SceneMusic, retourner la liste des connecteurs
-			for (Connector c : listConn) {
-				
-				SceneMusic target = c.getTarget(); // Pour chaque Connector, prendre la cible de celui-ci
-			}
-		}
+	public void playAndStop(ArrayList<SceneMusic> sceneMusicList, SceneMusic startSM) {
+		
+		
 		
 		try {
 			System.out.println(musicSequence.getTickLength());
