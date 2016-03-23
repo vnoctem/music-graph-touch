@@ -154,9 +154,11 @@ public class RadialSceneMusic extends AbstractRadial {
 			case 2: // noeud de départ
 				sm.setStart();
 				break;
-			case 3: // afficher
-			case 5: // le panneau de son
-				sb.show(super.position.x(), super.position.y());
+			case 3: // afficher le panneau de son
+				sb.show(super.position.x() - innerRadius, super.position.y(), true);
+				break;
+			case 5: // afficher le panneau de son
+				sb.show(super.position.x() + innerRadius, super.position.y(), false);
 				break;
 		}
 		
