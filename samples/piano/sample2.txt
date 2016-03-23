@@ -1,1 +1,0 @@
-/8--F +C E C -F +C E C -G B +D -B G B +D -B A +C E C -A +C E C -A +C E C -G +C E C
