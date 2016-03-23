@@ -11,10 +11,6 @@ public class Connector {
 		this.target = target;
 	}
 	
-	public SceneMusic getSource() {
-		return source;
-	}
-	
 	public SceneMusic getTarget() {
 		return target;
 	}

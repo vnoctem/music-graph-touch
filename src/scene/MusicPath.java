@@ -82,7 +82,7 @@ public class MusicPath implements Runnable, ActionListener {
 				// si clic sur un des composants graphiques, fait l'action
 				for (SceneMusic sm : lSm) {
 					if (sm.isInside(x, y)) {
-						menuSM.show(sm, sm.getPosition().x(), sm.getPosition().y());
+						menuSM.show(sm, sm.getPosition().x(), sm.getPosition().y(), lSm);
 						selectedSM = sm;
 						selectedSM.select();
 						break;

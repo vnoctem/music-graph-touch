@@ -21,6 +21,14 @@ public class SceneMusic {
 		return radius;
 	}
 	
+	public boolean isLinkedTo(SceneMusic sm) {
+		return conn != null && conn.getTarget() == sm;
+	}
+	
+	public void deleteConn() {
+		conn = null;
+	}
+	
 	public void setPosition(float x, float y) {
 		this.position = new Point2D(x, y);
 	}

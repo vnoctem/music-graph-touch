@@ -1,5 +1,7 @@
 package widget;
 
+import java.util.ArrayList;
+
 import scene.GraphicsWrapper;
 import scene.SceneMusic;
 
@@ -7,15 +9,17 @@ public class RadialSceneMusic extends AbstractRadial {
 	
 	private SceneMusic sm;
 	private boolean action = false;
+	private ArrayList<SceneMusic> lSm;
 
 	public RadialSceneMusic() {
 		super(43, 100, 6, new float[] {0, 0, 0.5f});
 	}
 	
-	public void show(SceneMusic sm, float x, float y) {
+	public void show(SceneMusic sm, float x, float y, ArrayList<SceneMusic> lSm) {
 		super.show(x, y);
 		
 		this.sm = sm;
+		this.lSm = lSm;
 	}
 	
 	@Override
@@ -117,20 +121,15 @@ public class RadialSceneMusic extends AbstractRadial {
 	
 	protected void actionOnMove(float x, float y) {
 		switch (selected) {
-			case 0:
-				//drawDelete(gw);
-				break;
 			case 1:
 				sm.setPosition(x, y);
 				break;
 			case 3:
-				//drawMenu(gw);
 				break;
 			case 4:
 				sm.extendConnector(x, y);
 				break;
 			case 5:
-				//drawMenu(gw);
 				break;
 		}
 	}
@@ -140,11 +139,21 @@ public class RadialSceneMusic extends AbstractRadial {
 		
 		sm = null;
 		action = false;
+		lSm = null;
 	}
 
 	@Override
 	protected void actionOnSelect(int selected, float x, float y) {
 		switch (selected) {
+			case 0:
+				// enlever les connecteurs
+				for (SceneMusic s : lSm) {
+					if (s.isLinkedTo(sm))
+						s.deleteConn();
+				}
+				// enlever le noeud
+				lSm.remove(sm);
+				break;
 			case 2:
 				sm.setStart();
 				break;
