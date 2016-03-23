@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 import widget.RadialMenu;
 import widget.RadialSceneMusic;
+import widget.SoundBoard;
 
 public class MusicPath implements Runnable, ActionListener {
 
@@ -23,6 +24,9 @@ public class MusicPath implements Runnable, ActionListener {
 	
 	// menu pour les composants graphiques
 	private RadialSceneMusic menuSM;
+	
+	// panneau pour jouer des sons
+	private SoundBoard sb;
 	
 	// liste des composant graphique et musical
 	private ArrayList<SceneMusic> lSm = new ArrayList<SceneMusic>(); 
@@ -44,6 +48,9 @@ public class MusicPath implements Runnable, ActionListener {
 		
 		// initialiser le menu des composants
 		menuSM = new RadialSceneMusic();
+		
+		// initialiser le panneau de son
+		sb = new SoundBoard();
 
 		gw.setFontHeight( Constant.TEXT_HEIGHT );
 
@@ -67,6 +74,9 @@ public class MusicPath implements Runnable, ActionListener {
 			sm.draw(gw);
 		}
 		
+		// panneau de son
+		sb.draw(gw);
+		
 		// menu des composants
 		menuSM.draw(gw);
 		
@@ -82,7 +92,7 @@ public class MusicPath implements Runnable, ActionListener {
 				// si clic sur un des composants graphiques, fait l'action
 				for (SceneMusic sm : lSm) {
 					if (sm.isInside(x, y)) {
-						menuSM.show(sm, sm.getPosition().x(), sm.getPosition().y(), lSm);
+						menuSM.show(sm, sm.getPosition().x(), sm.getPosition().y(), lSm, sb);
 						selectedSM = sm;
 						selectedSM.select();
 						break;

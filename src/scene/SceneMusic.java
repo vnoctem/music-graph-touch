@@ -1,5 +1,7 @@
 package scene;
 
+import java.util.ArrayList;
+
 import music.instruments.AbstractInstrument;
 
 public class SceneMusic {
@@ -9,24 +11,32 @@ public class SceneMusic {
 	private float[] color = {0.7f,0.7f,0f};
 	private float[] colorStart = {0.7f,0,0.7f};
 	private Point2D posConnector = null; // connecteur utilisé pour esquisser
-	private Connector conn; // le composant connecté
+	private ArrayList<Connector> conn; // le composant connecté
 	private boolean start = false;
 	
 	public SceneMusic(AbstractInstrument mi, float radius) {
 		this.radius = radius;
 		this.mi = mi;
+		
+		conn = new ArrayList<Connector>();
 	}
 	
 	public float getRadius() {
 		return radius;
 	}
 	
-	public boolean isLinkedTo(SceneMusic sm) {
-		return conn != null && conn.getTarget() == sm;
-	}
-	
-	public void deleteConn() {
-		conn = null;
+	public void deleteConnIfLinked(SceneMusic sm) {
+		Connector toDelete = null;
+		
+		for (Connector c : conn) {
+			if (c.getTarget() == sm) {
+				toDelete = c;
+				break;
+			}
+		}
+
+		if (toDelete != null)
+			conn.remove(toDelete);
 	}
 	
 	public void setPosition(float x, float y) {
@@ -61,7 +71,7 @@ public class SceneMusic {
 		posConnector = null;
 		
 		if (sm != null)
-			conn = new Connector(this, sm);
+			conn.add(new Connector(this, sm));
 	}
 	
 	public void extendConnector(float x, float y) {
@@ -104,7 +114,8 @@ public class SceneMusic {
 		
 		// s'il y a un composant connecté
 		if (conn != null) {
-			conn.draw(gw);
+			for (Connector c : conn)
+				c.draw(gw);
 		}
 	}
 }
