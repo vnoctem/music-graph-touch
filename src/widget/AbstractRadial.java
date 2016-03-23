@@ -50,8 +50,8 @@ public abstract class AbstractRadial {
 		// laisser sélectionner l'instrument
 		if (shown)
 			select(x, y);
-		
-		actionOnMove(x, y);
+		if (!shown)
+			actionOnMove(x, y);
 	}
 	
 	protected int findSection(Point2D user, float distance) {

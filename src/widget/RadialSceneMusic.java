@@ -10,16 +10,18 @@ public class RadialSceneMusic extends AbstractRadial {
 	private SceneMusic sm;
 	private boolean action = false;
 	private ArrayList<SceneMusic> lSm;
+	private SoundBoard sb;
 
 	public RadialSceneMusic() {
 		super(43, 100, 6, new float[] {0, 0, 0.5f});
 	}
 	
-	public void show(SceneMusic sm, float x, float y, ArrayList<SceneMusic> lSm) {
+	public void show(SceneMusic sm, float x, float y, ArrayList<SceneMusic> lSm, SoundBoard sb) {
 		super.show(x, y);
 		
 		this.sm = sm;
 		this.lSm = lSm;
+		this.sb = sb;
 	}
 	
 	@Override
@@ -121,15 +123,11 @@ public class RadialSceneMusic extends AbstractRadial {
 	
 	protected void actionOnMove(float x, float y) {
 		switch (selected) {
-			case 1:
+			case 1: // bouger
 				sm.setPosition(x, y);
 				break;
-			case 3:
-				break;
-			case 4:
+			case 4: // connecter à d'autres noeuds
 				sm.extendConnector(x, y);
-				break;
-			case 5:
 				break;
 		}
 	}
@@ -145,17 +143,20 @@ public class RadialSceneMusic extends AbstractRadial {
 	@Override
 	protected void actionOnSelect(int selected, float x, float y) {
 		switch (selected) {
-			case 0:
+			case 0: // supprimer
 				// enlever les connecteurs
 				for (SceneMusic s : lSm) {
-					if (s.isLinkedTo(sm))
-						s.deleteConn();
+					s.deleteConnIfLinked(sm);
 				}
 				// enlever le noeud
 				lSm.remove(sm);
 				break;
-			case 2:
+			case 2: // noeud de départ
 				sm.setStart();
+				break;
+			case 3: // afficher
+			case 5: // le panneau de son
+				sb.show(super.position.x(), super.position.y());
 				break;
 		}
 		
