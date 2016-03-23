@@ -1,13 +1,27 @@
 package widget;
 
+import java.util.ArrayList;
+
 import scene.GraphicsWrapper;
+import scene.SceneMusic;
 
 public class RadialSceneMusic extends AbstractRadial {
+	
+	private SceneMusic sm;
+	private boolean action = false;
+	private ArrayList<SceneMusic> lSm;
 
 	public RadialSceneMusic() {
 		super(43, 100, 6, new float[] {0, 0, 0.5f});
 	}
-
+	
+	public void show(SceneMusic sm, float x, float y, ArrayList<SceneMusic> lSm) {
+		super.show(x, y);
+		
+		this.sm = sm;
+		this.lSm = lSm;
+	}
+	
 	@Override
 	protected void drawOptions(GraphicsWrapper gw, int level, float x, float y) {
 		gw.localWorldTrans(x, y, 0.3f, 0.3f);
@@ -100,14 +114,56 @@ public class RadialSceneMusic extends AbstractRadial {
 		gw.drawLine(-width / 2 + wGap, -height / 2, -width / 2 + wGap, height / 2);
 		gw.drawLine(-width / 2, -height / 2 + hGap, width / 2, -height / 2 + hGap);
 	}
-
-	@Override
-	protected void actionOnSelect(int selected) {
-		
-	}
 	
 	public void draw(GraphicsWrapper gw) {
 		drawRadial(gw);
+	}
+	
+	protected void actionOnMove(float x, float y) {
+		switch (selected) {
+			case 1:
+				sm.setPosition(x, y);
+				break;
+			case 3:
+				break;
+			case 4:
+				sm.extendConnector(x, y);
+				break;
+			case 5:
+				break;
+		}
+	}
+	
+	public void close() {
+		super.hide();
+		
+		sm = null;
+		action = false;
+		lSm = null;
+	}
+
+	@Override
+	protected void actionOnSelect(int selected, float x, float y) {
+		switch (selected) {
+			case 0:
+				// enlever les connecteurs
+				for (SceneMusic s : lSm) {
+					if (s.isLinkedTo(sm))
+						s.deleteConn();
+				}
+				// enlever le noeud
+				lSm.remove(sm);
+				break;
+			case 2:
+				sm.setStart();
+				break;
+		}
+		
+		action = true;
+	}
+	
+	public boolean isAction() {
+		return action;
 	}
 	
 }

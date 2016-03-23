@@ -82,8 +82,7 @@ public class MusicPath implements Runnable, ActionListener {
 				// si clic sur un des composants graphiques, fait l'action
 				for (SceneMusic sm : lSm) {
 					if (sm.isInside(x, y)) {
-						// sm.connect(x, y);
-						menuSM.show(sm.getPosition().x(), sm.getPosition().y());
+						menuSM.show(sm, sm.getPosition().x(), sm.getPosition().y(), lSm);
 						selectedSM = sm;
 						selectedSM.select();
 						break;
@@ -100,9 +99,23 @@ public class MusicPath implements Runnable, ActionListener {
 			break;
 			case MultitouchFramework.TOUCH_EVENT_UP:
 				if (selectedSM != null) {
-					menuSM.hide();
-					selectedSM.deselect();
-					selectedSM = null;
+					// si déposé sur un autre noeud, donc relie-les
+					for (SceneMusic sm : lSm) {
+						if (sm.isInside(x, y) && sm != selectedSM) {
+							menuSM.close();
+							selectedSM.deselect();
+							selectedSM.doneConnect(sm);
+							selectedSM = null;
+							break;
+						}
+					}
+					
+					if (selectedSM != null) {
+						menuSM.close();
+						selectedSM.deselect();
+						selectedSM.doneConnect(null);
+						selectedSM = null;
+					}
 				}
 				
 				if (menu.isShown()) {
@@ -117,7 +130,7 @@ public class MusicPath implements Runnable, ActionListener {
 				if (menu.isShown())
 					menu.onMove(x, y);
 				
-				if (menuSM.isShown())
+				if (menuSM.isShown() || menuSM.isAction())
 					menuSM.onMove(x, y);
 				
 				// pour changer l'apparence
