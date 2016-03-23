@@ -1,10 +1,15 @@
 package music;
 
+import java.util.ArrayList;
+
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+
+import scene.Connector;
+import scene.SceneMusic;
 
 public class MusicPlayer {
 	
@@ -51,7 +56,10 @@ public class MusicPlayer {
 		sequencer.close();
 	}
 	
-	public void playAndStop() {
+	public void playAndStop(ArrayList<SceneMusic> sceneMusicList, SceneMusic startSM) {
+		
+		
+		
 		try {
 			System.out.println(musicSequence.getTickLength());
 			

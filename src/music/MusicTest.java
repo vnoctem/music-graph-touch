@@ -57,7 +57,7 @@ public class MusicTest {
 			track1.add(new MidiEvent(on1, 0));
 			track1.add(new MidiEvent(off1, 3000));
 			
-			mp.playAndStop();
+			//mp.playAndStop();
 			//mp.close();
 			
 			
