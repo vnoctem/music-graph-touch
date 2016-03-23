@@ -17,6 +17,10 @@ public class SceneMusic {
 		this.mi = mi;
 	}
 	
+	public AbstractInstrument getInstrument() {
+		return mi;
+	}
+	
 	public float getRadius() {
 		return radius;
 	}

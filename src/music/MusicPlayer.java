@@ -1,10 +1,15 @@
 package music;
 
+import java.util.ArrayList;
+
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+
+import scene.Connector;
+import scene.SceneMusic;
 
 public class MusicPlayer {
 	
@@ -51,7 +56,16 @@ public class MusicPlayer {
 		sequencer.close();
 	}
 	
-	public void playAndStop() {
+	public void playAndStop(ArrayList<SceneMusic> sceneMusicList) {
+		for (SceneMusic sm : sceneMusicList) {
+			ArrayList<Connector> listConn = null;
+			//listConn = sm.getConnectors(); // Pour chaque SceneMusic, retourner la liste des connecteurs
+			for (Connector c : listConn) {
+				
+				SceneMusic target = c.getTarget(); // Pour chaque Connector, prendre la cible de celui-ci
+			}
+		}
+		
 		try {
 			System.out.println(musicSequence.getTickLength());
 			
