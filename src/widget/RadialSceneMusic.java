@@ -13,7 +13,7 @@ public class RadialSceneMusic extends AbstractRadial {
 	private SoundBoard sb;
 
 	public RadialSceneMusic() {
-		super(43, 100, 6, new float[] {0, 0, 0.5f});
+		super(43, 100, 5, new float[] {0, 0, 0.5f});
 	}
 	
 	public void show(SceneMusic sm, float x, float y, ArrayList<SceneMusic> lSm, SoundBoard sb) {
@@ -42,9 +42,6 @@ public class RadialSceneMusic extends AbstractRadial {
 					break;
 				case 4:
 					drawConnector(gw);
-					break;
-				case 5:
-					drawMenu(gw);
 					break;
 			}
 		gw.popMatrix();
@@ -126,6 +123,9 @@ public class RadialSceneMusic extends AbstractRadial {
 			case 1: // bouger
 				sm.setPosition(x, y);
 				break;
+			case 3: // afficher le panneau de son
+				sb.show(x, y);
+				break;
 			case 4: // connecter à d'autres noeuds
 				sm.extendConnector(x, y);
 				break;
@@ -156,10 +156,6 @@ public class RadialSceneMusic extends AbstractRadial {
 					sm.setStart(false);
 				}
 				sm.setStart(true);
-				break;
-			case 3: // afficher
-			case 5: // le panneau de son
-				sb.show(super.position.x(), super.position.y());
 				break;
 		}
 		
