@@ -2,6 +2,8 @@ package widget;
 
 import java.util.ArrayList;
 
+import music.MusicNote;
+import music.MusicNotePlayer;
 import scene.GraphicsWrapper;
 import scene.Point2D;
 
@@ -14,35 +16,46 @@ public class SoundBoard {
 	private ArrayList<AbstractSound> sounds;
 	private int col = 4;
 	
+	private MusicNotePlayer musicNotePlayer;
+	
 	public SoundBoard() {
 		int sWidth = (width - volWidth) / 4;
 		int sHeight = (heightPerCol * col) / 2;
 		
-		// initialiser les clés
+		musicNotePlayer = new MusicNotePlayer(); // créer le musicNotePlayer pour jouer les notes lorsqu'elle sont touchées
+		
+		// initialiser les notes
 		sounds = new ArrayList<AbstractSound>();
 		sounds.add(new RecordControl(sWidth, sHeight, (as) -> {
 			((RecordControl) as).play();
 		}));
 		sounds.add(new Sound("C", sWidth, sHeight, (as) -> {
-			System.out.println("c");
+			musicNotePlayer.playMusicNote(new MusicNote(60, 1000)); // hauteur de la note = 60, durée de la note (millisecondes) = 1000
+			System.out.println("C");
 		}));
 		sounds.add(new Sound("D", sWidth, sHeight, (as) -> {
-			System.out.println("d");
+			musicNotePlayer.playMusicNote(new MusicNote(62, 1000)); // hauteur de la note = 62, durée de la note (millisecondes) = 1000
+			System.out.println("D");
 		}));
 		sounds.add(new Sound("E", sWidth, sHeight, (as) -> {
-			System.out.println("e");
+			musicNotePlayer.playMusicNote(new MusicNote(64, 1000)); // hauteur de la note = 64, durée de la note (millisecondes) = 1000
+			System.out.println("E");
 		}));
 		sounds.add(new Sound("F", sWidth, sHeight, (as) -> {
-			System.out.println("f");
+			musicNotePlayer.playMusicNote(new MusicNote(65, 1000)); // hauteur de la note = 65, durée de la note (millisecondes) = 1000
+			System.out.println("F");
 		}));
 		sounds.add(new Sound("G", sWidth, sHeight, (as) -> {
-			System.out.println("g");
+			musicNotePlayer.playMusicNote(new MusicNote(67, 1000)); // hauteur de la note = 67, durée de la note (millisecondes) = 1000
+			System.out.println("G");
 		}));
 		sounds.add(new Sound("A", sWidth, sHeight, (as) -> {
-			System.out.println("a");
+			musicNotePlayer.playMusicNote(new MusicNote(69, 1000)); // hauteur de la note = 69, durée de la note (millisecondes) = 1000
+			System.out.println("A");
 		}));
 		sounds.add(new Sound("B", sWidth, sHeight, (as) -> {
-			System.out.println("b");
+			musicNotePlayer.playMusicNote(new MusicNote(71, 1000)); // hauteur de la note = 71, durée de la note (millisecondes) = 1000
+			System.out.println("B");
 		}));
 		
 		// positionner les clés

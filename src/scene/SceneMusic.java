@@ -2,6 +2,7 @@ package scene;
 
 import java.util.ArrayList;
 
+import music.MusicSample;
 import music.instruments.AbstractInstrument;
 
 public class SceneMusic {
@@ -12,7 +13,8 @@ public class SceneMusic {
 	private float[] colorStart = {0.7f,0,0.7f};
 	private Point2D posConnector = null; // connecteur utilisé pour esquisser
 	private ArrayList<Connector> conn; // le composant connecté
-	private boolean start = false;
+	private boolean start = false; // identifier si c'est le noeud de départ
+	private MusicSample musicSample; // l'échantillon de musique du noeud
 	
 	public SceneMusic(AbstractInstrument mi, float radius) {
 		this.radius = radius;
@@ -27,6 +29,14 @@ public class SceneMusic {
 	
 	public ArrayList<Connector> getConnectors() {
 		return conn;
+	}
+	
+	public MusicSample getMusicSample() {
+		return musicSample;
+	}
+	
+	public void setMusicSample(MusicSample musicSample) {
+		this.musicSample = musicSample;
 	}
 	
 	public float getRadius() {

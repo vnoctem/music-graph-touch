@@ -35,6 +35,14 @@ public class MusicSample {
 		return track;
 	}
 
+	public void setStartTick(int startTick) {
+		ticks = startTick;
+	}
+	
+	public int getDuration() {
+		return ticks;
+	}
+	
 	/**
 	 * Ajouter une note de musique dans la track du MusicSample
 	 * @param note

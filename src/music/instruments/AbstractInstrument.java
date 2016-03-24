@@ -4,6 +4,7 @@ import scene.GraphicsWrapper;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
+import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
@@ -35,7 +36,7 @@ public abstract class AbstractInstrument {
 	
 	
 	// Pour jouer un échantillon de musique
-	public void playMusicSample(MusicPlayer musicPlayer, MusicSample musicSample, int channel) 
+	public void playMusicSample(Sequence sequence, MusicSample musicSample, int channel) 
 			throws InvalidMidiDataException {
 		// changer l'instrument pour une guitare
 		ShortMessage instrument = new ShortMessage();
@@ -44,7 +45,7 @@ public abstract class AbstractInstrument {
         
         //musicPlayer.getSequencer().setSequence(musicPlayer.getMusicSequence());
 		//musicPlayer.playAndStop();
-		musicPlayer.getMusicSequence().deleteTrack(musicSample.getTrack()); // supprimer la track une fois qu'elle est jouée
+		//musicPlayer.getMusicSequence().deleteTrack(musicSample.getTrack()); // supprimer la track une fois qu'elle est jouée
 	}
 	
 	// Pour jouer un échantillon de musique dans le séquenceur
