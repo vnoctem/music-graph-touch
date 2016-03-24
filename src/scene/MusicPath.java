@@ -1,37 +1,27 @@
 package scene;
 
-import java.util.ArrayList;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedHashMap;
 
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
-import widget.RadialMenu;
-import widget.RadialSceneMusic;
-import widget.SoundBoard;
+import app.Application;
+import app.Cursor;
+import app.CursorController;
 
 public class MusicPath implements Runnable, ActionListener {
 
 	public MultitouchFramework multitouchFramework = null;
 	public GraphicsWrapper gw = null;
 	
-	// un seul menu pour l'instant
-	// si plusieurs menus possible (multiutilisateurs), utilise Arraylist
-	private RadialMenu menu;
-	
-	// menu pour les composants graphiques
-	private RadialSceneMusic menuSM;
-	
-	// panneau pour jouer des sons
-	private SoundBoard sb;
-	
-	// liste des composant graphique et musical
-	private ArrayList<SceneMusic> lSm = new ArrayList<SceneMusic>(); 
-	
-	private SceneMusic selectedSM = null;
+	// contenir l'application complète
+	private Application app;
+	// track les curseurs
+	private LinkedHashMap<Integer, CursorController> cursors;
 
 	Thread thread = null;
 	boolean threadSuspended;
@@ -42,17 +32,11 @@ public class MusicPath implements Runnable, ActionListener {
 		multitouchFramework = mf;
 		this.gw = gw;
 		multitouchFramework.setPreferredWindowSize(Constant.INITIAL_WINDOW_WIDTH,Constant.INITIAL_WINDOW_HEIGHT);
-		
-		// initialiser le menu
-		menu = new RadialMenu();
-		
-		// initialiser le menu des composants
-		menuSM = new RadialSceneMusic();
-		
-		// initialiser le panneau de son
-		sb = new SoundBoard();
 
 		gw.setFontHeight( Constant.TEXT_HEIGHT );
+		
+		app = new Application();
+		cursors = new LinkedHashMap<Integer, CursorController>();
 
 		gw.frame( new AlignedRectangle2D( new Point2D(-100,-100), new Point2D(100,100) ), true );
 	}
@@ -69,85 +53,37 @@ public class MusicPath implements Runnable, ActionListener {
 
 		gw.setCoordinateSystemToPixels();
 		
-		// tous les composants graphiques et musicals
-		for (SceneMusic sm : lSm) {
-			sm.draw(gw);
-		}
-		
-		// panneau de son
-		sb.draw(gw);
-		
-		// menu des composants
-		menuSM.draw(gw);
-		
-		// menu
-		// doit toujours être la dernière à dessiner pour qu'il soit toujours par dessus de tout
-		menu.draw(gw);
+		app.draw(gw);
 	}
 
 	// écouteur pour tous les événements de multitouch
 	public synchronized void processMultitouchInputEvent( int id, float x, float y, int type ) {
 		switch (type) {
 			case MultitouchFramework.TOUCH_EVENT_DOWN:
-				// détecte s'il y a une clé cliquée
-				// permet pas de faire d'autres choses avant de fermer le panneau
-				if (sb.isShown()) {
-					sb.onClick(x, y);
-				} else {
-					// si clic sur un des composants graphiques, fait l'action
-					for (SceneMusic sm : lSm) {
-						if (sm.isInside(x, y)) {
-							menuSM.show(sm, sm.getPosition().x(), sm.getPosition().y(), lSm, sb);
-							selectedSM = sm;
-							selectedSM.select();
-							break;
-						}
-					}
-					
-					// sinon, afficher le menu
-					if (selectedSM == null) {
-						menu.show(x, y);
-					}
-				}
+				// créer un nouveau tracker pour les curseurs
+				CursorController cc = new CursorController();
+				cc.addCursor(new Cursor(type, x, y));
+				cursors.put(id, cc);
+				
+				app.touchDown(id, cursors);
 				
 				// forcer le rafraîchissement pour faire apparaître le menu
 				multitouchFramework.requestRedraw();
 			break;
 			case MultitouchFramework.TOUCH_EVENT_UP:
-				if (selectedSM != null) {
-					// si déposé sur un autre noeud, donc relie-les
-					for (SceneMusic sm : lSm) {
-						if (sm.isInside(x, y) && sm != selectedSM) {
-							menuSM.close();
-							selectedSM.deselect();
-							selectedSM.doneConnect(sm);
-							selectedSM = null;
-							break;
-						}
-					}
-					
-					if (selectedSM != null) {
-						menuSM.close();
-						selectedSM.deselect();
-						selectedSM.doneConnect(null);
-						selectedSM = null;
-					}
-				}
+				// garder le curseur dans le propre contrôleur
+				cursors.get(id).addCursor(new Cursor(type, x, y));
 				
-				if (menu.isShown()) {
-					// cacher le menu
-					SceneMusic sm = menu.close();
-					
-					if (sm != null)
-						lSm.add(sm);
-				}
+				app.touchUp(id, cursors);
+				
+				// une fois traité, enlève le tracker
+				cursors.remove(id);
 			break;
 			case MultitouchFramework.TOUCH_EVENT_MOVE:
-				if (menu.isShown())
-					menu.onMove(x, y);
+				// garder le curseur dans le propre contrôleur
+				cursors.get(id).addCursor(new Cursor(type, x, y));
 				
-				if (menuSM.isShown() || menuSM.isAction())
-					menuSM.onMove(x, y);
+				app.touchMove(id, cursors);
 				
 				// pour changer l'apparence
 				multitouchFramework.requestRedraw();

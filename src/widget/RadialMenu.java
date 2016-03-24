@@ -19,24 +19,6 @@ public class RadialMenu extends AbstractRadial {
 		super(30, 100, 6, new float[] {0.7f, 0.7f, 0f});
 	}
 	
-	public void show(float x, float y) {
-		super.show(x, y);
-		
-		// réinitialiser pour ne pas modifier l'ancien
-		sm = null;
-	}
-	
-	public boolean isShown() {
-		return super.shown || shownInstru;
-	}
-	
-	public SceneMusic close() {
-		super.hide();
-		shownInstru = false;
-		
-		return sm;
-	}
-	
 	protected void drawOptions(GraphicsWrapper gw, int level, float x, float y) {
 		// Créer l'instrument
 		switch (level) {
