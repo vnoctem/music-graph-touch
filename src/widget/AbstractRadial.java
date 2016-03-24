@@ -120,7 +120,9 @@ public abstract class AbstractRadial {
 						gw.drawPartOfCircle(outerPoints, innerPoints, true);
 						// contour
 						gw.setColor(1,1,1);
+						gw.setLineWidth(1);
 						gw.drawPartOfCircle(outerPoints, innerPoints, false);
+						gw.setLineWidth(3);
 						
 						int midAngle = (condition + (int) ((360 / nb) * (level - 1))) / 2;
 						Point2D central = new Point2D(

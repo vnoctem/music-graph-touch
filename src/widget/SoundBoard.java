@@ -3,34 +3,66 @@ package widget;
 import java.util.ArrayList;
 
 import scene.GraphicsWrapper;
+import scene.Point2D;
 
 public class SoundBoard {
 	private boolean shown = false;
-	private int height = 180;
-	private int width = 400;
-	private float x;
-	private float y;
-	private ArrayList<Sound> sounds;
+	private int heightPerCol = 90;
+	private int width = 420;
+	private int volWidth = 40;
+	private Point2D position;
+	private ArrayList<AbstractSound> sounds;
+	private int col = 4;
 	
 	public SoundBoard() {
-		int sWidth = width / 4;
-		int sHeight = height / 2;
-		sounds = new ArrayList<Sound>();
-		sounds.add(new Sound(".", 0, 0, sWidth, sHeight));
-		sounds.add(new Sound("C", sWidth, 0, sWidth, sHeight));
-		sounds.add(new Sound("D", sWidth * 2, 0, sWidth, sHeight));
-		sounds.add(new Sound("E", sWidth * 3, 0, sWidth, sHeight));
-		sounds.add(new Sound("F", 0, sHeight, sWidth, sHeight));
-		sounds.add(new Sound("G", sWidth, sHeight, sWidth, sHeight));
-		sounds.add(new Sound("A", sWidth * 2, sHeight, sWidth, sHeight));
-		sounds.add(new Sound("B", sWidth * 3, sHeight, sWidth, sHeight));
+		int sWidth = (width - volWidth) / 4;
+		int sHeight = (heightPerCol * col) / 2;
+		
+		// initialiser les clés
+		sounds = new ArrayList<AbstractSound>();
+		sounds.add(new RecordControl(sWidth, sHeight, (as) -> {
+			((RecordControl) as).play();
+		}));
+		sounds.add(new Sound("C", sWidth, sHeight, (as) -> {
+			System.out.println("c");
+		}));
+		sounds.add(new Sound("D", sWidth, sHeight, (as) -> {
+			System.out.println("d");
+		}));
+		sounds.add(new Sound("E", sWidth, sHeight, (as) -> {
+			System.out.println("e");
+		}));
+		sounds.add(new Sound("F", sWidth, sHeight, (as) -> {
+			System.out.println("f");
+		}));
+		sounds.add(new Sound("G", sWidth, sHeight, (as) -> {
+			System.out.println("g");
+		}));
+		sounds.add(new Sound("A", sWidth, sHeight, (as) -> {
+			System.out.println("a");
+		}));
+		sounds.add(new Sound("B", sWidth, sHeight, (as) -> {
+			System.out.println("b");
+		}));
+		
+		// positionner les clés
+		int colCount = 0;
+		int rowCount = 0;
+		for (int i = 0; i < sounds.size(); i++) {
+			if (colCount == col) {
+				colCount = 0;
+				rowCount++;
+			}
+			
+			sounds.get(i).setPosition(sWidth * colCount, sHeight * rowCount);
+			colCount++;
+		}
 	}
 	
-	public void show(float x, float y, boolean isLeft) {
+	public void show(float x, float y) {
 		shown = true;
 		
-		this.x = x + (isLeft ? -width - 5 : 5);
-		this.y = y - height / 2;
+		position = new Point2D(x - width / 2, y - (heightPerCol * col) / 2);
 	}
 	
 	public void hide() {
@@ -40,16 +72,29 @@ public class SoundBoard {
 	public boolean isShown() {
 		return shown;
 	}
+	
+	public void onClick(float x, float y) {
+		for (AbstractSound s : sounds) {
+			if (s.isInside(x, y, position)) {
+				s.setSelect(true);
+				s.performAction();
+			} else {
+				s.setSelect(false);
+			}
+		}
+	}
 
 	public void draw(GraphicsWrapper gw) {
 		if (shown) {
-			gw.localWorldTrans(x, y);
-				gw.setColor(0.4f, 0.4f, 0.4f);
+			gw.localWorldTrans(position.x(), position.y());
+				gw.setColor(0.2f, 0.2f, 0.2f);
 				// le panneau
-				gw.drawRect(0, 0, width, height, true);
-				gw.setColor(0.5f, 0.5f, 0.5f);
+				gw.drawRect(0, 0, width, (heightPerCol * col), true);
+				// volume
+				gw.setColor(1, 0, 0);
+				gw.drawRect(width - volWidth, - 1, volWidth, (heightPerCol * col) + 3, true);
 				// chacun des boutons
-				for (Sound s : sounds)
+				for (AbstractSound s : sounds)
 					s.draw(gw);
 				gw.setColor(1, 1, 1);
 			gw.popMatrix();

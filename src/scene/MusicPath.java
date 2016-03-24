@@ -89,19 +89,25 @@ public class MusicPath implements Runnable, ActionListener {
 	public synchronized void processMultitouchInputEvent( int id, float x, float y, int type ) {
 		switch (type) {
 			case MultitouchFramework.TOUCH_EVENT_DOWN:
-				// si clic sur un des composants graphiques, fait l'action
-				for (SceneMusic sm : lSm) {
-					if (sm.isInside(x, y)) {
-						menuSM.show(sm, sm.getPosition().x(), sm.getPosition().y(), lSm, sb);
-						selectedSM = sm;
-						selectedSM.select();
-						break;
+				// détecte s'il y a une clé cliquée
+				// permet pas de faire d'autres choses avant de fermer le panneau
+				if (sb.isShown()) {
+					sb.onClick(x, y);
+				} else {
+					// si clic sur un des composants graphiques, fait l'action
+					for (SceneMusic sm : lSm) {
+						if (sm.isInside(x, y)) {
+							menuSM.show(sm, sm.getPosition().x(), sm.getPosition().y(), lSm, sb);
+							selectedSM = sm;
+							selectedSM.select();
+							break;
+						}
 					}
-				}
-				
-				// sinon, afficher le menu
-				if (selectedSM == null) {
-					menu.show(x, y);
+					
+					// sinon, afficher le menu
+					if (selectedSM == null) {
+						menu.show(x, y);
+					}
 				}
 				
 				// forcer le rafraîchissement pour faire apparaître le menu
