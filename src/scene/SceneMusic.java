@@ -21,6 +21,9 @@ public class SceneMusic {
 		this.mi = mi;
 		
 		conn = new ArrayList<Connector>();
+		
+		// test vgr
+		musicSample = new MusicSample();
 	}
 	
 	public AbstractInstrument getInstrument() {

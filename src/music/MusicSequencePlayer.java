@@ -8,15 +8,14 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 
-import scene.Connector;
 import scene.SceneMusic;
 
-public class MusicPlayer {
+public class MusicSequencePlayer {
 	
 	private Sequencer sequencer; // permet de démarrer et arrêter la lecture d'une séquence
 	private Sequence musicSequence; // la séquence principale dans laquelle tous les MusicSample (tracks) vont être joués
 	
-	public MusicPlayer() {
+	public MusicSequencePlayer() {
 		try {
 			sequencer = MidiSystem.getSequencer(); // initialiser le séquenceur
 			open(); // ouvrir le séquenceur

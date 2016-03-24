@@ -15,7 +15,7 @@ import scene.SceneMusic;
  */
 public class MusicSequenceBuilder {
 	
-	private int ticks; // temps en ticks pour la composition de la séquence
+	private int ticks; // temps en ticks (millisecondes) pour la composition de la séquence
 	
 	public MusicSequenceBuilder() {
 		ticks = 0; // on débute à 0
@@ -41,8 +41,9 @@ public class MusicSequenceBuilder {
 			}
 			// ajouter l'échantillon suivant après un certain temps (calculé avec la longueur du connecteur * 100 millisecondes)
 			addMusicSample(nextSM.getMusicSample(), musicSequence, nextSM.getInstrument(), ticks + Math.round(c.getLength()) * 100);
-			//ticks
+			
 		}
+		//ticks += 
 		ticks += startSM.getMusicSample().getDuration(); // incrémenter le temps avec le temps de l'échantillon (pas vrm)
 		
 		//musicPlayer, musicSample, channel);

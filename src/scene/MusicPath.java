@@ -6,10 +6,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.sound.midi.Sequence;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
-import music.MusicPlayer;
+import music.MusicSequencePlayer;
 import widget.RadialMenu;
 import widget.RadialSceneMusic;
 import widget.SoundBoard;
@@ -38,6 +39,8 @@ public class MusicPath implements Runnable, ActionListener {
 	boolean threadSuspended;
 
 	int mouse_x, mouse_y;
+	
+	private Sequence sequence;
 
 	public MusicPath( MultitouchFramework mf, GraphicsWrapper gw ) {
 		multitouchFramework = mf;
@@ -57,8 +60,9 @@ public class MusicPath implements Runnable, ActionListener {
 
 		gw.frame( new AlignedRectangle2D( new Point2D(-100,-100), new Point2D(100,100) ), true );
 		
-		MusicPlayer mp = new MusicPlayer();
-		mp.playAndStop(lSm, getStartSceneMusic());
+		MusicSequencePlayer mp = new MusicSequencePlayer();
+		//mp.playAndStop(lSm, getStartSceneMusic());
+		
 	}
 	
 	// retourne le noeud de départ

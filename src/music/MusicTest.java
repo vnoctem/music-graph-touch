@@ -17,7 +17,7 @@ import music.instruments.Violin;
 public class MusicTest {
     
 	public static void main(String[] args) {
-		MusicPlayer mp = new MusicPlayer();
+		MusicSequencePlayer mp = new MusicSequencePlayer();
 
 		try {
 			// création d'un Instrument guitare
@@ -26,10 +26,10 @@ public class MusicTest {
 			// création d'un MusicSample avec volume de 64
 			MusicSample musicSample = new MusicSample(mp.getMusicSequence(), 64);
 			// ajouter des notes au MusicSample
-			musicSample.addMusicNote(new MusicNote(60, 1000), 0);
-			musicSample.addMusicNote(new MusicNote(65, 1000), 0);
-			musicSample.addMusicNote(new MusicNote(62, 1000), 0);
-			musicSample.addMusicNote(new MusicNote(67, 1000), 0);
+			musicSample.addMusicNote(new MusicNote(60, 1000));
+			musicSample.addMusicNote(new MusicNote(65, 1000));
+			musicSample.addMusicNote(new MusicNote(62, 1000));
+			musicSample.addMusicNote(new MusicNote(67, 1000));
 			// faire la guitare jouer le MusicSample
 			//guitar.playMusicSample(mp, musicSample, 0);
 			
@@ -40,10 +40,10 @@ public class MusicTest {
 			// création d'un MusicSample2 avec volume de 64
 			MusicSample musicSample2 = new MusicSample(mp.getMusicSequence(), 64);
 			// ajouter des notes au MusicSample
-			musicSample2.addMusicNote(new MusicNote(54, 1000), 0);
-			musicSample2.addMusicNote(new MusicNote(53, 1000), 0);
-			musicSample2.addMusicNote(new MusicNote(50, 1000), 0);
-			musicSample2.addMusicNote(new MusicNote(43, 1000), 0);
+			musicSample2.addMusicNote(new MusicNote(54, 1000));
+			musicSample2.addMusicNote(new MusicNote(53, 1000));
+			musicSample2.addMusicNote(new MusicNote(50, 1000));
+			musicSample2.addMusicNote(new MusicNote(43, 1000));
 			// faire la guitare jouer le MusicSample
 			//violin.playMusicSample(mp, musicSample2, 0);
 			

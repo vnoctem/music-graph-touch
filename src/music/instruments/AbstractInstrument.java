@@ -8,10 +8,6 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
-import music.MusicPlayer;
-import music.MusicSample;
-
-
 public abstract class AbstractInstrument {
 	
 	// les paramètres qui définissent l'instrument
@@ -34,19 +30,18 @@ public abstract class AbstractInstrument {
 		return program;
 	}
 	
-	
 	// Pour jouer un échantillon de musique
-	public void playMusicSample(Sequence sequence, MusicSample musicSample, int channel) 
-			throws InvalidMidiDataException {
-		// changer l'instrument pour une guitare
-		ShortMessage instrument = new ShortMessage();
-        instrument.setMessage(ShortMessage.PROGRAM_CHANGE, channel, getProgram(), getBank());
-        musicSample.getTrack().add(new MidiEvent(instrument, 0)); // -1 pour changer l'instrument avant de jouer l'échantillon de musique
-        
-        //musicPlayer.getSequencer().setSequence(musicPlayer.getMusicSequence());
-		//musicPlayer.playAndStop();
-		//musicPlayer.getMusicSequence().deleteTrack(musicSample.getTrack()); // supprimer la track une fois qu'elle est jouée
-	}
+//	public void playMusicSample(Sequence sequence, MusicSample musicSample, int channel) 
+//			throws InvalidMidiDataException {
+//		// changer l'instrument pour une guitare
+//		ShortMessage instrument = new ShortMessage();
+//        instrument.setMessage(ShortMessage.PROGRAM_CHANGE, channel, this.program, this.bank);
+//        musicSample.getTrack().add(new MidiEvent(instrument, 0)); // -1 pour changer l'instrument avant de jouer l'échantillon de musique
+//        
+//        //musicPlayer.getSequencer().setSequence(musicPlayer.getMusicSequence());
+//		//musicPlayer.playAndStop();
+//		//musicPlayer.getMusicSequence().deleteTrack(musicSample.getTrack()); // supprimer la track une fois qu'elle est jouée
+//	}
 	
 	// Pour jouer un échantillon de musique dans le séquenceur
 //	public void playSample(String filePathName, int channel, Sequencer sequencer, Sequence sequence) 
