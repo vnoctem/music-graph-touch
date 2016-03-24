@@ -20,30 +20,29 @@ public class Contrabass extends AbstractInstrument {
 			gw.drawLine(-topWidth / 2 - lineWidth / 2, height / 10 - height / 2, topWidth / 2 - lineWidth / 2, height / 10 - height / 2);
 			gw.drawLine(-topWidth / 2 - lineWidth / 2, height / 5 - height / 2, topWidth / 2 - lineWidth / 2, height / 5 - height / 2);
 			// corps
-			int topCircleWidth = 26;
-			int topCircleHeight = 18;
-			gw.drawEllipse(-lineWidth / 2, height / 8, topCircleWidth, topCircleHeight, true);
-			int bottomCircleWidth = 35;
-			int bottomCircleHeight = 25;
+			int topCircleWidth = 30;
+			int topCircleHeight = 25;
+			int start = -6;
+			gw.drawEllipse(-lineWidth / 2, start, topCircleWidth, topCircleHeight, true);
+			int bottomCircleWidth = 45;
+			int bottomCircleHeight = 35;
 			int gap = 10;
-			gw.drawEllipse(-lineWidth / 2, height / 8 + topCircleHeight + bottomCircleHeight - gap, bottomCircleWidth, bottomCircleHeight, true);
+			gw.drawEllipse(-lineWidth / 2, start + topCircleHeight + bottomCircleHeight - gap, bottomCircleWidth, bottomCircleHeight, true);
 			int smallCircle = 8;
 			int space = 20;
+			int smallCircleStart = 10;
 			gw.setColor(0.2f,0.2f,0.2f);
-			gw.fillCircle(-lineWidth / 2 - smallCircle - space, (topCircleHeight + bottomCircleHeight) / 2, smallCircle);
-			gw.fillCircle(-lineWidth / 2 - smallCircle + space, (topCircleHeight + bottomCircleHeight) / 2, smallCircle);
+			gw.fillCircle(-lineWidth / 2 - smallCircle - space, smallCircleStart / 2, smallCircle);
+			gw.fillCircle(-lineWidth / 2 - smallCircle + space, smallCircleStart / 2, smallCircle);
 			gw.setColor(1, 1, 1);
 			// wire
 			gw.setLineWidth(1);
 			gw.setColor(0,0,0);
-			int wireHeight = 50;
+			int wireHeight = 80;
 			int wireSpace = 4;
-			gw.drawLine(-lineWidth / 2 - wireSpace, height / 8 - topCircleHeight / 2, -lineWidth / 2 - wireSpace, height / 8 + wireHeight - topCircleHeight / 2);
-			gw.drawLine(-lineWidth / 2, height / 8 - topCircleHeight / 2, -lineWidth / 2, height / 8 + wireHeight - topCircleHeight / 2);
-			gw.drawLine(-lineWidth / 2 + wireSpace, height / 8 - topCircleHeight / 2, -lineWidth / 2 + wireSpace, height / 8 + wireHeight - topCircleHeight / 2);
-			gw.setColor(1, 1, 1);
-			// triangle
-			gw.drawTriangle(20, -30, 30, 0, 40, -30);
+			gw.drawLine(-lineWidth / 2 - wireSpace, start - topCircleHeight / 2, -lineWidth / 2 - wireSpace, start + wireHeight - topCircleHeight / 2);
+			gw.drawLine(-lineWidth / 2, start - topCircleHeight / 2, -lineWidth / 2, start + wireHeight - topCircleHeight / 2);
+			gw.drawLine(-lineWidth / 2 + wireSpace, start - topCircleHeight / 2, -lineWidth / 2 + wireSpace, start + wireHeight - topCircleHeight / 2);
 			gw.setColor(1, 1, 1);
 		gw.popMatrix();
 		gw.setLineWidth(1);
