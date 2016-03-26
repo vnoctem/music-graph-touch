@@ -74,35 +74,40 @@ public class Application {
 	public void touchUp(int id, CursorController cursors) {
 		Point2D pos = cursors.last().getPos();
 		
-		if (selectedSM != null) {
-			// garder le sound board
-			sb = menuSM.getSB();
-			
-			// si déposé sur un autre noeud, donc relie-les
-			for (SceneMusic sm : lSm) {
-				if (sm.isInside(pos.x(), pos.y()) && sm != selectedSM) {
+		// passer aussi la durée entre touch down et touch up
+		if (sb != null) {
+			sb.onRelease(pos.x(), pos.y(), cursors.getDuration());
+		} else {
+			if (selectedSM != null) {
+				// garder le sound board
+				sb = menuSM.getSB();
+				
+				// si déposé sur un autre noeud, donc relie-les
+				for (SceneMusic sm : lSm) {
+					if (sm.isInside(pos.x(), pos.y()) && sm != selectedSM) {
+						menuSM = null;
+						selectedSM.deselect();
+						selectedSM.doneConnect(sm);
+						selectedSM = null;
+						break;
+					}
+				}
+				
+				if (selectedSM != null) {
 					menuSM = null;
 					selectedSM.deselect();
-					selectedSM.doneConnect(sm);
+					selectedSM.doneConnect(null);
 					selectedSM = null;
-					break;
 				}
 			}
 			
-			if (selectedSM != null) {
-				menuSM = null;
-				selectedSM.deselect();
-				selectedSM.doneConnect(null);
-				selectedSM = null;
+			if (menu != null) {
+				SceneMusic sm = menu.getSM();
+				
+				if (sm != null)
+					lSm.add(sm);
+				menu = null;
 			}
-		}
-		
-		if (menu != null) {
-			SceneMusic sm = menu.getSM();
-			
-			if (sm != null)
-				lSm.add(sm);
-			menu = null;
 		}
 	}
 

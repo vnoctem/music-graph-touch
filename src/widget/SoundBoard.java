@@ -69,8 +69,19 @@ public class SoundBoard {
 			if (s.isInside(x, y, position)) {
 				s.setSelect(true);
 				s.performAction();
-			} else {
+				
+				return;
+			}
+		}
+	}
+	
+	public void onRelease(float x, float y, long duration) {
+		for (AbstractSound s : sounds) {
+			if (s.isInside(x, y, position)) {
 				s.setSelect(false);
+				// debug with seconds
+				System.out.println((double)duration / 1000000000.0);
+				return;
 			}
 		}
 	}
