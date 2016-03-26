@@ -65,7 +65,7 @@ public class MusicPath implements Runnable, ActionListener {
 				cc.addCursor(new Cursor(type, x, y));
 				cursors.put(id, cc);
 				
-				app.touchDown(id, cursors);
+				app.touchDown(id, cc);
 				
 				// forcer le rafraîchissement pour faire apparaître le menu
 				multitouchFramework.requestRedraw();
@@ -74,7 +74,7 @@ public class MusicPath implements Runnable, ActionListener {
 				// garder le curseur dans le propre contrôleur
 				cursors.get(id).addCursor(new Cursor(type, x, y));
 				
-				app.touchUp(id, cursors);
+				app.touchUp(id, cursors.get(id));
 				
 				// une fois traité, enlève le tracker
 				cursors.remove(id);
@@ -83,7 +83,7 @@ public class MusicPath implements Runnable, ActionListener {
 				// garder le curseur dans le propre contrôleur
 				cursors.get(id).addCursor(new Cursor(type, x, y));
 				
-				app.touchMove(id, cursors);
+				app.touchMove(id, cursors.get(id));
 				
 				// pour changer l'apparence
 				multitouchFramework.requestRedraw();

@@ -1,7 +1,6 @@
 package app;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 import scene.GraphicsWrapper;
 import scene.Point2D;
@@ -47,12 +46,11 @@ public class Application {
 			menu.draw(gw);
 	}
 	
-	public void touchDown(int id, LinkedHashMap<Integer, CursorController> cursors) {
+	public void touchDown(int id, CursorController cursors) {
+		Point2D pos = cursors.last().getPos();
+		
 		// détecte s'il y a une clé cliquée
 		// permet pas de faire d'autres choses avant de fermer le panneau
-		
-		Point2D pos = cursors.get(id).last().getPos();
-		
 		if (sb != null) {
 			sb.onClick(pos.x(), pos.y());
 		} else {
@@ -66,36 +64,18 @@ public class Application {
 				}
 			}
 			
+			// sinon, afficher le menu
 			if (selectedSM == null) {
 				menu = new RadialMenu(pos.x(), pos.y());
 			}
 		}
-		
-		/*if (sb.isShown()) {
-			sb.onClick(x, y);
-		} else {
-			// si clic sur un des composants graphiques, fait l'action
-			for (SceneMusic sm : lSm) {
-				if (sm.isInside(x, y)) {
-					menuSM.show(sm, sm.getPosition().x(), sm.getPosition().y(), lSm, sb);
-					selectedSM = sm;
-					selectedSM.select();
-					break;
-				}
-			}
-			
-			// sinon, afficher le menu
-			if (selectedSM == null) {
-				menu.show(x, y);
-			}
-		}*/
 	}
 
-	public void touchUp(int id, LinkedHashMap<Integer, CursorController> cursors) {
-		Point2D pos = cursors.get(id).last().getPos();
+	public void touchUp(int id, CursorController cursors) {
+		Point2D pos = cursors.last().getPos();
 		
 		if (selectedSM != null) {
-			// garder le sound board s'il y en a un
+			// garder le sound board
 			sb = menuSM.getSB();
 			
 			// si déposé sur un autre noeud, donc relie-les
@@ -124,38 +104,10 @@ public class Application {
 				lSm.add(sm);
 			menu = null;
 		}
-		
-		/*if (selectedSM != null) {
-			// si déposé sur un autre noeud, donc relie-les
-			for (SceneMusic sm : lSm) {
-				if (sm.isInside(x, y) && sm != selectedSM) {
-					menuSM.close();
-					selectedSM.deselect();
-					selectedSM.doneConnect(sm);
-					selectedSM = null;
-					break;
-				}
-			}
-			
-			if (selectedSM != null) {
-				menuSM.close();
-				selectedSM.deselect();
-				selectedSM.doneConnect(null);
-				selectedSM = null;
-			}
-		}
-		
-		if (menu.isShown()) {
-			// cacher le menu
-			SceneMusic sm = menu.close();
-			
-			if (sm != null)
-				lSm.add(sm);
-		}*/
 	}
 
-	public void touchMove(int id, LinkedHashMap<Integer, CursorController> cursors) {
-		Point2D pos = cursors.get(id).last().getPos();
+	public void touchMove(int id, CursorController cursors) {
+		Point2D pos = cursors.last().getPos();
 		
 		if (menu != null)
 			menu.onMove(pos.x(), pos.y());

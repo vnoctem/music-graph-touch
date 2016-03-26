@@ -11,7 +11,6 @@ import scene.Point2D;
 import scene.SceneMusic;
 
 public class RadialMenu extends AbstractRadial {
-	private boolean shownInstru = false;
 	private SceneMusic sm;
 	private float radiusInstru = 40;
 	
@@ -69,20 +68,18 @@ public class RadialMenu extends AbstractRadial {
 				sm = new SceneMusic(new FrenchHorn(), radiusInstru);
 				break;
 		}
-		
-		shownInstru = true;
 	}
 	
 	protected void actionOnMove(float x, float y) {
 		// faire suivre le composant graphique à l'utilisateur
-		if (shownInstru)
+		if (sm != null)
 			sm.setPosition(x, y);
 	}
 
 	public void draw(GraphicsWrapper gw) {
 		drawRadial(gw);
 		
-		if (shownInstru) {
+		if (sm != null) {
 			sm.draw(gw);
 		}
 	}
