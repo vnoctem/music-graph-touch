@@ -6,7 +6,6 @@ import scene.GraphicsWrapper;
 import scene.Point2D;
 
 public class SoundBoard {
-	private boolean shown = false;
 	private int heightPerCol = 90;
 	private int width = 420;
 	private int volWidth = 40;
@@ -14,7 +13,9 @@ public class SoundBoard {
 	private ArrayList<AbstractSound> sounds;
 	private int col = 4;
 	
-	public SoundBoard() {
+	public SoundBoard(float x, float y) {
+		position = new Point2D(x - width / 2, y - (heightPerCol * col) / 2);
+		
 		int sWidth = (width - volWidth) / 4;
 		int sHeight = (heightPerCol * col) / 2;
 		
@@ -59,18 +60,8 @@ public class SoundBoard {
 		}
 	}
 	
-	public void show(float x, float y) {
-		shown = true;
-		
+	public void setPosition(float x, float y) {
 		position = new Point2D(x - width / 2, y - (heightPerCol * col) / 2);
-	}
-	
-	public void hide() {
-		shown = false;
-	}
-	
-	public boolean isShown() {
-		return shown;
 	}
 	
 	public void onClick(float x, float y) {
@@ -85,19 +76,17 @@ public class SoundBoard {
 	}
 
 	public void draw(GraphicsWrapper gw) {
-		if (shown) {
-			gw.localWorldTrans(position.x(), position.y());
-				gw.setColor(0.2f, 0.2f, 0.2f);
-				// le panneau
-				gw.drawRect(0, 0, width, (heightPerCol * col), true);
-				// volume
-				gw.setColor(1, 0, 0);
-				gw.drawRect(width - volWidth, - 1, volWidth, (heightPerCol * col) + 3, true);
-				// chacun des boutons
-				for (AbstractSound s : sounds)
-					s.draw(gw);
-				gw.setColor(1, 1, 1);
-			gw.popMatrix();
-		}
+		gw.localWorldTrans(position.x(), position.y());
+			gw.setColor(0.2f, 0.2f, 0.2f);
+			// le panneau
+			gw.drawRect(0, 0, width, (heightPerCol * col), true);
+			// volume
+			gw.setColor(1, 0, 0);
+			gw.drawRect(width - volWidth, - 1, volWidth, (heightPerCol * col) + 3, true);
+			// chacun des boutons
+			for (AbstractSound s : sounds)
+				s.draw(gw);
+			gw.setColor(1, 1, 1);
+		gw.popMatrix();
 	}
 }

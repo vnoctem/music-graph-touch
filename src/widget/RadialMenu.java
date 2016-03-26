@@ -15,8 +15,13 @@ public class RadialMenu extends AbstractRadial {
 	private SceneMusic sm;
 	private float radiusInstru = 40;
 	
-	public RadialMenu() {
+	public RadialMenu(float x, float y) {
 		super(30, 100, 6, new float[] {0.7f, 0.7f, 0f});
+		position = new Point2D(x, y);
+	}
+	
+	public SceneMusic getSM() {
+		return sm;
 	}
 	
 	protected void drawOptions(GraphicsWrapper gw, int level, float x, float y) {

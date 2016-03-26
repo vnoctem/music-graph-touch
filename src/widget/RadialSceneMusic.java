@@ -3,25 +3,21 @@ package widget;
 import java.util.ArrayList;
 
 import scene.GraphicsWrapper;
+import scene.Point2D;
 import scene.SceneMusic;
 
 public class RadialSceneMusic extends AbstractRadial {
 	
 	private SceneMusic sm;
-	private boolean action = false;
 	private ArrayList<SceneMusic> lSm;
 	private SoundBoard sb;
 
-	public RadialSceneMusic() {
+	public RadialSceneMusic(SceneMusic sm, float x, float y, ArrayList<SceneMusic> lSm) {
 		super(43, 100, 5, new float[] {0, 0, 0.5f});
-	}
-	
-	public void show(SceneMusic sm, float x, float y, ArrayList<SceneMusic> lSm, SoundBoard sb) {
-		super.show(x, y);
 		
+		position = new Point2D(x, y);
 		this.sm = sm;
 		this.lSm = lSm;
-		this.sb = sb;
 	}
 	
 	@Override
@@ -116,6 +112,10 @@ public class RadialSceneMusic extends AbstractRadial {
 	
 	public void draw(GraphicsWrapper gw) {
 		drawRadial(gw);
+		
+		if (sb != null) {
+			sb.draw(gw);
+		}
 	}
 	
 	protected void actionOnMove(float x, float y) {
@@ -124,7 +124,7 @@ public class RadialSceneMusic extends AbstractRadial {
 				sm.setPosition(x, y);
 				break;
 			case 3: // afficher le panneau de son
-				sb.show(x, y);
+				sb.setPosition(x, y);
 				break;
 			case 4: // connecter à d'autres noeuds
 				sm.extendConnector(x, y);
@@ -132,14 +132,10 @@ public class RadialSceneMusic extends AbstractRadial {
 		}
 	}
 	
-	public void close() {
-		super.hide();
-		
-		sm = null;
-		action = false;
-		lSm = null;
+	public SoundBoard getSB() {
+		return sb;
 	}
-
+	
 	@Override
 	protected void actionOnSelect(int selected, float x, float y) {
 		switch (selected) {
@@ -154,13 +150,10 @@ public class RadialSceneMusic extends AbstractRadial {
 			case 2: // noeud de départ
 				sm.setStart();
 				break;
+			case 3: // afficher le panneau de son
+				sb = new SoundBoard(x, y);
+				break;
 		}
-		
-		action = true;
-	}
-	
-	public boolean isAction() {
-		return action;
 	}
 	
 }

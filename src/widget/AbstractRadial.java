@@ -11,7 +11,7 @@ public abstract class AbstractRadial {
 	protected float outerRadius;
 	protected int nb; // nombre d'éléments dans le menu
 	protected Point2D position;
-	protected boolean shown;
+	protected boolean shown = true;
 	protected int selected = -1;
 	protected float[] color;
 	private int tolerance = 30;
@@ -21,21 +21,6 @@ public abstract class AbstractRadial {
 		this.outerRadius = outerRadius;
 		this.nb = nb;
 		this.color = color;
-	}
-	
-	public void show(float x, float y) {
-		position = new Point2D(x, y);
-		shown = true;
-	}
-	
-	public boolean isShown() {
-		return shown;
-	}
-	
-	public void hide() {
-		position = null;
-		shown = false;
-		selected = -1;
 	}
 	
 	// appelé constamment

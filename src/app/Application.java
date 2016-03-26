@@ -53,9 +53,22 @@ public class Application {
 		
 		Point2D pos = cursors.get(id).last().getPos();
 		
-		if (selectedSM == null) {
-			menu = new RadialMenu();
-			menu.show(pos.x(), pos.y());
+		if (sb != null) {
+			sb.onClick(pos.x(), pos.y());
+		} else {
+			// si clic sur un des composants graphiques, fait l'action
+			for (SceneMusic sm : lSm) {
+				if (sm.isInside(pos.x(), pos.y())) {
+					menuSM = new RadialSceneMusic(sm, sm.getPosition().x(), sm.getPosition().y(), lSm);
+					selectedSM = sm;
+					selectedSM.select();
+					break;
+				}
+			}
+			
+			if (selectedSM == null) {
+				menu = new RadialMenu(pos.x(), pos.y());
+			}
 		}
 		
 		/*if (sb.isShown()) {
@@ -79,8 +92,36 @@ public class Application {
 	}
 
 	public void touchUp(int id, LinkedHashMap<Integer, CursorController> cursors) {
+		Point2D pos = cursors.get(id).last().getPos();
+		
+		if (selectedSM != null) {
+			// garder le sound board s'il y en a un
+			sb = menuSM.getSB();
+			
+			// si déposé sur un autre noeud, donc relie-les
+			for (SceneMusic sm : lSm) {
+				if (sm.isInside(pos.x(), pos.y()) && sm != selectedSM) {
+					menuSM = null;
+					selectedSM.deselect();
+					selectedSM.doneConnect(sm);
+					selectedSM = null;
+					break;
+				}
+			}
+			
+			if (selectedSM != null) {
+				menuSM = null;
+				selectedSM.deselect();
+				selectedSM.doneConnect(null);
+				selectedSM = null;
+			}
+		}
 		
 		if (menu != null) {
+			SceneMusic sm = menu.getSM();
+			
+			if (sm != null)
+				lSm.add(sm);
 			menu = null;
 		}
 		
@@ -119,7 +160,7 @@ public class Application {
 		if (menu != null)
 			menu.onMove(pos.x(), pos.y());
 		
-		/*if (menuSM.isShown() || menuSM.isAction())
-			menuSM.onMove(x, y);*/
+		if (menuSM != null)
+			menuSM.onMove(pos.x(), pos.y());
 	}
 }
