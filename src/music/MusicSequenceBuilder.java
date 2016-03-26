@@ -1,12 +1,14 @@
 package music;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
-import javax.sound.midi.Track;
 
 import music.instruments.AbstractInstrument;
 import scene.Connector;
-import scene.SceneMusic;
+import scene.MusicVertex;
 
 /**
  * Pour bâtir la séquence de musique qui sera jouer par le MusicPlayer
@@ -28,32 +30,42 @@ public class MusicSequenceBuilder {
 	 * @param timingResolution
 	 * @throws InvalidMidiDataException
 	 */
-	public void buildMusicSequence(SceneMusic startSM, float tempoTimingType, int timingResolution) 
+	public Sequence buildMusicSequence(MusicVertex mvRoot, float tempoTimingType, int timingResolution) 
 			throws InvalidMidiDataException {
 		Sequence musicSequence = new Sequence(tempoTimingType, timingResolution); // music sequence
 		
-		addMusicSample(startSM.getMusicSample(), musicSequence, startSM.getInstrument(), ticks); // ajouter l'échantillon de musique au temps donné
+		Queue<MusicVertex> queue = new LinkedList<MusicVertex>();
 		
-		for (Connector c : startSM.getConnectors()) {
-			SceneMusic nextSM = c.getTarget();
-			if (nextSM == null) {
-				return;
-			}
-			// ajouter l'échantillon suivant après un certain temps (calculé avec la longueur du connecteur * 100 millisecondes)
-			addMusicSample(nextSM.getMusicSample(), musicSequence, nextSM.getInstrument(), ticks + Math.round(c.getLength()) * 100);
+		// ajouter l'échantillon de musique au temps donné
+		addMusicSample(mvRoot.getMusicSample(), musicSequence, mvRoot.getInstrument(), ticks);
+		queue.add(mvRoot);
+		mvRoot.setVisited(true);
+		
+		while (!queue.isEmpty()) {
+			MusicVertex mv = queue.remove(); // extraire le noeud inséré en premier
+			ticks += mv.getTimePosition(); // incrémenter les ticks avec le temps de départ du noeud courant
 			
+			for (Connector c : mv.getConnectors()) {
+				MusicVertex mvChild = c.getTarget(mv); // récupérer la cible du connecteur
+				
+				if (!mvChild.isVisited()) {
+					addMusicSample(mvChild.getMusicSample(), musicSequence, mvChild.getInstrument(), ticks + (Math.round(c.getLength()) * 5));
+					mvChild.setTimePosition(ticks);
+					queue.add(mvChild);
+					mvChild.setVisited(true);
+				}
+			}
 		}
-		//ticks += 
-		ticks += startSM.getMusicSample().getDuration(); // incrémenter le temps avec le temps de l'échantillon (pas vrm)
-		
-		//musicPlayer, musicSample, channel);
-		
-		
-		
+		return musicSequence;
 	}
 	
 	private void addMusicSample(MusicSample musicSample, Sequence sequence, AbstractInstrument instrument, int startTick) {
-		
+		try {
+			musicSample.buildTrack(sequence, instrument, startTick);
+		} catch (InvalidMidiDataException e) {
+			e.printStackTrace();
+			System.out.println("Instrument invalide.");
+		}
 	}
 
 }

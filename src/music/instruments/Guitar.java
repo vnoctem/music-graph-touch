@@ -2,11 +2,6 @@ package music.instruments;
 
 import scene.GraphicsWrapper;
 
-/**
- * Une guitare
- * @author Vincent
- *
- */
 public class Guitar extends AbstractInstrument {
 	
 	public Guitar() {
@@ -51,4 +46,5 @@ public class Guitar extends AbstractInstrument {
 		gw.popMatrix();
 		gw.setLineWidth(1);
 	}
+	
 }

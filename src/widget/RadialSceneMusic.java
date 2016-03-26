@@ -2,25 +2,31 @@ package widget;
 
 import java.util.ArrayList;
 
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.Sequence;
+
+import music.MusicSequenceBuilder;
+import music.MusicSequencePlayer;
+import scene.Connector;
 import scene.GraphicsWrapper;
-import scene.SceneMusic;
+import scene.MusicVertex;
 
 public class RadialSceneMusic extends AbstractRadial {
 	
-	private SceneMusic sm;
+	private MusicVertex mv;
 	private boolean action = false;
-	private ArrayList<SceneMusic> lSm;
+	private ArrayList<MusicVertex> lMv;
 	private SoundBoard sb;
 
 	public RadialSceneMusic() {
 		super(43, 100, 5, new float[] {0, 0, 0.5f});
 	}
 	
-	public void show(SceneMusic sm, float x, float y, ArrayList<SceneMusic> lSm, SoundBoard sb) {
+	public void show(MusicVertex mv, float x, float y, ArrayList<MusicVertex> lMv, SoundBoard sb) {
 		super.show(x, y);
 		
-		this.sm = sm;
-		this.lSm = lSm;
+		this.mv = mv;
+		this.lMv = lMv;
 		this.sb = sb;
 	}
 	
@@ -121,13 +127,13 @@ public class RadialSceneMusic extends AbstractRadial {
 	protected void actionOnMove(float x, float y) {
 		switch (selected) {
 			case 1: // bouger
-				sm.setPosition(x, y);
+				mv.setPosition(x, y);
 				break;
 			case 3: // afficher le panneau de son
-				sb.show(x, y, sm);
+				sb.show(x, y, mv);
 				break;
 			case 4: // connecter à d'autres noeuds
-				sm.extendConnector(x, y);
+				mv.extendConnector(x, y);
 				break;
 		}
 	}
@@ -135,9 +141,9 @@ public class RadialSceneMusic extends AbstractRadial {
 	public void close() {
 		super.hide();
 		
-		sm = null;
+		mv = null;
 		action = false;
-		lSm = null;
+		lMv = null;
 	}
 
 	@Override
@@ -145,21 +151,41 @@ public class RadialSceneMusic extends AbstractRadial {
 		switch (selected) {
 			case 0: // supprimer
 				// enlever les connecteurs
-				for (SceneMusic s : lSm) {
-					s.deleteConnIfLinked(sm);
+				for (MusicVertex s : lMv) {
+					s.deleteConnIfLinked(mv);
 				}
 				// enlever le noeud
-				lSm.remove(sm);
+				lMv.remove(mv);
 				break;
 			case 2: // noeud de départ
-				for (SceneMusic sm : lSm) { // si un autre noeud est le noeud de départ, modifier pour qu'il ne le soit plus
-					sm.setStart(false);
+				for (MusicVertex mv : lMv) { // si un autre noeud est le noeud de départ, modifier pour qu'il ne le soit plus
+					mv.setStart(false);
 				}
-				sm.setStart(true);
+				mv.setStart(true);
+				System.out.println("Set noeud de départ");
+				MusicSequenceBuilder seqBuilder = new MusicSequenceBuilder();
+				
+				try {
+					MusicSequencePlayer msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(mv, Sequence.PPQ, 960));
+					msp.play();
+					System.out.println("Jouer******************************************");
+					mv.getMusicSample().printMusicNotes();
+					
+				} catch (InvalidMidiDataException e) {
+					e.printStackTrace();
+					System.out.println("Paramètres de séquence invalide.");
+				}
+				
 				break;
 		}
 		
 		action = true;
+	}
+	
+	private void setConnectorsDirection(MusicVertex musicVertex) {
+		for (Connector c : musicVertex.getConnectors()) {
+			c.getTarget(musicVertex);
+		}
 	}
 	
 	public boolean isAction() {

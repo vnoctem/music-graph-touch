@@ -8,11 +8,11 @@ import music.instruments.Piano;
 import music.instruments.Violin;
 import scene.GraphicsWrapper;
 import scene.Point2D;
-import scene.SceneMusic;
+import scene.MusicVertex;
 
 public class RadialMenu extends AbstractRadial {
 	private boolean shownInstru = false;
-	private SceneMusic sm;
+	private MusicVertex mv;
 	private float radiusInstru = 40;
 	
 	public RadialMenu() {
@@ -23,18 +23,18 @@ public class RadialMenu extends AbstractRadial {
 		super.show(x, y);
 		
 		// réinitialiser pour ne pas modifier l'ancien
-		sm = null;
+		mv = null;
 	}
 	
 	public boolean isShown() {
 		return super.shown || shownInstru;
 	}
 	
-	public SceneMusic close() {
+	public MusicVertex close() {
 		super.hide();
 		shownInstru = false;
 		
-		return sm;
+		return mv;
 	}
 	
 	protected void drawOptions(GraphicsWrapper gw, int level, float x, float y) {
@@ -64,22 +64,22 @@ public class RadialMenu extends AbstractRadial {
 	protected void actionOnSelect(int selected, float x, float y) {
 		switch (selected) {
 			case 0:
-				sm = new SceneMusic(new Piano(), radiusInstru);
+				mv = new MusicVertex(new Piano(), radiusInstru);
 				break;
 			case 1:
-				sm = new SceneMusic(new Guitar(), radiusInstru);
+				mv = new MusicVertex(new Guitar(), radiusInstru);
 				break;
 			case 2:
-				sm = new SceneMusic(new Violin(), radiusInstru);
+				mv = new MusicVertex(new Violin(), radiusInstru);
 				break;
 			case 3:
-				sm = new SceneMusic(new Clarinet(), radiusInstru);
+				mv = new MusicVertex(new Clarinet(), radiusInstru);
 				break;
 			case 4:
-				sm = new SceneMusic(new Contrabass(), radiusInstru);
+				mv = new MusicVertex(new Contrabass(), radiusInstru);
 				break;
 			case 5:
-				sm = new SceneMusic(new FrenchHorn(), radiusInstru);
+				mv = new MusicVertex(new FrenchHorn(), radiusInstru);
 				break;
 		}
 		
@@ -89,14 +89,14 @@ public class RadialMenu extends AbstractRadial {
 	protected void actionOnMove(float x, float y) {
 		// faire suivre le composant graphique à l'utilisateur
 		if (shownInstru)
-			sm.setPosition(x, y);
+			mv.setPosition(x, y);
 	}
 
 	public void draw(GraphicsWrapper gw) {
 		drawRadial(gw);
 		
 		if (shownInstru) {
-			sm.draw(gw);
+			mv.draw(gw);
 		}
 	}
 }

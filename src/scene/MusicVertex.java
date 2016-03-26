@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import music.MusicSample;
 import music.instruments.AbstractInstrument;
 
-public class SceneMusic {
+public class MusicVertex {
 	private AbstractInstrument mi;
 	private Point2D position;
 	private float radius;
@@ -15,15 +15,34 @@ public class SceneMusic {
 	private ArrayList<Connector> conn; // le composant connecté
 	private boolean start = false; // identifier si c'est le noeud de départ
 	private MusicSample musicSample; // l'échantillon de musique du noeud
+	private boolean visited; // pour déterminer si le noeud a été visité ou non
+	private int timePosition; // position de départ en millisecondes dans la séquence
 	
-	public SceneMusic(AbstractInstrument mi, float radius) {
+	
+	public MusicVertex(AbstractInstrument mi, float radius) {
 		this.radius = radius;
 		this.mi = mi;
 		
 		conn = new ArrayList<Connector>();
 		
-		// test vgr
 		musicSample = new MusicSample();
+		timePosition = 0;
+	}
+	
+	public void setTimePosition(int ticks) {
+		timePosition = ticks;
+	}
+	
+	public int getTimePosition() {
+		return timePosition;
+	}
+	
+	public boolean isVisited() {
+		return visited;
+	}
+	
+	public void setVisited(boolean visited) {
+		this.visited = visited;
 	}
 	
 	public AbstractInstrument getInstrument() {
@@ -46,11 +65,11 @@ public class SceneMusic {
 		return radius;
 	}
 	
-	public void deleteConnIfLinked(SceneMusic sm) {
+	public void deleteConnIfLinked(MusicVertex mv) {
 		Connector toDelete = null;
 		
 		for (Connector c : conn) {
-			if (c.getTarget() == sm) {
+			if (c.getTarget(this) == mv) {
 				toDelete = c;
 				break;
 			}
@@ -62,6 +81,10 @@ public class SceneMusic {
 	
 	public void setPosition(float x, float y) {
 		this.position = new Point2D(x, y);
+		sortConnectorsByLength();
+		for (Connector c : conn) { // aussi trier les connecteurs des enfants
+			c.getTarget(this).sortConnectorsByLength();
+		}
 	}
 	
 	public boolean isInside(float x, float y) {
@@ -88,11 +111,25 @@ public class SceneMusic {
 		color[2] = 0.8f;
 	}
 	
-	public void doneConnect(SceneMusic sm) {
+	public void doneConnect(MusicVertex mv) {
 		posConnector = null;
 		
-		if (sm != null)
-			conn.add(new Connector(this, sm));
+		if (mv != null) {
+			conn.add(new Connector(this, mv));
+			sortConnectorsByLength();
+		}
+	}
+	
+	public void sortConnectorsByLength() {
+		for (int i = 0; i < conn.size() - 1; i++) {
+			for (int j = 0; j < conn.size() - i; j++) {
+				if (conn.get(j).getLength() > conn.get(j + 1).getLength()) {
+					Connector tempConnector = conn.get(j);
+					conn.set(j, conn.get(j + 1));
+					conn.set(j + 1, tempConnector);
+				}
+			}
+		}
 	}
 	
 	public void extendConnector(float x, float y) {

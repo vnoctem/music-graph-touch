@@ -5,6 +5,8 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Synthesizer;
 
+import music.instruments.AbstractInstrument;
+
 /**
  * Pour jouer une note de musique sur le SoundBoard
  * @author vince
@@ -29,7 +31,8 @@ public class MusicNotePlayer {
 	  * Joue une MusicNote dans le midiChannel 0 du Synthesizer
 	  * @param musicNote
 	  */
-	public void playMusicNote(MusicNote musicNote) {
+	public void playMusicNote(MusicNote musicNote, AbstractInstrument instrument) {
+		midiChannels[0].programChange(instrument.getBank(), instrument.getProgram());
 		midiChannels[0].noteOn(musicNote.getKey(), musicNote.getNoteLength());
 	}
 

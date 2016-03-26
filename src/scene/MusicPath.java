@@ -25,15 +25,15 @@ public class MusicPath implements Runnable, ActionListener {
 	private RadialMenu menu;
 	
 	// menu pour les composants graphiques
-	private RadialSceneMusic menuSM;
+	private RadialSceneMusic menuMV;
 	
 	// panneau pour jouer des sons
 	private SoundBoard sb;
 	
 	// liste des composant graphique et musical
-	private ArrayList<SceneMusic> lSm = new ArrayList<SceneMusic>(); 
+	private ArrayList<MusicVertex> lMV = new ArrayList<MusicVertex>(); 
 	
-	private SceneMusic selectedSM = null;
+	private MusicVertex selectedMV = null;
 
 	Thread thread = null;
 	boolean threadSuspended;
@@ -51,7 +51,7 @@ public class MusicPath implements Runnable, ActionListener {
 		menu = new RadialMenu();
 		
 		// initialiser le menu des composants
-		menuSM = new RadialSceneMusic();
+		menuMV = new RadialSceneMusic();
 		
 		// initialiser le panneau de son
 		sb = new SoundBoard();
@@ -60,16 +60,16 @@ public class MusicPath implements Runnable, ActionListener {
 
 		gw.frame( new AlignedRectangle2D( new Point2D(-100,-100), new Point2D(100,100) ), true );
 		
-		MusicSequencePlayer mp = new MusicSequencePlayer();
-		//mp.playAndStop(lSm, getStartSceneMusic());
+		//MusicSequencePlayer mp = new MusicSequencePlayer();
+		//mp.playAndStop(lMv, getStartSceneMusic());
 		
 	}
 	
 	// retourne le noeud de départ
-	public SceneMusic getStartSceneMusic() {
-		for (SceneMusic sm : lSm) {
-			if (sm.isStart()) {
-				return sm;
+	public MusicVertex getStartSceneMusic() {
+		for (MusicVertex mv : lMV) {
+			if (mv.isStart()) {
+				return mv;
 			}
 		}
 		return null;
@@ -88,15 +88,15 @@ public class MusicPath implements Runnable, ActionListener {
 		gw.setCoordinateSystemToPixels();
 		
 		// tous les composants graphiques et musicals
-		for (SceneMusic sm : lSm) {
-			sm.draw(gw);
+		for (MusicVertex mv : lMV) {
+			mv.draw(gw);
 		}
 		
 		// panneau de son
 		sb.draw(gw);
 		
 		// menu des composants
-		menuSM.draw(gw);
+		menuMV.draw(gw);
 		
 		// menu
 		// doit toujours être la dernière à dessiner pour qu'il soit toujours par dessus de tout
@@ -113,17 +113,17 @@ public class MusicPath implements Runnable, ActionListener {
 					sb.onClick(x, y);
 				} else {
 					// si clic sur un des composants graphiques, fait l'action
-					for (SceneMusic sm : lSm) {
-						if (sm.isInside(x, y)) {
-							menuSM.show(sm, sm.getPosition().x(), sm.getPosition().y(), lSm, sb);
-							selectedSM = sm;
-							selectedSM.select();
+					for (MusicVertex mv : lMV) {
+						if (mv.isInside(x, y)) {
+							menuMV.show(mv, mv.getPosition().x(), mv.getPosition().y(), lMV, sb);
+							selectedMV = mv;
+							selectedMV.select();
 							break;
 						}
 					}
 					
 					// sinon, afficher le menu
-					if (selectedSM == null) {
+					if (selectedMV == null) {
 						menu.show(x, y);
 					}
 				}
@@ -132,40 +132,40 @@ public class MusicPath implements Runnable, ActionListener {
 				multitouchFramework.requestRedraw();
 			break;
 			case MultitouchFramework.TOUCH_EVENT_UP:
-				if (selectedSM != null) {
+				if (selectedMV != null) {
 					// si déposé sur un autre noeud, donc relie-les
-					for (SceneMusic sm : lSm) {
-						if (sm.isInside(x, y) && sm != selectedSM) {
-							menuSM.close();
-							selectedSM.deselect();
-							selectedSM.doneConnect(sm);
-							selectedSM = null;
+					for (MusicVertex mv : lMV) {
+						if (mv.isInside(x, y) && mv != selectedMV) {
+							menuMV.close();
+							selectedMV.deselect();
+							selectedMV.doneConnect(mv);
+							selectedMV = null;
 							break;
 						}
 					}
 					
-					if (selectedSM != null) {
-						menuSM.close();
-						selectedSM.deselect();
-						selectedSM.doneConnect(null);
-						selectedSM = null;
+					if (selectedMV != null) {
+						menuMV.close();
+						selectedMV.deselect();
+						selectedMV.doneConnect(null);
+						selectedMV = null;
 					}
 				}
 				
 				if (menu.isShown()) {
 					// cacher le menu
-					SceneMusic sm = menu.close();
+					MusicVertex mv = menu.close();
 					
-					if (sm != null)
-						lSm.add(sm);
+					if (mv != null)
+						lMV.add(mv);
 				}
 			break;
 			case MultitouchFramework.TOUCH_EVENT_MOVE:
 				if (menu.isShown())
 					menu.onMove(x, y);
 				
-				if (menuSM.isShown() || menuSM.isAction())
-					menuSM.onMove(x, y);
+				if (menuMV.isShown() || menuMV.isAction())
+					menuMV.onMove(x, y);
 				
 				// pour changer l'apparence
 				multitouchFramework.requestRedraw();

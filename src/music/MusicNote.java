@@ -10,11 +10,6 @@ public class MusicNote {
 	private int key; // la hauteur de la note, entre 21 et 108 pour un piano standard
 	private int noteLength; // la durée en millisecondes de la note
 	
-	private final String[] notes = {
-			"C", "D", "E", "F", "G", "A", "B"
-	};
-	
-	
 	public MusicNote(int key, int noteLength) {
 		this.key = key;
 		this.noteLength = noteLength;
