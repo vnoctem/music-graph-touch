@@ -311,6 +311,21 @@ public class GraphicsWrapper {
 		gl.glEnd();
 	}
 	
+	public void drawPartOfCircle(float x, float y, float radius, int start, int end, boolean isFilled) {
+		if (isFilled)
+			gl.glBegin(GL.GL_TRIANGLE_FAN);
+		else
+			gl.glBegin(GL.GL_LINES);
+		
+			gl.glVertex2d(x, y);
+			for (int i = start; i < end; i++) {
+				double rad = Math.toRadians(i);
+		        gl.glVertex2d(x + Math.cos(rad) * radius,
+		        			  y + Math.sin(rad) * radius);
+		    }
+		gl.glEnd();
+	}
+	
 	public void drawEllipse(float x, float y, float radiusX, float radiusY, boolean isFilled) {
 		drawEllipse(x, y, radiusX, radiusY, 0, 360, isFilled);
 	}

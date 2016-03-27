@@ -18,7 +18,7 @@ public class SoundBoard {
 	private int nbKeys = 7;
 	private int nbSharpKeys = 5;
 	private int controlStart = 100;
-	private int gapBetweenControls = 30;
+	private int gapBetweenControls = 20;
 	
 	private Point2D position;
 	private ArrayList<Sound> sounds;
@@ -32,9 +32,11 @@ public class SoundBoard {
 	// contrôle pour fermer
 	private CloseControl closeControl;
 	
-	// contrôle pour changer l'octave
-	
 	// contrôle pour changer le volume
+	private VolControl volControl;
+	
+	// contrôle pour changer l'octave
+	private OctControl octControl;
 	
 	public SoundBoard(float x, float y) {
 		position = new Point2D(x - width / 2, y - height / 2);
@@ -115,6 +117,8 @@ public class SoundBoard {
 		recordControl = new RecordControl(controlStart, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
 		moveControl = new MoveControl(controlStart * 2 + gapBetweenControls, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
 		closeControl = new CloseControl(controlStart * 3 + gapBetweenControls * 2, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		volControl = new VolControl(controlStart * 5 + gapBetweenControls * 4, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Vol.");
+		octControl = new OctControl(controlStart * 6 + gapBetweenControls * 5, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Oct.");
 	}
 	
 	public void setPosition(float x, float y) {
@@ -142,6 +146,12 @@ public class SoundBoard {
 		if (closeControl.isInside(x, y, position)) {
 			closeControl.close(app);
 		}
+		
+		if (volControl.isInside(x, y, position))
+			volControl.adjust(x, y, position);
+		
+		if (octControl.isInside(x, y, position))
+			octControl.adjust(x, y, position);
 	}
 	
 	public void onRelease(float x, float y, long duration) {
@@ -153,11 +163,23 @@ public class SoundBoard {
 				return;
 			}
 		}
+		
+		if (volControl.isInside(x, y, position))
+			volControl.done();
+		
+		if (octControl.isInside(x, y, position))
+			octControl.done();
 	}
 	
 	public void onMove(float x, float y) {
 		if (moveControl.isInside(x, y, position))
 			moveControl.move(x, y, this);
+		
+		if (volControl.isInside(x, y, position))
+			volControl.adjust(x, y, position);
+		
+		if (octControl.isInside(x, y, position))
+			octControl.adjust(x, y, position);
 	}
 
 	public void draw(GraphicsWrapper gw) {
@@ -174,6 +196,8 @@ public class SoundBoard {
 			recordControl.draw(gw);
 			moveControl.draw(gw);
 			closeControl.draw(gw);
+			volControl.draw(gw);
+			octControl.draw(gw);
 			
 			gw.setColor(1, 1, 1);
 		gw.popMatrix();
