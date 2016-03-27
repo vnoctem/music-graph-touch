@@ -119,6 +119,11 @@ public class Application {
 	public void touchMove(int id, CursorController cursors) {
 		Point2D pos = cursors.last().getPos();
 		
+		// pas besoin de les mettre dans un if
+		// parce que dans touch down ils subissent déjà une restriction
+		if (sb != null)
+			sb.onMove(pos.x(), pos.y());
+		
 		if (menu != null)
 			menu.onMove(pos.x(), pos.y());
 		

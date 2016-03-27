@@ -17,6 +17,7 @@ public class SoundBoard {
 	private int nbKeys = 7;
 	private int nbSharpKeys = 5;
 	private int controlStart = 100;
+	private int gapBetweenControls = 30;
 	
 	private Point2D position;
 	private ArrayList<Sound> sounds;
@@ -25,6 +26,7 @@ public class SoundBoard {
 	private RecordControl recordControl;
 	
 	// contrôle pour déplacer
+	private MoveControl moveControl;
 	
 	// contrôle pour fermer
 	
@@ -109,10 +111,15 @@ public class SoundBoard {
 		
 		// contrôles
 		recordControl = new RecordControl(controlStart, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		moveControl = new MoveControl(controlStart * 2 + gapBetweenControls, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
 	}
 	
 	public void setPosition(float x, float y) {
 		position = new Point2D(x - width / 2, y - height / 2);
+	}
+	
+	public void setPositionWithoutChanges(float x, float y) {
+		position = new Point2D(x, y);
 	}
 	
 	public void onClick(float x, float y) {
@@ -140,6 +147,11 @@ public class SoundBoard {
 			}
 		}
 	}
+	
+	public void onMove(float x, float y) {
+		if (moveControl.isInside(x, y, position))
+			moveControl.move(x, y, this);
+	}
 
 	public void draw(GraphicsWrapper gw) {
 		gw.localWorldTrans(position.x(), position.y());
@@ -152,6 +164,7 @@ public class SoundBoard {
 				sounds.get(i).draw(gw);
 			
 			recordControl.draw(gw);
+			moveControl.draw(gw);
 			gw.setColor(1, 1, 1);
 		gw.popMatrix();
 	}
