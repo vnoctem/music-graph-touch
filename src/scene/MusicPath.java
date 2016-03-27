@@ -65,7 +65,10 @@ public class MusicPath implements Runnable, ActionListener {
 				cc.addCursor(new Cursor(type, x, y));
 				cursors.put(id, cc);
 				
-				app.touchDown(id, cc);
+				if (cursors.size() >= 3)
+					app.specialAction();
+				else
+					app.touchDown(id, cc);
 				
 				// forcer le rafraîchissement pour faire apparaître le menu
 				multitouchFramework.requestRedraw();

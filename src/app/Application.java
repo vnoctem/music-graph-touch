@@ -70,6 +70,11 @@ public class Application {
 			}
 		}
 	}
+	
+	// lorsqu'il y a plus de 3 clics
+	public void specialAction() {
+		System.out.println("play the music");
+	}
 
 	public void touchUp(int id, CursorController cursors) {
 		Point2D pos = cursors.last().getPos();

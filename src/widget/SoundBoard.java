@@ -16,9 +16,21 @@ public class SoundBoard {
 	private int widthSharp = 80;
 	private int nbKeys = 7;
 	private int nbSharpKeys = 5;
+	private int controlStart = 100;
 	
 	private Point2D position;
 	private ArrayList<Sound> sounds;
+	
+	// contrôle pour enregistrer
+	private RecordControl recordControl;
+	
+	// contrôle pour déplacer
+	
+	// contrôle pour fermer
+	
+	// contrôle pour changer l'octave
+	
+	// contrôle pour changer le volume
 	
 	public SoundBoard(float x, float y) {
 		position = new Point2D(x - width / 2, y - height / 2);
@@ -94,6 +106,9 @@ public class SoundBoard {
 			);
 			sounds.get(sounds.size() - 1).setPosition(keyWidth * i, height - pianoHeight);
 		}
+		
+		// contrôles
+		recordControl = new RecordControl(controlStart, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
 	}
 	
 	public void setPosition(float x, float y) {
@@ -108,6 +123,10 @@ public class SoundBoard {
 				
 				return;
 			}
+		}
+		
+		if (recordControl.isInside(x, y, position)) {
+			recordControl.record();
 		}
 	}
 	
@@ -131,6 +150,8 @@ public class SoundBoard {
 			// commencer avec les dièses pour qu'ils soient par dessus
 			for (int i = sounds.size() - 1; i >= 0; i--)
 				sounds.get(i).draw(gw);
+			
+			recordControl.draw(gw);
 			gw.setColor(1, 1, 1);
 		gw.popMatrix();
 	}

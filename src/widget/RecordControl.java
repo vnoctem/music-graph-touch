@@ -2,25 +2,28 @@ package widget;
 
 import scene.GraphicsWrapper;
 
-public class RecordControl {
-	private float radius = 20; 
-	private boolean play = false;
+public class RecordControl extends AbstractControl {
+	private boolean recorded = false;
+	private float[] colorIcon = new float[]{1, 0, 0, 0.5f};
+	private float radiusIcon = 30;
 	
-	public RecordControl(float width, float height, ISoundAction sAction) {
+	public RecordControl(float x, float y, float radius, float[] color) {
+		super(x, y, radius, color);
 	}
 	
-	public void play() {
-		play = !play;
+	public void record() {
+		recorded = !recorded;
 	}
 
 	public void draw(GraphicsWrapper gw) {
+		super.draw(gw);
 		
-		gw.setColor(1, 0, 0);
-		
-		/*if (!play)
-			gw.drawCircle(position.x() + width / 2 - radius / 2, position.y() + height / 2 - radius / 2, radius / 2, true);
+		gw.setColor(colorIcon[0], colorIcon[1], colorIcon[2], colorIcon[3]);
+		if (!recorded)
+			gw.drawCircle(position.x() - radiusIcon / 2, position.y() - radiusIcon / 2, radiusIcon / 2, true);
 		else
-			gw.drawRect(position.x() - radius / 2 + width / 2, position.y() - radius / 2 + height / 2, radius, radius, true);*/
+			gw.drawRect(position.x() - radiusIcon / 2, position.y() - radiusIcon / 2, radiusIcon, radiusIcon, true);
+		gw.setColor(1, 1, 1);
 	}
 
 }
