@@ -2,5 +2,5 @@ package widget;
 
 public interface ISoundAction {
 
-	public void action(AbstractSound as);
+	public void action(Sound s);
 }
