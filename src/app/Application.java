@@ -46,13 +46,17 @@ public class Application {
 			menu.draw(gw);
 	}
 	
+	public void resetSB() {
+		sb = null;
+	}
+	
 	public void touchDown(int id, CursorController cursors) {
 		Point2D pos = cursors.last().getPos();
 		
 		// détecte s'il y a une clé cliquée
 		// permet pas de faire d'autres choses avant de fermer le panneau
 		if (sb != null) {
-			sb.onClick(pos.x(), pos.y());
+			sb.onClick(pos.x(), pos.y(), this);
 		} else {
 			// si clic sur un des composants graphiques, fait l'action
 			for (SceneMusic sm : lSm) {

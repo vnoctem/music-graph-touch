@@ -3,6 +3,7 @@ package widget;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import app.Application;
 import scene.GraphicsWrapper;
 import scene.Point2D;
 
@@ -29,6 +30,7 @@ public class SoundBoard {
 	private MoveControl moveControl;
 	
 	// contrôle pour fermer
+	private CloseControl closeControl;
 	
 	// contrôle pour changer l'octave
 	
@@ -112,6 +114,7 @@ public class SoundBoard {
 		// contrôles
 		recordControl = new RecordControl(controlStart, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
 		moveControl = new MoveControl(controlStart * 2 + gapBetweenControls, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		closeControl = new CloseControl(controlStart * 3 + gapBetweenControls * 2, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
 	}
 	
 	public void setPosition(float x, float y) {
@@ -122,7 +125,7 @@ public class SoundBoard {
 		position = new Point2D(x, y);
 	}
 	
-	public void onClick(float x, float y) {
+	public void onClick(float x, float y, Application app) {
 		for (Sound s : sounds) {
 			if (s.isInside(x, y, position)) {
 				s.setSelected(true);
@@ -134,6 +137,10 @@ public class SoundBoard {
 		
 		if (recordControl.isInside(x, y, position)) {
 			recordControl.record();
+		}
+		
+		if (closeControl.isInside(x, y, position)) {
+			closeControl.close(app);
 		}
 	}
 	
@@ -163,8 +170,11 @@ public class SoundBoard {
 			for (int i = sounds.size() - 1; i >= 0; i--)
 				sounds.get(i).draw(gw);
 			
+			// contrôles
 			recordControl.draw(gw);
 			moveControl.draw(gw);
+			closeControl.draw(gw);
+			
 			gw.setColor(1, 1, 1);
 		gw.popMatrix();
 	}
