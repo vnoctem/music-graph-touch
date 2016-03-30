@@ -48,6 +48,7 @@ public class MusicSequenceBuilder {
 			for (Connector c : mv.getConnectors()) {
 				MusicVertex mvChild = c.getTarget(mv); // récupérer la cible du connecteur
 				
+				
 				if (!mvChild.isVisited()) {
 					addMusicSample(mvChild.getMusicSample(), musicSequence, mvChild.getInstrument(), ticks + (Math.round(c.getLength()) * 5));
 					mvChild.setTimePosition(ticks);

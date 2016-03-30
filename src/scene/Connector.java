@@ -15,8 +15,6 @@ public class Connector {
 		return mv == neighbours[0] ? neighbours[1] : neighbours[0];
 	}
 	
-	
-	
 	public float getLength() {
 		return length;
 	}
@@ -35,7 +33,7 @@ public class Connector {
 		float y2 = (float) (connected.y() + Math.sin(angle) * radius);
 		// toujours recalculé au cas où les noeuds ont changé de place
 		length = Point2D.diff(new Point2D(x1, y1), new Point2D(x2, y2)).length();
-		System.out.println("longueur : " + length);
+		//System.out.println("longueur : " + length);
 		gw.setLineWidth(3);
 		gw.setColor(color[0],color[1],color[2]);
 		gw.drawLine(x1,	y1,	x2,	y2);

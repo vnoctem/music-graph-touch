@@ -45,6 +45,7 @@ public class SoundBoard {
 	// contrôle pour changer l'octave
 	private OctControl octControl;
 	
+	private MusicVertex mv;
 	private MusicNotePlayer musicNotePlayer;
 	private MusicSample musicSample;
 	private AbstractInstrument instrument;
@@ -54,6 +55,7 @@ public class SoundBoard {
 		
 		int keyWidth = width / nbKeys;
 		
+		this.mv = mv;
 		musicNotePlayer = new MusicNotePlayer();
 		musicSample = new MusicSample();
 		instrument = mv.getInstrument();
@@ -64,6 +66,7 @@ public class SoundBoard {
 		LinkedList<ISoundAction> actions = new LinkedList<ISoundAction>();
 		actions.add((as) -> {
 			System.out.println("c#");
+			
 			MusicNote musicNote = new MusicNote(61, 1000); // hauteur de la note = 61, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			if (recordControl.isRecording()) {
@@ -196,16 +199,15 @@ public class SoundBoard {
 						new float[] {0.7f, 0.7f, 0.7f, 0.5f},
 						actions.pop()
 				)
-		);
-		sounds.get(sounds.size() - 1).setPosition(keyWidth * i, height - pianoHeight);
-		
+			);
+			sounds.get(sounds.size() - 1).setPosition(keyWidth * i, height - pianoHeight);
+		}
 		// contrôles
 		recordControl = new RecordControl(controlStart, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
 		moveControl = new MoveControl(controlStart * 2 + gapBetweenControls, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
 		closeControl = new CloseControl(controlStart * 3 + gapBetweenControls * 2, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
 		volControl = new VolControl(controlStart * 5 + gapBetweenControls * 4, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Vol.");
 		octControl = new OctControl(controlStart * 6 + gapBetweenControls * 5, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Oct.");
-		}
 	}
 	
 	public void setPosition(float x, float y) {
@@ -228,6 +230,9 @@ public class SoundBoard {
 		
 		if (recordControl.isInside(x, y, position)) {
 			recordControl.record();
+			if (recordControl.isRecording()) {
+				mv.setMusicSample(musicSample);
+			}
 		}
 		
 		if (closeControl.isInside(x, y, position)) {

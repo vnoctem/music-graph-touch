@@ -53,7 +53,7 @@ public class MusicSample {
 	}
 	
 	public void printMusicNotes() {
-		String notes = "";
+		String notes = "Notes : ";
 		for (MusicNote note : getMusicNotes()) {
 			notes += note.getKey() + ", ";
 		}
@@ -100,7 +100,7 @@ public class MusicSample {
 				track.add(new MidiEvent(on, startTick + ticks)); // message pour jouer la note
 				track.add(new MidiEvent(off, startTick + ticks + note.getNoteLength())); // message pour arrêter la note
 				ticks += note.getNoteLength(); // incrémenter les ticks avec la durée de la note jouée
-				System.out.println("note = ");
+				System.out.println("note = " + note.getKey() + ", noteLength = " + note.getNoteLength());
 			} catch (InvalidMidiDataException e) {
 				e.printStackTrace();
 			}

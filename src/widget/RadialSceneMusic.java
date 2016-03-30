@@ -160,18 +160,18 @@ public class RadialSceneMusic extends AbstractRadial {
 				}
 				mv.setStart(true);
 				System.out.println("Set noeud de départ");
-				MusicSequenceBuilder seqBuilder = new MusicSequenceBuilder();
-				
-				try {
-					MusicSequencePlayer msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(mv, Sequence.PPQ, 960));
-					msp.play();
-					System.out.println("Jouer******************************************");
-					mv.getMusicSample().printMusicNotes();
-					
-				} catch (InvalidMidiDataException e) {
-					e.printStackTrace();
-					System.out.println("Paramètres de séquence invalide.");
-				}
+//				MusicSequenceBuilder seqBuilder = new MusicSequenceBuilder();
+//				
+//				try {
+//					MusicSequencePlayer msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(mv, Sequence.PPQ, 960));
+//					msp.play();
+//					System.out.println("Jouer******************************************");
+//					mv.getMusicSample().printMusicNotes();
+//					
+//				} catch (InvalidMidiDataException e) {
+//					e.printStackTrace();
+//					System.out.println("Paramètres de séquence invalide.");
+//				}
 				
 				break;
 			case 3: // afficher le panneau de son
