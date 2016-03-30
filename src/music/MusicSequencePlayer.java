@@ -20,6 +20,7 @@ public class MusicSequencePlayer {
 			sequencer = MidiSystem.getSequencer(); // initialiser le séquenceur
 			open(); // ouvrir le séquenceur
 			sequencer.setSequence(sequence);
+			sequencer.setTempoInBPM(120);
 		} catch (MidiUnavailableException e) {
 			e.printStackTrace();
 		} catch (InvalidMidiDataException e) {

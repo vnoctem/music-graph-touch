@@ -34,6 +34,7 @@ public class MusicSequenceBuilder {
 			throws InvalidMidiDataException {
 		Sequence musicSequence = new Sequence(tempoTimingType, timingResolution); // music sequence
 		
+		
 		Queue<MusicVertex> queue = new LinkedList<MusicVertex>();
 		
 		// ajouter l'échantillon de musique au temps donné
@@ -48,12 +49,13 @@ public class MusicSequenceBuilder {
 			for (Connector c : mv.getConnectors()) {
 				MusicVertex mvChild = c.getTarget(mv); // récupérer la cible du connecteur
 				
-				
 				if (!mvChild.isVisited()) {
-					addMusicSample(mvChild.getMusicSample(), musicSequence, mvChild.getInstrument(), ticks + (Math.round(c.getLength()) * 5));
-					mvChild.setTimePosition(ticks);
-					queue.add(mvChild);
-					mvChild.setVisited(true);
+					if (mvChild.getMusicSample() != null) { // si échantillon 
+						addMusicSample(mvChild.getMusicSample(), musicSequence, mvChild.getInstrument(), ticks + (Math.round(c.getLength()) * 5));
+						mvChild.setTimePosition(ticks);
+						queue.add(mvChild);
+						mvChild.setVisited(true);
+					}
 				}
 			}
 		}

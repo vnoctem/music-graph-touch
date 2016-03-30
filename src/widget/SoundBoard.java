@@ -68,132 +68,80 @@ public class SoundBoard {
 			System.out.println("c#");
 			
 			MusicNote musicNote = new MusicNote(61); // hauteur de la note = 61, durée de la note (millisecondes) = 1000
-			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
-			if (recordControl.isRecording()) {
-				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
-				musicSample.printMusicNotes();
-			}
+			musicNotePlayer.playMusicNote(musicNote, instrument, 64); // jouer la note
 			c.setData(musicNote);
 		});
 		actions.add((as, c) -> {
 			System.out.println("d#");
 			MusicNote musicNote = new MusicNote(63); // hauteur de la note = 63, durée de la note (millisecondes) = 1000
-			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
-			if (recordControl.isRecording()) {
-				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
-				musicSample.printMusicNotes();
-			}
+			musicNotePlayer.playMusicNote(musicNote, instrument, 64); // jouer la note
 			c.setData(musicNote);
 		});
 		actions.add((as, c) -> {
 			System.out.println("f#");
 			MusicNote musicNote = new MusicNote(66); // hauteur de la note = 66, durée de la note (millisecondes) = 1000
-			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
-			if (recordControl.isRecording()) {
-				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
-				musicSample.printMusicNotes();
-			}
+			musicNotePlayer.playMusicNote(musicNote, instrument, 64); // jouer la note
 			c.setData(musicNote);
 		});
 		actions.add((as, c) -> {
 			System.out.println("g#");
 			MusicNote musicNote = new MusicNote(68); // hauteur de la note = 68, durée de la note (millisecondes) = 1000
-			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
-			if (recordControl.isRecording()) {
-				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
-				musicSample.printMusicNotes();
-			}
+			musicNotePlayer.playMusicNote(musicNote, instrument, 64); // jouer la note
 			c.setData(musicNote);
 		});
 		actions.add((as, c) -> {
 			System.out.println("a#");
 			MusicNote musicNote = new MusicNote(70); // hauteur de la note = 70, durée de la note (millisecondes) = 1000
-			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
-			if (recordControl.isRecording()) {
-				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
-				musicSample.printMusicNotes();
-			}
+			musicNotePlayer.playMusicNote(musicNote, instrument, 64); // jouer la note
 			c.setData(musicNote);
 		});
 		actions.add((as, c) -> {
 			System.out.println("C");
 			MusicNote musicNote = new MusicNote(60); // hauteur de la note = 60, durée de la note (millisecondes) = 1000
-			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
-			if (recordControl.isRecording()) {
-				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
-				musicSample.printMusicNotes();
-			}
+			musicNotePlayer.playMusicNote(musicNote, instrument, 64); // jouer la note
 			c.setData(musicNote);
 		});
 		actions.add((as, c) -> {
 			System.out.println("D");
 			MusicNote musicNote = new MusicNote(62); // hauteur de la note = 62, durée de la note (millisecondes) = 1000
-			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
-			if (recordControl.isRecording()) {
-				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
-				musicSample.printMusicNotes();
-			}
+			musicNotePlayer.playMusicNote(musicNote, instrument, 64); // jouer la note
 			c.setData(musicNote);
 		});
 		actions.add((as, c) -> {
 			System.out.println("E");
 			MusicNote musicNote = new MusicNote(64); // hauteur de la note = 64, durée de la note (millisecondes) = 1000
-			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
-			if (recordControl.isRecording()) {
-				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
-				musicSample.printMusicNotes();
-			}
+			musicNotePlayer.playMusicNote(musicNote, instrument, 64); // jouer la note
 			c.setData(musicNote);
 		});
 		actions.add((as, c) -> {
 			System.out.println("F");
 			MusicNote musicNote = new MusicNote(65); // hauteur de la note = 65, durée de la note (millisecondes) = 1000
-			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
-			if (recordControl.isRecording()) {
-				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
-				musicSample.printMusicNotes();
-			}
+			musicNotePlayer.playMusicNote(musicNote, instrument, 64); // jouer la note
 			c.setData(musicNote);
 		});
 		actions.add((as, c) -> {
 			System.out.println("G");
 			MusicNote musicNote = new MusicNote(67); // hauteur de la note = 67, durée de la note (millisecondes) = 1000
-			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
-			if (recordControl.isRecording()) {
-				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
-				musicSample.printMusicNotes();
-			}
+			musicNotePlayer.playMusicNote(musicNote, instrument, 64); // jouer la note
 			c.setData(musicNote);
 		});
 		actions.add((as, c) -> {
 			System.out.println("A");
 			MusicNote musicNote = new MusicNote(69); // hauteur de la note = 69, durée de la note (millisecondes) = 1000
-			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
-			if (recordControl.isRecording()) {
-				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
-				musicSample.printMusicNotes();
-			}
+			musicNotePlayer.playMusicNote(musicNote, instrument, 64); // jouer la note
 			c.setData(musicNote);
 		});
 		actions.add((as, c) -> {
 			System.out.println("B");
 			MusicNote musicNote = new MusicNote(71); // hauteur de la note = 71, durée de la note (millisecondes) = 1000
-			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
-			if (recordControl.isRecording()) {
-				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
-				musicSample.printMusicNotes();
-			}
+			musicNotePlayer.playMusicNote(musicNote, instrument, 64); // jouer la note
 			c.setData(musicNote);
 		});
 		actions.add((as, c) -> {
 			System.out.println("C2");
 			
 			MusicNote musicNote = new MusicNote(72); // hauteur de la note = 71, durée de la note (millisecondes) = 1000
-			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
-			if (recordControl.isRecording()) {
-				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
-				musicSample.printMusicNotes();
-			}
+			musicNotePlayer.playMusicNote(musicNote, instrument, 64); // jouer la note
 			c.setData(musicNote);
 		});
 		
@@ -256,7 +204,9 @@ public class SoundBoard {
 		if (recordControl.isInside(x, y, position)) {
 			recordControl.record();
 			if (recordControl.isRecording()) {
-				mv.setMusicSample(musicSample);
+				mv.setMusicSample(musicSample); // assigner le musicSample lorqu'on arrête d'enregistrer
+			} else {
+				musicSample = new MusicSample(); // faire un nouveau échantillon
 			}
 		}
 		
@@ -278,15 +228,13 @@ public class SoundBoard {
 				
 				MusicNote musicNote = (MusicNote)cDown.getData(); // récupérer la note qui joue
 				musicNotePlayer.stopMusicNote(musicNote); // arrêter de jouer la note lorsqu'on enlève notre doigt
-				musicSample.addMusicNote(musicNote);
 				
+				if (recordControl.isRecording()) { // si recording
+					musicNote.setNoteLength(Math.round(duration / 1000000)); // assigner la durée de la note
+					musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
+					System.out.println("onRelease : note key=" + musicNote.getKey() + ", length=" + musicNote.getNoteLength());
+				}
 				
-				// debug with seconds
-				System.out.println("Note jouée : " + ((MusicNote)cDown.getData()).getKey());
-				//musicSample.addMusicNote(musicNote);
-				System.out.println("onRelease");
-				
-				System.out.println((double)duration / 1000000.0);
 				return;
 			}
 		}

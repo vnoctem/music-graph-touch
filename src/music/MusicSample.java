@@ -79,28 +79,30 @@ public class MusicSample {
 	public void buildTrack(Sequence sequence, AbstractInstrument instrument, int startTick) 
 			throws InvalidMidiDataException {
 		track = sequence.createTrack(); // créer la track
+		ticks = 0;
 		
 		// modifier l'instrument qui va jouer la track
 		ShortMessage instrumentMessage = new ShortMessage();
 		instrumentMessage.setMessage(ShortMessage.PROGRAM_CHANGE, 0, instrument.getProgram(), instrument.getBank());
 		track.add(new MidiEvent(instrumentMessage, startTick));
-		startTick++; // incrémenter le tick de 1 milliseconde
+		startTick++; // incrémenter le tick de 1
 				
 		
 		for (MusicNote note : notes) {
 			try {
 				ShortMessage on = new ShortMessage();
 				ShortMessage off = new ShortMessage();
-				System.out.println("build track note key = " + note.getKey() + ", ticks = " + ticks + ", startTick = " + 
-						startTick + ", noteLength = " + note.getNoteLength()); // tempo
+				System.out.println("build track note key = " + note.getKey() + ", startTick = " + startTick + ", ticks = " + 
+						ticks + ", noteLength = " + note.getNoteLength()); // tempo
+				
+				int milliseconds = Math.round(60000 / (120 * 960)); 
 				
 				on.setMessage(ShortMessage.NOTE_ON, 0, note.getKey(), this.velocity);
 				off.setMessage(ShortMessage.NOTE_OFF, 0, note.getKey(), this.velocity);
 				
-				track.add(new MidiEvent(on, startTick + ticks)); // message pour jouer la note
-				track.add(new MidiEvent(off, startTick + ticks + note.getNoteLength())); // message pour arrêter la note
+				track.add(new MidiEvent(on, startTick + milliseconds)); // message pour jouer la note
+				track.add(new MidiEvent(off, startTick + milliseconds + note.getNoteLength())); // message pour arrêter la note
 				ticks += note.getNoteLength(); // incrémenter les ticks avec la durée de la note jouée
-				System.out.println("note = " + note.getKey() + ", noteLength = " + note.getNoteLength());
 			} catch (InvalidMidiDataException e) {
 				e.printStackTrace();
 			}
