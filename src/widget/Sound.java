@@ -1,5 +1,6 @@
 package widget;
 
+import app.Cursor;
 import scene.GraphicsWrapper;
 import scene.Point2D;
 
@@ -24,8 +25,8 @@ public class Sound {
 		position = new Point2D(x, y);
 	}
 	
-	public void performAction() {
-		sAction.action(this);
+	public void performAction(Cursor c) {
+		sAction.action(this, c);
 	}
 	
 	public void setSelected(boolean selected) {

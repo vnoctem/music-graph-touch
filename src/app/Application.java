@@ -63,7 +63,7 @@ public class Application {
 		// détecte s'il y a une clé cliquée
 		// permet pas de faire d'autres choses avant de fermer le panneau
 		if (sb != null) {
-			sb.onClick(pos.x(), pos.y(), this);
+			sb.onClick(this, cursors.last());
 		} else {
 			// si clic sur un des composants graphiques, fait l'action
 			for (MusicVertex mv : lMv) {
