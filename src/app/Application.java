@@ -121,7 +121,7 @@ public class Application {
 		
 		// passer aussi la durée entre touch down et touch up
 		if (sb != null) {
-			sb.onRelease(pos.x(), pos.y(), cursors.getDuration());
+			sb.onRelease(pos.x(), pos.y(), cursors.getDuration(), cursors.first());
 		} else {
 			if (selectedMV != null) {
 				// garder le sound board

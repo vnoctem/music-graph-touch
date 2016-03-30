@@ -36,6 +36,10 @@ public class MusicNotePlayer {
 		midiChannels[0].noteOn(musicNote.getKey(), musicNote.getNoteLength());
 	}
 	
+	/**
+	 * Arrêter de jouer la MusicNote dans le midiChannel 0 du Synthesizer
+	 * @param musicNote
+	 */
 	public void stopMusicNote(MusicNote musicNote) {
 		midiChannels[0].noteOff(musicNote.getKey());
 	}

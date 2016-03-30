@@ -176,6 +176,14 @@ public class SoundBoard {
 		});
 		actions.add((as, c) -> {
 			System.out.println("C2");
+			
+			MusicNote musicNote = new MusicNote(72, 1000); // hauteur de la note = 71, durée de la note (millisecondes) = 1000
+			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
+			if (recordControl.isRecording()) {
+				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
+				musicSample.printMusicNotes();
+			}
+			c.setData(musicNote);
 		});
 		
 		// initialiser les clés
@@ -252,14 +260,21 @@ public class SoundBoard {
 			octControl.adjust(x, y, position);
 	}
 	
-	public void onRelease(float x, float y, long duration) {
+	public void onRelease(float x, float y, long duration, Cursor cDown) {
 		for (Sound s : sounds) {
 			if (s.isInside(x, y, position)) {
 				s.setSelected(false);
-				// debug with seconds
 				
+				MusicNote musicNote = (MusicNote)cDown.getData();
+				musicNotePlayer.stopMusicNote(musicNote);
+				
+				
+				// debug with seconds
+				System.out.println("Note jouée : " + ((MusicNote)cDown.getData()).getKey());
+				//musicSample.addMusicNote(musicNote);
 				System.out.println("onRelease");
-				System.out.println((double)duration / 1000000000.0);
+				
+				System.out.println((double)duration / 1000000.0);
 				return;
 			}
 		}

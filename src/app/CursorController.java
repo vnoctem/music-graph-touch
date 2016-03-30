@@ -18,6 +18,10 @@ public class CursorController {
 		return cursors.get(cursors.size() - 1);
 	}
 	
+	public Cursor first() {
+		return cursors.get(0);
+	}
+	
 	public long getDuration() {
 		return last().getTime() - cursors.get(0).getTime();
 	}
