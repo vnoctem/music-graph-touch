@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import app.Application;
-
+import app.Cursor;
 import music.MusicNote;
 import music.MusicNotePlayer;
 import music.MusicSample;
@@ -22,7 +22,7 @@ public class SoundBoard {
 	private int pianoHeight = 250;
 	private int heightSharp = 180;
 	private int widthSharp = 80;
-	private int nbKeys = 7;
+	private int nbKeys = 8;
 	private int nbSharpKeys = 5;
 	private int controlStart = 100;
 	private int gapBetweenControls = 20;
@@ -64,7 +64,7 @@ public class SoundBoard {
 		// les actions sont associés en ordre avec ceux d'ajouter dans le panneau
 		// donc même order que l'insertion des notes
 		LinkedList<ISoundAction> actions = new LinkedList<ISoundAction>();
-		actions.add((as) -> {
+		actions.add((as, c) -> {
 			System.out.println("c#");
 			
 			MusicNote musicNote = new MusicNote(61, 1000); // hauteur de la note = 61, durée de la note (millisecondes) = 1000
@@ -74,7 +74,7 @@ public class SoundBoard {
 				musicSample.printMusicNotes();
 			}
 		});
-		actions.add((as) -> {
+		actions.add((as, c) -> {
 			System.out.println("d#");
 			MusicNote musicNote = new MusicNote(63, 1000); // hauteur de la note = 63, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
@@ -83,7 +83,7 @@ public class SoundBoard {
 				musicSample.printMusicNotes();
 			}
 		});
-		actions.add((as) -> {
+		actions.add((as, c) -> {
 			System.out.println("f#");
 			MusicNote musicNote = new MusicNote(66, 1000); // hauteur de la note = 66, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
@@ -92,7 +92,7 @@ public class SoundBoard {
 				musicSample.printMusicNotes();
 			}
 		});
-		actions.add((as) -> {
+		actions.add((as, c) -> {
 			System.out.println("g#");
 			MusicNote musicNote = new MusicNote(68, 1000); // hauteur de la note = 68, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
@@ -101,7 +101,7 @@ public class SoundBoard {
 				musicSample.printMusicNotes();
 			}
 		});
-		actions.add((as) -> {
+		actions.add((as, c) -> {
 			System.out.println("a#");
 			MusicNote musicNote = new MusicNote(70, 1000); // hauteur de la note = 70, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
@@ -110,7 +110,7 @@ public class SoundBoard {
 				musicSample.printMusicNotes();
 			}
 		});
-		actions.add((as) -> {
+		actions.add((as, c) -> {
 			System.out.println("C");
 			MusicNote musicNote = new MusicNote(60, 1000); // hauteur de la note = 60, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
@@ -120,7 +120,7 @@ public class SoundBoard {
 				System.out.println("test");
 			}
 		});
-		actions.add((as) -> {
+		actions.add((as, c) -> {
 			System.out.println("D");
 			MusicNote musicNote = new MusicNote(62, 1000); // hauteur de la note = 62, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
@@ -129,7 +129,7 @@ public class SoundBoard {
 				musicSample.printMusicNotes();
 			}
 		});
-		actions.add((as) -> {
+		actions.add((as, c) -> {
 			System.out.println("E");
 			MusicNote musicNote = new MusicNote(64, 1000); // hauteur de la note = 64, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
@@ -138,7 +138,7 @@ public class SoundBoard {
 				musicSample.printMusicNotes();
 			}
 		});
-		actions.add((as) -> {
+		actions.add((as, c) -> {
 			System.out.println("F");
 			MusicNote musicNote = new MusicNote(65, 1000); // hauteur de la note = 65, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
@@ -147,7 +147,7 @@ public class SoundBoard {
 				musicSample.printMusicNotes();
 			}
 		});
-		actions.add((as) -> {
+		actions.add((as, c) -> {
 			System.out.println("G");
 			MusicNote musicNote = new MusicNote(67, 1000); // hauteur de la note = 67, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
@@ -156,7 +156,7 @@ public class SoundBoard {
 				musicSample.printMusicNotes();
 			}
 		});
-		actions.add((as) -> {
+		actions.add((as, c) -> {
 			System.out.println("A");
 			MusicNote musicNote = new MusicNote(69, 1000); // hauteur de la note = 69, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
@@ -165,7 +165,7 @@ public class SoundBoard {
 				musicSample.printMusicNotes();
 			}
 		});
-		actions.add((as) -> {
+		actions.add((as, c) -> {
 			System.out.println("B");
 			MusicNote musicNote = new MusicNote(71, 1000); // hauteur de la note = 71, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
@@ -173,6 +173,9 @@ public class SoundBoard {
 				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
 				musicSample.printMusicNotes();
 			}
+		});
+		actions.add((as, c) -> {
+			System.out.println("C2");
 		});
 		
 		// initialiser les clés
@@ -218,11 +221,14 @@ public class SoundBoard {
 		position = new Point2D(x, y);
 	}
 	
-	public void onClick(float x, float y, Application app) {
+	public void onClick(Application app, Cursor c) {
+		float x = c.getPos().x();
+		float y = c.getPos().y();
+		
 		for (Sound s : sounds) {
 			if (s.isInside(x, y, position)) {
 				s.setSelected(true);
-				s.performAction();
+				s.performAction(c);
 				
 				return;
 			}
