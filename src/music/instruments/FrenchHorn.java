@@ -11,7 +11,7 @@ public class FrenchHorn extends AbstractInstrument {
 
 	@Override
 	public void drawIcon(GraphicsWrapper gw, float transX, float transY, float scaleX, float scaleY) {
-		gw.setLineWidth(4);
+		gw.setLineWidth(3);
 		gw.localWorldTrans(transX, transY, scaleX, scaleY);
 			// icônes "FrenchHorn"
 			gw.setColor(1, 1, 1);

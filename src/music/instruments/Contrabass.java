@@ -17,7 +17,7 @@ public class Contrabass extends AbstractInstrument {
 			gw.setColor(1, 1, 1);
 			// bâton
 			int height = 150;
-			int lineWidth = 6;
+			int lineWidth = 4;
 			gw.setLineWidth(lineWidth);
 			gw.drawLine(-lineWidth / 2, -height / 2, -lineWidth / 2, height / 2);
 			gw.setLineWidth(2);
