@@ -3,7 +3,7 @@ package widget;
 import scene.GraphicsWrapper;
 
 public class RecordControl extends AbstractControl {
-	private boolean recorded = false;
+	private boolean recording = false;
 	private float[] colorIcon = new float[]{1, 0, 0};
 	private float radiusIcon = 30;
 	
@@ -12,14 +12,18 @@ public class RecordControl extends AbstractControl {
 	}
 	
 	public void record() {
-		recorded = !recorded;
+		recording = !recording;
+	}
+	
+	public boolean isRecording() {
+		return recording;
 	}
 
 	public void draw(GraphicsWrapper gw) {
 		super.draw(gw);
 		
 		gw.setColor(colorIcon[0], colorIcon[1], colorIcon[2]);
-		if (!recorded)
+		if (!recording)
 			gw.drawCircle(position.x() - radiusIcon / 2, position.y() - radiusIcon / 2, radiusIcon / 2, true);
 		else
 			gw.drawRect(position.x() - radiusIcon / 2, position.y() - radiusIcon / 2, radiusIcon, radiusIcon, true);

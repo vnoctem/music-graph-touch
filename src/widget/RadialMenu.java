@@ -8,10 +8,10 @@ import music.instruments.Piano;
 import music.instruments.Violin;
 import scene.GraphicsWrapper;
 import scene.Point2D;
-import scene.SceneMusic;
+import scene.MusicVertex;
 
 public class RadialMenu extends AbstractRadial {
-	private SceneMusic sm;
+	private MusicVertex mv;
 	private float radiusInstru = 40;
 	
 	public RadialMenu(float x, float y) {
@@ -19,8 +19,8 @@ public class RadialMenu extends AbstractRadial {
 		position = new Point2D(x, y);
 	}
 	
-	public SceneMusic getSM() {
-		return sm;
+	public MusicVertex getMV() {
+		return mv;
 	}
 	
 	protected void drawOptions(GraphicsWrapper gw, int level, float x, float y) {
@@ -50,37 +50,37 @@ public class RadialMenu extends AbstractRadial {
 	protected void actionOnSelect(int selected, float x, float y) {
 		switch (selected) {
 			case 0:
-				sm = new SceneMusic(new Piano(), radiusInstru);
+				mv = new MusicVertex(new Piano(), radiusInstru);
 				break;
 			case 1:
-				sm = new SceneMusic(new Guitar(), radiusInstru);
+				mv = new MusicVertex(new Guitar(), radiusInstru);
 				break;
 			case 2:
-				sm = new SceneMusic(new Violin(), radiusInstru);
+				mv = new MusicVertex(new Violin(), radiusInstru);
 				break;
 			case 3:
-				sm = new SceneMusic(new Clarinet(), radiusInstru);
+				mv = new MusicVertex(new Clarinet(), radiusInstru);
 				break;
 			case 4:
-				sm = new SceneMusic(new Contrabass(), radiusInstru);
+				mv = new MusicVertex(new Contrabass(), radiusInstru);
 				break;
 			case 5:
-				sm = new SceneMusic(new FrenchHorn(), radiusInstru);
+				mv = new MusicVertex(new FrenchHorn(), radiusInstru);
 				break;
 		}
 	}
 	
 	protected void actionOnMove(float x, float y) {
 		// faire suivre le composant graphique à l'utilisateur
-		if (sm != null)
-			sm.setPosition(x, y);
+		if (mv != null)
+			mv.setPosition(x, y);
 	}
 
 	public void draw(GraphicsWrapper gw) {
 		drawRadial(gw);
 		
-		if (sm != null) {
-			sm.draw(gw);
+		if (mv != null) {
+			mv.draw(gw);
 		}
 	}
 }

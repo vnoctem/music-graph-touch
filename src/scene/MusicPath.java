@@ -13,6 +13,7 @@ import app.Application;
 import app.Cursor;
 import app.CursorController;
 
+
 public class MusicPath implements Runnable, ActionListener {
 
 	public MultitouchFramework multitouchFramework = null;
@@ -27,7 +28,7 @@ public class MusicPath implements Runnable, ActionListener {
 	boolean threadSuspended;
 
 	int mouse_x, mouse_y;
-
+	
 	public MusicPath( MultitouchFramework mf, GraphicsWrapper gw ) {
 		multitouchFramework = mf;
 		this.gw = gw;
@@ -39,8 +40,12 @@ public class MusicPath implements Runnable, ActionListener {
 		cursors = new LinkedHashMap<Integer, CursorController>();
 
 		gw.frame( new AlignedRectangle2D( new Point2D(-100,-100), new Point2D(100,100) ), true );
+		
+		//MusicSequencePlayer mp = new MusicSequencePlayer();
+		//mp.playAndStop(lMv, getStartSceneMusic());
+		
 	}
-
+	
 	// méthode pour dessiner dans la scène
 	public synchronized void draw() {
 		// mettre noir dans l'arrière plan

@@ -2,9 +2,14 @@ package app;
 
 import java.util.ArrayList;
 
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.Sequence;
+
+import music.MusicSequenceBuilder;
+import music.MusicSequencePlayer;
 import scene.GraphicsWrapper;
 import scene.Point2D;
-import scene.SceneMusic;
+import scene.MusicVertex;
 import widget.RadialMenu;
 import widget.RadialSceneMusic;
 import widget.SoundBoard;
@@ -22,14 +27,16 @@ public class Application {
 	private SoundBoard sb;
 	
 	// liste des composant graphique et musical
-	private ArrayList<SceneMusic> lSm = new ArrayList<SceneMusic>(); 
+	private ArrayList<MusicVertex> lMv = new ArrayList<MusicVertex>(); 
 	
-	private SceneMusic selectedSM = null;
+	private MusicVertex selectedMV = null;
+	
+	private MusicVertex startMV = null; // noeud de départ
 	
 	public void draw(GraphicsWrapper gw) {
 		// tous les composants graphiques et musicals
-		for (SceneMusic sm : lSm) {
-			sm.draw(gw);
+		for (MusicVertex mv : lMv) {
+			mv.draw(gw);
 		}
 		
 		// panneau de son
@@ -59,17 +66,17 @@ public class Application {
 			sb.onClick(pos.x(), pos.y(), this);
 		} else {
 			// si clic sur un des composants graphiques, fait l'action
-			for (SceneMusic sm : lSm) {
-				if (sm.isInside(pos.x(), pos.y())) {
-					menuSM = new RadialSceneMusic(sm, sm.getPosition().x(), sm.getPosition().y(), lSm);
-					selectedSM = sm;
-					selectedSM.select();
+			for (MusicVertex mv : lMv) {
+				if (mv.isInside(pos.x(), pos.y())) {
+					menuSM = new RadialSceneMusic(mv, mv.getPosition().x(), mv.getPosition().y(), lMv);
+					selectedMV = mv;
+					selectedMV.select();
 					break;
 				}
 			}
 			
 			// sinon, afficher le menu
-			if (selectedSM == null) {
+			if (selectedMV == null) {
 				menu = new RadialMenu(pos.x(), pos.y());
 			}
 		}
@@ -77,7 +84,36 @@ public class Application {
 	
 	// lorsqu'il y a plus de 3 clics
 	public void specialAction() {
-		System.out.println("play the music");
+		System.out.println("3 clicks : play the music");
+		startMV = getStartMusicVertex();
+		if (startMV != null) {
+			MusicSequenceBuilder seqBuilder = new MusicSequenceBuilder();
+			
+			try {
+				MusicSequencePlayer msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(startMV, Sequence.PPQ, 960));
+				msp.play();
+				System.out.println("Jouer musique******************************************");
+				startMV.getMusicSample().printMusicNotes();
+				
+			} catch (InvalidMidiDataException e) {
+				e.printStackTrace();
+				System.out.println("Paramètres de séquence invalide.");
+			}
+			
+		} else {
+			System.out.println("Aucun noeud de départ spécifié.");
+		}
+	}
+	
+	private MusicVertex getStartMusicVertex() {
+		MusicVertex startMV = null;
+		for (MusicVertex mv : lMv) {
+			if (mv.isStart()) {
+				startMV = mv;
+				break;
+			}
+		}
+		return startMV;
 	}
 
 	public void touchUp(int id, CursorController cursors) {
@@ -87,34 +123,34 @@ public class Application {
 		if (sb != null) {
 			sb.onRelease(pos.x(), pos.y(), cursors.getDuration());
 		} else {
-			if (selectedSM != null) {
+			if (selectedMV != null) {
 				// garder le sound board
 				sb = menuSM.getSB();
 				
 				// si déposé sur un autre noeud, donc relie-les
-				for (SceneMusic sm : lSm) {
-					if (sm.isInside(pos.x(), pos.y()) && sm != selectedSM) {
+				for (MusicVertex mv : lMv) {
+					if (mv.isInside(pos.x(), pos.y()) && mv != selectedMV) {
 						menuSM = null;
-						selectedSM.deselect();
-						selectedSM.doneConnect(sm);
-						selectedSM = null;
+						selectedMV.deselect();
+						selectedMV.doneConnect(mv);
+						selectedMV = null;
 						break;
 					}
 				}
 				
-				if (selectedSM != null) {
+				if (selectedMV != null) {
 					menuSM = null;
-					selectedSM.deselect();
-					selectedSM.doneConnect(null);
-					selectedSM = null;
+					selectedMV.deselect();
+					selectedMV.doneConnect(null);
+					selectedMV = null;
 				}
 			}
 			
 			if (menu != null) {
-				SceneMusic sm = menu.getSM();
+				MusicVertex mv = menu.getMV();
 				
-				if (sm != null)
-					lSm.add(sm);
+				if (mv != null)
+					lMv.add(mv);
 				menu = null;
 			}
 		}

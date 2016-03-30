@@ -2,22 +2,29 @@ package widget;
 
 import java.util.ArrayList;
 
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.Sequence;
+
+import music.MusicSequenceBuilder;
+import music.MusicSequencePlayer;
+
 import scene.GraphicsWrapper;
 import scene.Point2D;
-import scene.SceneMusic;
+import scene.MusicVertex;
 
 public class RadialSceneMusic extends AbstractRadial {
 	
-	private SceneMusic sm;
-	private ArrayList<SceneMusic> lSm;
+	private MusicVertex mv;
+	private boolean action = false;
+	private ArrayList<MusicVertex> lMv;
 	private SoundBoard sb;
 
-	public RadialSceneMusic(SceneMusic sm, float x, float y, ArrayList<SceneMusic> lSm) {
+	public RadialSceneMusic(MusicVertex mv, float x, float y, ArrayList<MusicVertex> lMv) {
 		super(43, 100, 5, new float[] {0, 0, 0.5f});
 		
 		position = new Point2D(x, y);
-		this.sm = sm;
-		this.lSm = lSm;
+		this.mv = mv;
+		this.lMv = lMv;
 	}
 	
 	@Override
@@ -121,13 +128,13 @@ public class RadialSceneMusic extends AbstractRadial {
 	protected void actionOnMove(float x, float y) {
 		switch (selected) {
 			case 1: // bouger
-				sm.setPosition(x, y);
+				mv.setPosition(x, y);
 				break;
 			case 3: // afficher le panneau de son
 				sb.setPosition(x, y);
 				break;
 			case 4: // connecter à d'autres noeuds
-				sm.extendConnector(x, y);
+				mv.extendConnector(x, y);
 				break;
 		}
 	}
@@ -141,19 +148,47 @@ public class RadialSceneMusic extends AbstractRadial {
 		switch (selected) {
 			case 0: // supprimer
 				// enlever les connecteurs
-				for (SceneMusic s : lSm) {
-					s.deleteConnIfLinked(sm);
+				for (MusicVertex s : lMv) {
+					s.deleteConnIfLinked(mv);
 				}
 				// enlever le noeud
-				lSm.remove(sm);
+				lMv.remove(mv);
 				break;
 			case 2: // noeud de départ
-				sm.setStart();
+				for (MusicVertex mv : lMv) { // si un autre noeud est le noeud de départ, modifier pour qu'il ne le soit plus
+					mv.setStart(false);
+				}
+				mv.setStart(true);
+				System.out.println("Set noeud de départ");
+				MusicSequenceBuilder seqBuilder = new MusicSequenceBuilder();
+				
+				try {
+					MusicSequencePlayer msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(mv, Sequence.PPQ, 960));
+					msp.play();
+					System.out.println("Jouer******************************************");
+					mv.getMusicSample().printMusicNotes();
+					
+				} catch (InvalidMidiDataException e) {
+					e.printStackTrace();
+					System.out.println("Paramètres de séquence invalide.");
+				}
+				
 				break;
 			case 3: // afficher le panneau de son
-				sb = new SoundBoard(x, y);
+				sb = new SoundBoard(x, y, mv);
 				break;
 		}
+		
+		action = true;
 	}
 	
+//	private void setConnectorsDirection(MusicVertex musicVertex) {
+//		for (Connector c : musicVertex.getConnectors()) {
+//			c.getTarget(musicVertex);
+//		}
+//	}
+	
+	public boolean isAction() {
+		return action;
+	}	
 }

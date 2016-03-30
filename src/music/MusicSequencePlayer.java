@@ -1,21 +1,25 @@
 package music;
 
+import java.util.ArrayList;
+
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 
-public class MusicPlayer {
+import scene.MusicVertex;
+
+public class MusicSequencePlayer {
 	
 	private Sequencer sequencer; // permet de démarrer et arrêter la lecture d'une séquence
 	private Sequence musicSequence; // la séquence principale dans laquelle tous les MusicSample (tracks) vont être joués
 	
-	public MusicPlayer() {
+	public MusicSequencePlayer(Sequence sequence) {
 		try {
 			sequencer = MidiSystem.getSequencer(); // initialiser le séquenceur
 			open(); // ouvrir le séquenceur
-			musicSequence = new Sequence(Sequence.PPQ, 960); // créer la séquence principale
+			sequencer.setSequence(sequence);
 		} catch (MidiUnavailableException e) {
 			e.printStackTrace();
 		} catch (InvalidMidiDataException e) {
@@ -51,7 +55,10 @@ public class MusicPlayer {
 		sequencer.close();
 	}
 	
-	public void playAndStop() {
+	public void playAndStop(ArrayList<MusicVertex> sceneMusicList, MusicVertex startSM) {
+		
+		
+		
 		try {
 			System.out.println(musicSequence.getTickLength());
 			
