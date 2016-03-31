@@ -65,10 +65,6 @@ public class MusicPath implements Runnable, ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		//MusicSequencePlayer mp = new MusicSequencePlayer();
-		//mp.playAndStop(lMv, getStartSceneMusic());
-		
 	}
 	
 	// méthode pour dessiner dans la scène

@@ -20,7 +20,7 @@ public class MusicSample implements Serializable {
 	
 	private static final long serialVersionUID = -7222124622093166901L;
 	
-	private int ticks; // temps en ticks pour la composition (en millisecondes)
+	private int ticks; // temps en ticks pour la composition
 	private int velocity; // le volume de l'échantillon
 	private ArrayList<MusicNote> notes; // les notes de musique de l'échantillon
 	private Track track; // la track dans laquelle l'échantillon sera créé (une track par échantillon)
@@ -30,8 +30,8 @@ public class MusicSample implements Serializable {
 		velocity = 64;
 	}
 	
-	public MusicSample(Sequence sequence, int velocity) {
-		this.ticks = 1; // on débute à 1
+	public MusicSample(int velocity) {
+		notes = new ArrayList<MusicNote>();
 		this.velocity = velocity;
 	}
 	
@@ -47,7 +47,7 @@ public class MusicSample implements Serializable {
 		ticks = startTick;
 	}
 	
-	public int getDuration() {
+	public int getTicksLength() {
 		return ticks;
 	}
 	
@@ -98,14 +98,14 @@ public class MusicSample implements Serializable {
 				System.out.println("build track note key = " + note.getKey() + ", startTick = " + startTick + ", ticks = " + 
 						ticks + ", noteLength = " + note.getNoteLength()); // tempo
 				
-				int milliseconds = Math.round(60000 / (120 * 960)); 
-				
 				on.setMessage(ShortMessage.NOTE_ON, 0, note.getKey(), this.velocity);
 				off.setMessage(ShortMessage.NOTE_OFF, 0, note.getKey(), this.velocity);
 				
-				track.add(new MidiEvent(on, startTick + milliseconds)); // message pour jouer la note
-				track.add(new MidiEvent(off, startTick + milliseconds + note.getNoteLength())); // message pour arrêter la note
+				track.add(new MidiEvent(on, startTick + ticks)); // message pour jouer la note
+				track.add(new MidiEvent(off, startTick + ticks + note.getNoteLength())); // message pour arrêter la note
 				ticks += note.getNoteLength(); // incrémenter les ticks avec la durée de la note jouée
+				
+				System.out.println("sequence.getTickLength() = " + sequence.getTickLength());
 			} catch (InvalidMidiDataException e) {
 				e.printStackTrace();
 			}

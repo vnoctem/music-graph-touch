@@ -1,12 +1,18 @@
 package music;
 
+import java.io.Serializable;
+
 /**
  * Une note de musique qui peut être ajoutée à un MusicSample
  * @author Vincent
  *
  */
-public class MusicNote {
+public class MusicNote implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7503301646628898509L;
 	private int key; // la hauteur de la note, entre 21 et 108 pour un piano standard
 	private int noteLength; // la durée en millisecondes de la note
 	

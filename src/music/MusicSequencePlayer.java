@@ -13,14 +13,16 @@ import scene.MusicVertex;
 public class MusicSequencePlayer {
 	
 	private Sequencer sequencer; // permet de démarrer et arrêter la lecture d'une séquence
-	private Sequence musicSequence; // la séquence principale dans laquelle tous les MusicSample (tracks) vont être joués
+	private Sequence sequence; // la séquence principale dans laquelle tous les MusicSample (tracks) vont être joués
 	
 	public MusicSequencePlayer(Sequence sequence) {
+		this.sequence = sequence;
 		try {
 			sequencer = MidiSystem.getSequencer(); // initialiser le séquenceur
 			open(); // ouvrir le séquenceur
 			sequencer.setSequence(sequence);
-			sequencer.setTempoInBPM(120);
+			sequencer.setTempoInBPM(240);
+			System.out.println("init MusicSequencePlayer");
 		} catch (MidiUnavailableException e) {
 			e.printStackTrace();
 		} catch (InvalidMidiDataException e) {
@@ -32,8 +34,8 @@ public class MusicSequencePlayer {
 		return sequencer;
 	}
 	
-	public Sequence getMusicSequence() {
-		return musicSequence;
+	public Sequence getSequence() {
+		return sequence;
 	}
 	
 	public void open() {
@@ -57,13 +59,10 @@ public class MusicSequencePlayer {
 	}
 	
 	public void playAndStop(ArrayList<MusicVertex> sceneMusicList, MusicVertex startSM) {
-		
-		
-		
 		try {
-			System.out.println(musicSequence.getTickLength());
+			System.out.println(sequence.getTickLength());
 			
-			sequencer.setSequence(musicSequence); // assigner la séquence au séquenceur
+			sequencer.setSequence(sequence); // assigner la séquence au séquenceur
 			sequencer.start();
 			//sequencer.setTickPosition(0);
 			//Thread.sleep((sequencer.getMicrosecondLength() / 1000) + 1000);
