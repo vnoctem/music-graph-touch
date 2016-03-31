@@ -24,7 +24,7 @@ public class SoundBoard {
 	private int widthSharp = 80;
 	private int nbKeys = 8;
 	private int nbSharpKeys = 5;
-	private int controlStart = 100;
+	private int controlStart = 90;
 	private int gapBetweenControls = 20;
 	
 	private Point2D position;
@@ -32,6 +32,9 @@ public class SoundBoard {
 	
 	// contrôle pour enregistrer
 	private RecordControl recordControl;
+	
+	// contrôle pour jouer
+	private PlayControl playControl;
 	
 	// contrôle pour déplacer
 	private MoveControl moveControl;
@@ -173,11 +176,13 @@ public class SoundBoard {
 			sounds.get(sounds.size() - 1).setPosition(keyWidth * i, height - pianoHeight);
 		}
 		// contrôles
+		int gapBetweenSection = 50;
 		recordControl = new RecordControl(controlStart, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
-		moveControl = new MoveControl(controlStart * 2 + gapBetweenControls, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
-		closeControl = new CloseControl(controlStart * 3 + gapBetweenControls * 2, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
-		volControl = new VolControl(controlStart * 5 + gapBetweenControls * 4, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Vol.");
-		octControl = new OctControl(controlStart * 6 + gapBetweenControls * 5, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Oct.");
+		playControl = new PlayControl(controlStart * 2 + gapBetweenControls, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		moveControl = new MoveControl(controlStart * 3 + gapBetweenControls * 2, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		closeControl = new CloseControl(controlStart * 4 + gapBetweenControls * 3, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		volControl = new VolControl(controlStart * 6 + gapBetweenControls * 5 - gapBetweenSection, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Vol.");
+		octControl = new OctControl(controlStart * 7 + gapBetweenControls * 6 - gapBetweenSection, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Oct.");
 	}
 	
 	public void setPosition(float x, float y) {
@@ -208,6 +213,10 @@ public class SoundBoard {
 			} else {
 				musicSample = new MusicSample(); // faire un nouveau échantillon
 			}
+		}
+		
+		if (playControl.isInside(x, y, position)) {
+			playControl.play();
 		}
 		
 		if (closeControl.isInside(x, y, position)) {
@@ -269,6 +278,7 @@ public class SoundBoard {
 			
 			// contrôles
 			recordControl.draw(gw);
+			playControl.draw(gw);
 			moveControl.draw(gw);
 			closeControl.draw(gw);
 			volControl.draw(gw);
