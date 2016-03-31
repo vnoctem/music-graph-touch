@@ -193,7 +193,7 @@ public class SoundBoard {
 		position = new Point2D(x, y);
 	}
 	
-	public void onClick(Application app, Cursor c) {
+	public void onClick(Application app, Cursor c, long timeBetweenClick) {
 		float x = c.getPos().x();
 		float y = c.getPos().y();
 		

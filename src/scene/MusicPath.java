@@ -23,6 +23,9 @@ public class MusicPath implements Runnable, ActionListener {
 	private Application app;
 	// track les curseurs
 	private LinkedHashMap<Integer, CursorController> cursors;
+	private long startTime = 0;
+	// pause entre les touches
+	private long pause = 0;
 
 	Thread thread = null;
 	boolean threadSuspended;
@@ -65,6 +68,12 @@ public class MusicPath implements Runnable, ActionListener {
 	public synchronized void processMultitouchInputEvent( int id, float x, float y, int type ) {
 		switch (type) {
 			case MultitouchFramework.TOUCH_EVENT_DOWN:
+				// vérifier si c'est la première touche
+				// et un temps a été sauvegardé (touch up)
+				if (cursors.isEmpty() && startTime != 0) {
+					pause = System.nanoTime() - startTime;
+				}
+				
 				// créer un nouveau tracker pour les curseurs
 				CursorController cc = new CursorController();
 				cc.addCursor(new Cursor(type, x, y));
@@ -73,7 +82,13 @@ public class MusicPath implements Runnable, ActionListener {
 				if (cursors.size() >= 3)
 					app.specialAction();
 				else
-					app.touchDown(id, cc);
+					app.touchDown(id, cc, pause);
+				
+				// réinitialiser pour pas avoir des effets inatt
+				if (pause != 0) {
+					startTime = 0;
+					pause = 0;
+				}
 				
 				// forcer le rafraîchissement pour faire apparaître le menu
 				multitouchFramework.requestRedraw();
@@ -86,6 +101,11 @@ public class MusicPath implements Runnable, ActionListener {
 				
 				// une fois traité, enlève le tracker
 				cursors.remove(id);
+				
+				// vérifier si c'est la dernière touche
+				if (cursors.isEmpty()) {
+					startTime = System.nanoTime();
+				}
 			break;
 			case MultitouchFramework.TOUCH_EVENT_MOVE:
 				// garder le curseur dans le propre contrôleur

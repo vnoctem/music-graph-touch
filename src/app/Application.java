@@ -57,13 +57,13 @@ public class Application {
 		sb = null;
 	}
 	
-	public void touchDown(int id, CursorController cursors) {
+	public void touchDown(int id, CursorController cursors, long pauseBetweenClick) {
 		Point2D pos = cursors.last().getPos();
 		
 		// détecte s'il y a une clé cliquée
 		// permet pas de faire d'autres choses avant de fermer le panneau
 		if (sb != null) {
-			sb.onClick(this, cursors.last());
+			sb.onClick(this, cursors.last(), pauseBetweenClick);
 		} else {
 			// si clic sur un des composants graphiques, fait l'action
 			for (MusicVertex mv : lMv) {
