@@ -8,7 +8,7 @@ public abstract class AbstractCircleControl extends AbstractControl {
 	
 	private float[] colorIcon = new float[]{0f, 0.5f, 0f};
 	private String label;
-	private float value = 0;
+	private float value = 180;
 
 	public AbstractCircleControl(float x, float y, float radius, float[] color, String label) {
 		super(x, y, radius, color);
