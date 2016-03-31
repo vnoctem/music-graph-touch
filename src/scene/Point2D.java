@@ -1,9 +1,13 @@
 package scene;
 
+import java.io.Serializable;
 
 
-public class Point2D {
 
+public class Point2D implements Serializable {
+
+	private static final long serialVersionUID = -3197169736443368114L;
+	
 	public float [] p = new float[2];
 
 	public Point2D() {

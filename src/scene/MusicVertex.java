@@ -1,11 +1,15 @@
 package scene;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import music.MusicSample;
 import music.instruments.AbstractInstrument;
 
-public class MusicVertex {
+public class MusicVertex implements Serializable {
+	
+	private static final long serialVersionUID = -3118443078685533900L;
+	
 	private AbstractInstrument mi;
 	private Point2D position;
 	private float radius;

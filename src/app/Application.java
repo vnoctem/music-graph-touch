@@ -1,5 +1,10 @@
 package app;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -14,11 +19,13 @@ import widget.RadialMenu;
 import widget.RadialSceneMusic;
 import widget.SoundBoard;
 
-public class Application {
+public class Application implements Serializable {
+
+	private static final long serialVersionUID = -2475392251654453887L;
 
 	// un seul menu pour l'instant
 	// si plusieurs menus possible (multiutilisateurs), utilise Arraylist
-	private RadialMenu menu;
+	private transient RadialMenu menu;
 	
 	// menu pour les composants graphiques
 	private RadialSceneMusic menuSM;
@@ -104,6 +111,19 @@ public class Application {
 				
 			} else {
 				System.out.println("Aucun noeud de départ spécifié.");
+			}
+			
+			// sauvegarde la scène
+			try {
+				// le chemin
+				File fichier =  new File("scene.ser") ;
+				// sérialise
+				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fichier));
+				oos.writeObject(this);
+				oos.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}

@@ -4,6 +4,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.LinkedHashMap;
 
 import javax.swing.JMenuBar;
@@ -43,6 +47,24 @@ public class MusicPath implements Runnable, ActionListener {
 		cursors = new LinkedHashMap<Integer, CursorController>();
 
 		gw.frame( new AlignedRectangle2D( new Point2D(-100,-100), new Point2D(100,100) ), true );
+		
+		// charge la scène si celle-ci a été créée
+		try {
+			// chemin
+			File fichier =  new File("scene.ser") ;
+			if (fichier.exists()) {
+				ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(fichier)) ;
+				// désérialization de l'objet
+				app = (Application) ois.readObject();
+				ois.close();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//MusicSequencePlayer mp = new MusicSequencePlayer();
 		//mp.playAndStop(lMv, getStartSceneMusic());

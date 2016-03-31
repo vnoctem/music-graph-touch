@@ -11,6 +11,7 @@ import scene.Point2D;
 import scene.MusicVertex;
 
 public class RadialMenu extends AbstractRadial {
+	
 	private MusicVertex mv;
 	private float radiusInstru = 40;
 	

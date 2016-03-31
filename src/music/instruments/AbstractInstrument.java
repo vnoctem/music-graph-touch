@@ -1,8 +1,12 @@
 package music.instruments;
 
+import java.io.Serializable;
+
 import scene.GraphicsWrapper;
 
-public abstract class AbstractInstrument {
+public abstract class AbstractInstrument implements Serializable {
+	
+	private static final long serialVersionUID = 7589662898690292035L;
 	
 	// les paramètres qui définissent l'instrument
 	private int bank;

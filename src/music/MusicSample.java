@@ -1,5 +1,6 @@
 package music;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -15,7 +16,9 @@ import music.instruments.AbstractInstrument;
  * @author vince
  *
  */
-public class MusicSample {
+public class MusicSample implements Serializable {
+	
+	private static final long serialVersionUID = -7222124622093166901L;
 	
 	private int ticks; // temps en ticks pour la composition (en millisecondes)
 	private int velocity; // le volume de l'échantillon

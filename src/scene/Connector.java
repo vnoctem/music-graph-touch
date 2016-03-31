@@ -1,6 +1,11 @@
 package scene;
 
-public class Connector {
+import java.io.Serializable;
+
+public class Connector implements Serializable {
+	
+	private static final long serialVersionUID = -3010316384353874983L;
+	
 	private MusicVertex[] neighbours;
 	private float[] color = {0.7f,0.7f,0f};
 	private float length = -1;
