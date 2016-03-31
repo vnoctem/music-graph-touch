@@ -84,24 +84,27 @@ public class Application {
 	
 	// lorsqu'il y a plus de 3 clics
 	public void specialAction() {
-		System.out.println("3 clicks : play the music");
-		startMV = getStartMusicVertex();
-		if (startMV != null) {
-			MusicSequenceBuilder seqBuilder = new MusicSequenceBuilder();
-			
-			try {
-				MusicSequencePlayer msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(startMV, Sequence.PPQ, 960));
-				msp.play();
-				System.out.println("Jouer musique******************************************");
-				startMV.getMusicSample().printMusicNotes();
+		// jouer seulement on n'est pas en mode de piano
+		if (sb == null) {
+			System.out.println("3 clicks : play the music");
+			startMV = getStartMusicVertex();
+			if (startMV != null) {
+				MusicSequenceBuilder seqBuilder = new MusicSequenceBuilder();
 				
-			} catch (InvalidMidiDataException e) {
-				e.printStackTrace();
-				System.out.println("Paramètres de séquence invalide.");
+				try {
+					MusicSequencePlayer msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(startMV, Sequence.PPQ, 960));
+					msp.play();
+					System.out.println("Jouer musique******************************************");
+					startMV.getMusicSample().printMusicNotes();
+					
+				} catch (InvalidMidiDataException e) {
+					e.printStackTrace();
+					System.out.println("Paramètres de séquence invalide.");
+				}
+				
+			} else {
+				System.out.println("Aucun noeud de départ spécifié.");
 			}
-			
-		} else {
-			System.out.println("Aucun noeud de départ spécifié.");
 		}
 	}
 	
