@@ -11,7 +11,7 @@ import scene.GraphicsWrapper;
 import scene.Point2D;
 import scene.MusicVertex;
 import widget.RadialMenu;
-import widget.RadialSceneMusic;
+import widget.RadialMusicVertex;
 import widget.SoundBoard;
 
 public class Application {
@@ -21,7 +21,7 @@ public class Application {
 	private RadialMenu menu;
 	
 	// menu pour les composants graphiques
-	private RadialSceneMusic menuSM;
+	private RadialMusicVertex menuMV;
 	
 	// panneau pour jouer des sons
 	private SoundBoard sb;
@@ -32,6 +32,7 @@ public class Application {
 	private MusicVertex selectedMV = null;
 	
 	private MusicVertex startMV = null; // noeud de départ
+	private MusicSequencePlayer msp;
 	
 	public void draw(GraphicsWrapper gw) {
 		// tous les composants graphiques et musicals
@@ -44,8 +45,8 @@ public class Application {
 			sb.draw(gw);
 		
 		// menu des composants
-		if (menuSM != null)
-			menuSM.draw(gw);
+		if (menuMV != null)
+			menuMV.draw(gw);
 		
 		// menu
 		// doit toujours être la dernière à dessiner pour qu'il soit toujours par dessus de tout
@@ -68,7 +69,7 @@ public class Application {
 			// si clic sur un des composants graphiques, fait l'action
 			for (MusicVertex mv : lMv) {
 				if (mv.isInside(pos.x(), pos.y())) {
-					menuSM = new RadialSceneMusic(mv, mv.getPosition().x(), mv.getPosition().y(), lMv);
+					menuMV = new RadialMusicVertex(mv, mv.getPosition().x(), mv.getPosition().y(), lMv);
 					selectedMV = mv;
 					selectedMV.select();
 					break;
@@ -84,15 +85,15 @@ public class Application {
 	
 	// lorsqu'il y a plus de 3 clics
 	public void specialAction() {
-		System.out.println("3 clicks : play the music");
+		System.out.println("PLAY THE MUSIC**********************************************************");
 		startMV = getStartMusicVertex();
 		if (startMV != null) {
-			MusicSequenceBuilder seqBuilder = new MusicSequenceBuilder();
+			MusicSequenceBuilder seqBuilder = new MusicSequenceBuilder(lMv);
 			
 			try {
-				MusicSequencePlayer msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(startMV, Sequence.PPQ, 960));
+				msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(startMV, Sequence.PPQ, 250));
 				msp.play();
-				System.out.println("Jouer musique******************************************");
+				System.out.println("AFTER PLAY();*********************************************");
 				startMV.getMusicSample().printMusicNotes();
 				
 			} catch (InvalidMidiDataException e) {
@@ -125,12 +126,12 @@ public class Application {
 		} else {
 			if (selectedMV != null) {
 				// garder le sound board
-				sb = menuSM.getSB();
+				sb = menuMV.getSB();
 				
 				// si déposé sur un autre noeud, donc relie-les
 				for (MusicVertex mv : lMv) {
 					if (mv.isInside(pos.x(), pos.y()) && mv != selectedMV) {
-						menuSM = null;
+						menuMV = null;
 						selectedMV.deselect();
 						selectedMV.doneConnect(mv);
 						selectedMV = null;
@@ -139,7 +140,7 @@ public class Application {
 				}
 				
 				if (selectedMV != null) {
-					menuSM = null;
+					menuMV = null;
 					selectedMV.deselect();
 					selectedMV.doneConnect(null);
 					selectedMV = null;
@@ -167,7 +168,7 @@ public class Application {
 		if (menu != null)
 			menu.onMove(pos.x(), pos.y());
 		
-		if (menuSM != null)
-			menuSM.onMove(pos.x(), pos.y());
+		if (menuMV != null)
+			menuMV.onMove(pos.x(), pos.y());
 	}
 }

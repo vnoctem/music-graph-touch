@@ -33,7 +33,7 @@ public class MusicNotePlayer {
 	  */
 	public void playMusicNote(MusicNote musicNote, AbstractInstrument instrument, int volume) {
 		midiChannels[0].programChange(instrument.getBank(), instrument.getProgram());
-		midiChannels[0].noteOn(musicNote.getKey(), musicNote.getNoteLength());
+		midiChannels[0].noteOn(musicNote.getKey(), volume);
 	}
 	
 	/**

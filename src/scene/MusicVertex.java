@@ -50,6 +50,10 @@ public class MusicVertex {
 	}
 	
 	public ArrayList<Connector> getConnectors() {
+//		ArrayList<Connector> connIn = new ArrayList<Connector>();
+//		for (Connector c : conn) {
+//			
+//		}
 		return conn;
 	}
 	
@@ -115,14 +119,16 @@ public class MusicVertex {
 		posConnector = null;
 		
 		if (mv != null) {
-			conn.add(new Connector(this, mv));
+			Connector newConn = new Connector(this, mv);
+			conn.add(newConn);
 			sortConnectorsByLength();
+			mv.getConnectors().add(newConn);
 		}
 	}
 	
 	public void sortConnectorsByLength() {
 		for (int i = 0; i < conn.size() - 1; i++) {
-			for (int j = 0; j < conn.size() - i; j++) {
+			for (int j = 0; j < conn.size() - i - 1; j++) {
 				if (conn.get(j).getLength() > conn.get(j + 1).getLength()) {
 					Connector tempConnector = conn.get(j);
 					conn.set(j, conn.get(j + 1));

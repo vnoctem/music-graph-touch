@@ -2,24 +2,18 @@ package widget;
 
 import java.util.ArrayList;
 
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.Sequence;
-
-import music.MusicSequenceBuilder;
-import music.MusicSequencePlayer;
-
 import scene.GraphicsWrapper;
 import scene.Point2D;
 import scene.MusicVertex;
 
-public class RadialSceneMusic extends AbstractRadial {
+public class RadialMusicVertex extends AbstractRadial {
 	
 	private MusicVertex mv;
 	private boolean action = false;
 	private ArrayList<MusicVertex> lMv;
 	private SoundBoard sb;
 
-	public RadialSceneMusic(MusicVertex mv, float x, float y, ArrayList<MusicVertex> lMv) {
+	public RadialMusicVertex(MusicVertex mv, float x, float y, ArrayList<MusicVertex> lMv) {
 		super(43, 100, 5, new float[] {0, 0, 0.5f});
 		
 		position = new Point2D(x, y);

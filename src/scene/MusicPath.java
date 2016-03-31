@@ -40,10 +40,6 @@ public class MusicPath implements Runnable, ActionListener {
 		cursors = new LinkedHashMap<Integer, CursorController>();
 
 		gw.frame( new AlignedRectangle2D( new Point2D(-100,-100), new Point2D(100,100) ), true );
-		
-		//MusicSequencePlayer mp = new MusicSequencePlayer();
-		//mp.playAndStop(lMv, getStartSceneMusic());
-		
 	}
 	
 	// méthode pour dessiner dans la scène
