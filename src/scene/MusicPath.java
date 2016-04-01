@@ -97,10 +97,7 @@ public class MusicPath implements Runnable, ActionListener {
 				cc.addCursor(new Cursor(type, x, y));
 				cursors.put(id, cc);
 				
-				if (cursors.size() >= 3)
-					app.specialAction();
-				else
-					app.touchDown(id, pause, cursors);
+				app.touchDown(id, pause, cursors);
 				
 				// réinitialiser pour pas avoir des effets inatt
 				if (pause != 0) {

@@ -75,30 +75,35 @@ public class Application implements Serializable {
 		if (sb != null) {
 			sb.onClick(this, cCursor.last(), pauseBetweenClick);
 		} else {
-			if (cursors.size() == 1) {
-				// si clic sur un des composants graphiques, fait l'action
-				for (MusicVertex mv : lMv) {
-					if (mv.isInside(pos.x(), pos.y())) {
-						menuMV = new RadialMusicVertex(mv, mv.getPosition().x(), mv.getPosition().y(), lMv);
-						selectedMV = mv;
-						selectedMV.select();
-						break;
+			if (cursors.size() >= 3)
+				// jouer la séquence
+				specialAction();
+			else {
+				if (cursors.size() == 1) {
+					// si clic sur un des composants graphiques, fait l'action
+					for (MusicVertex mv : lMv) {
+						if (mv.isInside(pos.x(), pos.y())) {
+							menuMV = new RadialMusicVertex(mv, mv.getPosition().x(), mv.getPosition().y(), lMv);
+							selectedMV = mv;
+							selectedMV.select();
+							break;
+						}
 					}
+					
+					// sinon, afficher le menu
+					if (selectedMV == null) {
+						menu = new RadialMenu(pos.x(), pos.y());
+					}
+				} else { // mode de Play
+					// tout effacer
+					if (selectedMV != null) {
+						menuMV = null;
+						selectedMV.deselect();
+						selectedMV.doneConnect(null);
+						selectedMV = null;
+					}
+					menu = null;
 				}
-				
-				// sinon, afficher le menu
-				if (selectedMV == null) {
-					menu = new RadialMenu(pos.x(), pos.y());
-				}
-			} else { // mode de Play
-				// tout effacer
-				if (selectedMV != null) {
-					menuMV = null;
-					selectedMV.deselect();
-					selectedMV.doneConnect(null);
-					selectedMV = null;
-				}
-				menu = null;
 			}
 		}
 	}
