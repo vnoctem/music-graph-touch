@@ -57,19 +57,21 @@ public class MusicSequenceBuilder {
 				
 				if (!mvChild.isVisited()) {
 					System.out.println("si enfant non visité");
-					if (!mvChild.getMusicSample().getMusicNotes().isEmpty()) { // si échantillon pas vide
-						System.out.println("échantillon pas vide");
-						addMusicSample(mvChild.getMusicSample(), sequence, mvChild.getInstrument(), ticks + (Math.round(c.getLength()) * 10));
-						mvChild.setTimePosition(Math.round(c.getLength()) * 10);
-						System.out.println("Longueur du connecteur * 10 (millisecondes) : " + (Math.round(c.getLength()) * 10));
-						queue.add(mvChild);
-						mvChild.setVisited(true);
-					} else {
-						System.out.println("échantillon vide, continuer quand même au prochain");
-						mvChild.setTimePosition(Math.round(c.getLength()) * 10);
-						System.out.println("Longueur du connecteur * 10 (millisecondes) : " + (Math.round(c.getLength()) * 10));
-						queue.add(mvChild);
-						mvChild.setVisited(true);
+					if (mvChild.getMusicSample() != null) { // si échantillon existe
+						if (!mvChild.getMusicSample().getMusicNotes().isEmpty()) { // si échantillon pas vide
+							System.out.println("échantillon pas vide");
+							addMusicSample(mvChild.getMusicSample(), sequence, mvChild.getInstrument(), ticks + (Math.round(c.getLength()) * 5));
+							mvChild.setTimePosition(Math.round(c.getLength()) * 5);
+							System.out.println("Longueur du connecteur * 5 (millisecondes) : " + (Math.round(c.getLength()) * 5));
+							queue.add(mvChild);
+							mvChild.setVisited(true);
+						} else {
+							System.out.println("échantillon vide, continuer quand même au prochain");
+							mvChild.setTimePosition(Math.round(c.getLength()) * 5);
+							System.out.println("Longueur du connecteur * 5 (millisecondes) : " + (Math.round(c.getLength()) * 5));
+							queue.add(mvChild);
+							mvChild.setVisited(true);
+						}
 					}
 				}
 			}

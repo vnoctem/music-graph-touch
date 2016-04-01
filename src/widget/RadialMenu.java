@@ -1,5 +1,6 @@
 package widget;
 
+import app.Application;
 import music.instruments.Clarinet;
 import music.instruments.Contrabass;
 import music.instruments.FrenchHorn;
@@ -14,10 +15,12 @@ public class RadialMenu extends AbstractRadial {
 	
 	private MusicVertex mv;
 	private float radiusInstru = 40;
+	private Application app;
 	
-	public RadialMenu(float x, float y) {
+	public RadialMenu(float x, float y, Application app) {
 		super(30, 100, 6, new float[] {0.7f, 0.7f, 0f});
 		position = new Point2D(x, y);
+		this.app = app;
 	}
 	
 	public MusicVertex getMV() {
@@ -49,25 +52,40 @@ public class RadialMenu extends AbstractRadial {
 	}
 	
 	protected void actionOnSelect(int selected, float x, float y) {
-		switch (selected) {
-			case 0:
-				mv = new MusicVertex(new Piano(), radiusInstru);
-				break;
-			case 1:
-				mv = new MusicVertex(new Guitar(), radiusInstru);
-				break;
-			case 2:
-				mv = new MusicVertex(new Violin(), radiusInstru);
-				break;
-			case 3:
-				mv = new MusicVertex(new Clarinet(), radiusInstru);
-				break;
-			case 4:
-				mv = new MusicVertex(new Contrabass(), radiusInstru);
-				break;
-			case 5:
-				mv = new MusicVertex(new FrenchHorn(), radiusInstru);
-				break;
+		if (app.getChannelCounter() <= 15) { // pour ne pas dépasser le nombre maximal de channels
+			if (app.getChannelCounter()  == 9) { // skip le channel de percussion
+				app.setChannelCounter(app.getChannelCounter() + 1);
+				System.out.println("Skip channel 9");
+			}
+			switch (selected) {
+				case 0:
+					mv = new MusicVertex(new Piano(), radiusInstru, app.getChannelCounter());
+					app.setChannelCounter(app.getChannelCounter() + 1);
+					break;
+				case 1:
+					mv = new MusicVertex(new Guitar(), radiusInstru, app.getChannelCounter());
+					app.setChannelCounter(app.getChannelCounter() + 1);
+					break;
+				case 2:
+					mv = new MusicVertex(new Violin(), radiusInstru, app.getChannelCounter());
+					app.setChannelCounter(app.getChannelCounter() + 1);
+					break;
+				case 3:
+					mv = new MusicVertex(new Clarinet(), radiusInstru, app.getChannelCounter());
+					app.setChannelCounter(app.getChannelCounter() + 1);
+					break;
+				case 4:
+					mv = new MusicVertex(new Contrabass(), radiusInstru, app.getChannelCounter());
+					app.setChannelCounter(app.getChannelCounter() + 1);
+					break;
+				case 5:
+					mv = new MusicVertex(new FrenchHorn(), radiusInstru, app.getChannelCounter());
+					app.setChannelCounter(app.getChannelCounter() + 1);
+					break;
+			}
+			System.out.println("New instrument, channel=" + mv.getChannel() + ", channelCounter=" + app.getChannelCounter());
+		} else {
+			System.out.println("Nombre maximal de noeuds atteint! (15 noeuds)");
 		}
 	}
 	
