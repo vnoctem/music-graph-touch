@@ -185,7 +185,7 @@ public class SoundBoard {
 		moveControl = new MoveControl(controlStart * 3 + gapBetweenControls * 2, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
 		closeControl = new CloseControl(controlStart * 4 + gapBetweenControls * 3, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
 		volControl = new VolControl(controlStart * 6 + gapBetweenControls * 5 - gapBetweenSection, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Vol.");
-		octControl = new OctControl(controlStart * 7 + gapBetweenControls * 6 - gapBetweenSection, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Oct.");
+		octControl = new OctControl(controlStart * 7 + gapBetweenControls * 6 - gapBetweenSection, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Oct.", new int[] {5, 6, 7, 8, 9, 10});
 	}
 	
 	private int getOctaveFactor() {

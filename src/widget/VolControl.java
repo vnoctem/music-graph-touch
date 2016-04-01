@@ -6,4 +6,8 @@ public class VolControl extends AbstractCircleControl {
 		super(x, y, radius, color, label);
 	}
 
+	@Override
+	public double getValue() {
+		return  (int) (value / 360 * 100);
+	}
 }

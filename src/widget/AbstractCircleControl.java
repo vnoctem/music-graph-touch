@@ -1,7 +1,5 @@
 package widget;
 
-import java.text.DecimalFormat;
-
 import scene.GraphicsWrapper;
 import scene.Point2D;
 import scene.Vector2D;
@@ -33,9 +31,7 @@ public abstract class AbstractCircleControl extends AbstractControl {
 		int gapHoriz = 20;
 		int gapVerti = 15;
 		gw.drawString(position.x() - radius - gapHoriz, position.y() - radius, label);
-		DecimalFormat df = new DecimalFormat();
-		df.setMaximumFractionDigits(2);
-		gw.drawString(position.x() - radius - gapHoriz, position.y() - radius + gapVerti, df.format(getValue()));
+		gw.drawString(position.x() - radius - gapHoriz, position.y() - radius + gapVerti, String.valueOf((int)getValue()));
 		
 		gw.setColor(colorIcon[0], colorIcon[1], colorIcon[2]);
 		gw.drawPartOfCircle(position.x(), position.y(), radius, 0, (int)value, true);
