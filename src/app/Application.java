@@ -39,7 +39,7 @@ public class Application implements Serializable {
 	private MusicVertex selectedMV = null;
 	
 	private MusicVertex startMV = null; // noeud de départ
-	private MusicSequencePlayer msp;
+	private transient MusicSequencePlayer msp;
 	
 	public void draw(GraphicsWrapper gw) {
 		// tous les composants graphiques et musicals
@@ -114,17 +114,17 @@ public class Application implements Serializable {
 			}
 		
 			// sauvegarde la scène
-//			try {
-//				// le chemin
-//				File fichier =  new File("scene.ser") ;
-//				// sérialise
-//				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fichier));
-//				oos.writeObject(this);
-//				oos.close();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+			try {
+				// le chemin
+				File fichier =  new File("scene.ser") ;
+				// sérialise
+				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fichier));
+				oos.writeObject(this);
+				oos.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	

@@ -28,7 +28,6 @@ public class PlayControl extends AbstractControl {
 	
 	public void draw(GraphicsWrapper gw) {
 		super.draw(gw);
-		System.out.println("draw playing: " + playing);
 		
 		gw.setColor(colorIcon[0], colorIcon[1], colorIcon[2]);
 		int triHeight = 40;

@@ -17,15 +17,9 @@ public class MusicNote implements Serializable {
 	private long noteLength; // la durée en millisecondes de la note
 	private int velocity; // la vitesse à laquelle la note est jouée (représente le volume)
 	
-	public MusicNote(int key) {
-		this.key = key;
-		noteLength = 1000;
-	}
-	
 	public MusicNote(int key, int velocity) {
 		this.key = key;
 		this.velocity = velocity;
-		noteLength = 1000;
 	}
 
 	public MusicNote(int key, long noteLength, int velocity) {

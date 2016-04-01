@@ -246,7 +246,7 @@ public class SoundBoard {
 					musicSamplePlayer.stopPlaying(); // arrêter de jouer
 				} else {
 					System.out.println("Start playing!");
-					musicSamplePlayer.playMusicSample(musicSample, instrument);
+					musicSamplePlayer.playMusicSample(musicSample, instrument); // jouer l'échantillon
 				}
 			} else {
 				System.out.println("Aucun échantillon enregistré.");

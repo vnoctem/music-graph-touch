@@ -85,7 +85,7 @@ public class MusicSequenceBuilder {
 	private void resetVisitedMusicVertex() {
 		for (MusicVertex mv : lMv) {
 			mv.setVisited(false);
-			System.out.println("false");
+			System.out.println("resetVisitedMusicVertex()");
 		}
 	}
 

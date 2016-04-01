@@ -22,10 +22,11 @@ public class MusicSample implements Serializable {
 	
 	private long ticks; // temps en ticks pour la composition
 	private ArrayList<MusicNote> notes; // les notes de musique de l'échantillon
-	private Track track; // la track dans laquelle l'échantillon sera créé (une track par échantillon)
+	private transient Track track; // la track dans laquelle l'échantillon sera créé (une track par échantillon)
 	
 	public MusicSample() {
 		notes = new ArrayList<MusicNote>();
+		System.out.println("MusicSample()");
 	}
 	
 	public void setTrack(Track track) {
