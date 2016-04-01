@@ -31,9 +31,9 @@ public class MusicNotePlayer {
 	  * Joue une MusicNote dans le midiChannel 0 du Synthesizer
 	  * @param musicNote
 	  */
-	public void playMusicNote(MusicNote musicNote, AbstractInstrument instrument, int volume) {
+	public void playMusicNote(MusicNote musicNote, AbstractInstrument instrument) {
 		midiChannels[0].programChange(instrument.getBank(), instrument.getProgram());
-		midiChannels[0].noteOn(musicNote.getKey(), volume);
+		midiChannels[0].noteOn(musicNote.getKey(), musicNote.getVelocity());
 	}
 	
 	/**
@@ -41,7 +41,7 @@ public class MusicNotePlayer {
 	 * @param musicNote
 	 */
 	public void stopMusicNote(MusicNote musicNote) {
-		midiChannels[0].noteOff(musicNote.getKey());
+		midiChannels[0].noteOff(musicNote.getKey(), musicNote.getVelocity());
 	}
 
 }

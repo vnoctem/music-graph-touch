@@ -18,7 +18,7 @@ import scene.MusicVertex;
  */
 public class MusicSequenceBuilder {
 	
-	private int ticks; // temps en ticks (millisecondes) pour la composition de la séquence
+	private long ticks; // temps en ticks (millisecondes) pour la composition de la séquence
 	private ArrayList<MusicVertex> lMv;
 	
 	public MusicSequenceBuilder(ArrayList<MusicVertex> lMv) {
@@ -73,7 +73,7 @@ public class MusicSequenceBuilder {
 		return musicSequence;
 	}
 	
-	private void addMusicSample(MusicSample musicSample, Sequence sequence, AbstractInstrument instrument, int startTick) {
+	private void addMusicSample(MusicSample musicSample, Sequence sequence, AbstractInstrument instrument, long startTick) {
 		try {
 			musicSample.buildTrack(sequence, instrument, startTick);
 		} catch (InvalidMidiDataException e) {

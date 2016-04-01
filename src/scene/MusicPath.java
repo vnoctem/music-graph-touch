@@ -100,9 +100,9 @@ public class MusicPath implements Runnable, ActionListener {
 				if (cursors.size() >= 3)
 					app.specialAction();
 				else
-					app.touchDown(id, cc, pause);
+					app.touchDown(id, cc, pause / 1000000);
 				
-				// réinitialiser pour pas avoir des effets inatt
+				// réinitialiser pour pas avoir des effets inattendus
 				if (pause != 0) {
 					startTime = 0;
 					pause = 0;

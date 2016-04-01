@@ -100,11 +100,10 @@ public class Application implements Serializable {
 				MusicSequenceBuilder seqBuilder = new MusicSequenceBuilder(lMv);
 				
 				try {
-					MusicSequencePlayer msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(startMV, Sequence.PPQ, 250));
+					msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(startMV, Sequence.PPQ, 250));
 					msp.play();
 					System.out.println("AFTER PLAY();*********************************************");
 					startMV.getMusicSample().printMusicNotes();
-					
 				} catch (InvalidMidiDataException e) {
 					e.printStackTrace();
 					System.out.println("Paramètres de séquence invalide.");
@@ -115,17 +114,17 @@ public class Application implements Serializable {
 			}
 		
 			// sauvegarde la scène
-			try {
-				// le chemin
-				File fichier =  new File("scene.ser") ;
-				// sérialise
-				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fichier));
-				oos.writeObject(this);
-				oos.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				// le chemin
+//				File fichier =  new File("scene.ser") ;
+//				// sérialise
+//				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fichier));
+//				oos.writeObject(this);
+//				oos.close();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 		}
 	}
 	
