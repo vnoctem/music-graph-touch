@@ -28,5 +28,7 @@ public abstract class AbstractInstrument implements Serializable {
 		return program;
 	}
 	
+	public abstract String getName();
+	
 	public abstract void drawIcon(GraphicsWrapper gw, float transX, float transY, float scaleX, float scaleY);
 }

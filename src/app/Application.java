@@ -40,7 +40,7 @@ public class Application implements Serializable {
 	private MusicVertex selectedMV = null;
 	
 	private MusicVertex startMV = null; // noeud de départ
-	private transient MusicSequencePlayer msp;
+	//private transient MusicSequencePlayer msp;
 	
 	public void draw(GraphicsWrapper gw) {
 		// tous les composants graphiques et musicals
@@ -113,7 +113,7 @@ public class Application implements Serializable {
 				MusicSequenceBuilder seqBuilder = new MusicSequenceBuilder(lMv);
 				
 				try {
-					msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(startMV, Sequence.PPQ, 250));
+					MusicSequencePlayer msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(startMV, Sequence.PPQ, 250));
 					msp.play();
 					System.out.println("AFTER PLAY();*********************************************");
 					startMV.getMusicSample().printMusicNotes();

@@ -75,34 +75,42 @@ public class MusicSample implements Serializable {
 	 */
 	public void buildTrack(Sequence sequence, AbstractInstrument instrument, long startTick) 
 			throws InvalidMidiDataException {
+		System.out.println("===========================================Début buildTrack");
 		track = sequence.createTrack(); // créer la track
-		ticks = 0;
+		System.out.println("sequence number of tracks : " + sequence.getTracks().length);
+		ticks = 0; // les ticks interne de la track à 0
 		
 		// modifier l'instrument qui va jouer la track
 		ShortMessage instrumentMessage = new ShortMessage();
 		instrumentMessage.setMessage(ShortMessage.PROGRAM_CHANGE, 0, instrument.getProgram(), instrument.getBank());
-		track.add(new MidiEvent(instrumentMessage, startTick));
+		track.add(new MidiEvent(instrumentMessage, (startTick)));
+		System.out.println("*****************************************buildTrack instrument change to " + instrument.getName() + " at " + (startTick));
 		startTick++; // incrémenter le tick de 1
 		
 		for (MusicNote note : notes) {
 			try {
 				ShortMessage on = new ShortMessage();
 				ShortMessage off = new ShortMessage();
-				System.out.println("build track note key = " + note.getKey() + ", startTick = " + startTick + ", ticks = " + 
-						ticks + ", noteLength = " + note.getNoteLength()); // tempo
 				
 				on.setMessage(ShortMessage.NOTE_ON, 0, note.getKey(), note.getVelocity());
 				off.setMessage(ShortMessage.NOTE_OFF, 0, note.getKey(), note.getVelocity());
 				
-				track.add(new MidiEvent(on, startTick + ticks)); // message pour jouer la note
-				track.add(new MidiEvent(off, startTick + ticks + note.getNoteLength())); // message pour arrêter la note
-				ticks += note.getNoteLength(); // incrémenter les ticks avec la durée de la note jouée
+				track.add(new MidiEvent(on, (long)(startTick + ticks))); // message pour jouer la note
+				track.add(new MidiEvent(off, (long)(startTick + ticks + note.getNoteLength()))); // message pour arrêter la note
 				
-				System.out.println("sequence.getTickLength() = " + sequence.getTickLength());
+				if (note.getVelocity() > 0) {
+					System.out.println("build track note key = " + note.getKey() + ", startTick = " + startTick + ", ticks = " + 
+							ticks + ", noteLength = " + note.getNoteLength() + ", volume : " + note.getVelocity() + ", fixedTicks = " + (startTick + ticks));
+					System.out.println("sequence.getTickLength() = " + sequence.getTickLength());
+				}
+				
+				ticks += note.getNoteLength(); // incrémenter les ticks avec la durée de la note jouée
 			} catch (InvalidMidiDataException e) {
 				e.printStackTrace();
 			}
 		}
+		
+		System.out.println("===========================================Fin buildTrack");
 	}
 	
 }

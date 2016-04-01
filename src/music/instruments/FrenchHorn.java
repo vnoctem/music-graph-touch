@@ -8,6 +8,11 @@ public class FrenchHorn extends AbstractInstrument {
 		this.setBank(0);
 		this.setProgram(60);
 	}
+	
+	@Override
+	public String getName() {
+		return "French Horn";
+	}
 
 	@Override
 	public void drawIcon(GraphicsWrapper gw, float transX, float transY, float scaleX, float scaleY) {

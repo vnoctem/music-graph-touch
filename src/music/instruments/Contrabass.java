@@ -10,6 +10,11 @@ public class Contrabass extends AbstractInstrument {
 	}
 	
 	@Override
+	public String getName() {
+		return "Contrabass";
+	}
+	
+	@Override
 	public void drawIcon(GraphicsWrapper gw, float transX, float transY, float scaleX, float scaleY) {
 		gw.setLineWidth(3);
 		gw.localWorldTrans(transX, transY, scaleX, scaleY);
