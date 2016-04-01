@@ -249,16 +249,18 @@ public class SoundBoard {
 	}
 	
 	public void onRelease(float x, float y, long duration, Cursor cDown) {
-		MusicData data = (MusicData)cDown.getData();
-		data.getSound().setSelected(false);
-		
-		MusicNote musicNote = data.getMusicNote(); // récupérer la note qui joue
-		musicNotePlayer.stopMusicNote(musicNote); // arrêter de jouer la note lorsqu'on enlève notre doigt
-		
-		if (recordControl.isRecording()) { // si recording
-			musicNote.setNoteLength(Math.round(duration / 1000000)); // assigner la durée de la note
-			musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
-			System.out.println("onRelease : note key=" + musicNote.getKey() + ", length=" + musicNote.getNoteLength());
+		if (cDown.getData() != null) {
+			MusicData data = (MusicData)cDown.getData();
+			data.getSound().setSelected(false);
+			
+			MusicNote musicNote = data.getMusicNote(); // récupérer la note qui joue
+			musicNotePlayer.stopMusicNote(musicNote); // arrêter de jouer la note lorsqu'on enlève notre doigt
+			
+			if (recordControl.isRecording()) { // si recording
+				musicNote.setNoteLength(Math.round(duration / 1000000)); // assigner la durée de la note
+				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
+				System.out.println("onRelease : note key=" + musicNote.getKey() + ", length=" + musicNote.getNoteLength());
+			}
 		}
 	}
 	

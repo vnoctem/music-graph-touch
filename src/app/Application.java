@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
@@ -65,27 +66,39 @@ public class Application implements Serializable {
 		sb = null;
 	}
 	
-	public void touchDown(int id, CursorController cursors, long pauseBetweenClick) {
-		Point2D pos = cursors.last().getPos();
+	public void touchDown(int id, long pauseBetweenClick, LinkedHashMap<Integer, CursorController> cursors) {
+		CursorController cCursor = cursors.get(id);
+		Point2D pos = cCursor.last().getPos();
 		
 		// détecte s'il y a une clé cliquée
 		// permet pas de faire d'autres choses avant de fermer le panneau
 		if (sb != null) {
-			sb.onClick(this, cursors.last(), pauseBetweenClick);
+			sb.onClick(this, cCursor.last(), pauseBetweenClick);
 		} else {
-			// si clic sur un des composants graphiques, fait l'action
-			for (MusicVertex mv : lMv) {
-				if (mv.isInside(pos.x(), pos.y())) {
-					menuMV = new RadialMusicVertex(mv, mv.getPosition().x(), mv.getPosition().y(), lMv);
-					selectedMV = mv;
-					selectedMV.select();
-					break;
+			if (cursors.size() == 1) {
+				// si clic sur un des composants graphiques, fait l'action
+				for (MusicVertex mv : lMv) {
+					if (mv.isInside(pos.x(), pos.y())) {
+						menuMV = new RadialMusicVertex(mv, mv.getPosition().x(), mv.getPosition().y(), lMv);
+						selectedMV = mv;
+						selectedMV.select();
+						break;
+					}
 				}
-			}
-			
-			// sinon, afficher le menu
-			if (selectedMV == null) {
-				menu = new RadialMenu(pos.x(), pos.y());
+				
+				// sinon, afficher le menu
+				if (selectedMV == null) {
+					menu = new RadialMenu(pos.x(), pos.y());
+				}
+			} else { // mode de Play
+				// tout effacer
+				if (selectedMV != null) {
+					menuMV = null;
+					selectedMV.deselect();
+					selectedMV.doneConnect(null);
+					selectedMV = null;
+				}
+				menu = null;
 			}
 		}
 	}
