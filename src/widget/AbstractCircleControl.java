@@ -1,5 +1,7 @@
 package widget;
 
+import java.text.DecimalFormat;
+
 import scene.GraphicsWrapper;
 import scene.Point2D;
 import scene.Vector2D;
@@ -8,7 +10,7 @@ public abstract class AbstractCircleControl extends AbstractControl {
 	
 	private float[] colorIcon = new float[]{0f, 0.5f, 0f};
 	private String label;
-	private float value = 180;
+	protected float value = 180;
 
 	public AbstractCircleControl(float x, float y, float radius, float[] color, String label) {
 		super(x, y, radius, color);
@@ -24,14 +26,16 @@ public abstract class AbstractCircleControl extends AbstractControl {
 		return value / 360;
 	}
 	
-	// appelé après avoir ajusté la valeur
-	public abstract void done();
-	
 	public void draw(GraphicsWrapper gw) {
 		super.draw(gw);
 		
 		gw.setColor(1, 1, 1);
-		gw.drawString(position.x() - radius, position.y() - radius, label);
+		int gapHoriz = 20;
+		int gapVerti = 15;
+		gw.drawString(position.x() - radius - gapHoriz, position.y() - radius, label);
+		DecimalFormat df = new DecimalFormat();
+		df.setMaximumFractionDigits(2);
+		gw.drawString(position.x() - radius - gapHoriz, position.y() - radius + gapVerti, df.format(getValue()));
 		
 		gw.setColor(colorIcon[0], colorIcon[1], colorIcon[2]);
 		gw.drawPartOfCircle(position.x(), position.y(), radius, 0, (int)value, true);

@@ -6,9 +6,4 @@ public class VolControl extends AbstractCircleControl {
 		super(x, y, radius, color, label);
 	}
 
-	@Override
-	public void done() {
-		System.out.println("Vol : " + getValue());
-	}
-
 }

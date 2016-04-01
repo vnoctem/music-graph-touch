@@ -264,12 +264,6 @@ public class SoundBoard {
 				return;
 			}
 		}
-		
-		if (volControl.isInside(x, y, position))
-			volControl.done();
-		
-		if (octControl.isInside(x, y, position))
-			octControl.done();
 	}
 	
 	public void onMove(float x, float y) {
