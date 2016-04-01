@@ -20,19 +20,13 @@ public class MusicSample implements Serializable {
 	
 	private static final long serialVersionUID = -7222124622093166901L;
 	
-	private int ticks; // temps en ticks pour la composition
-	private int velocity; // le volume de l'échantillon
+	private long ticks; // temps en ticks pour la composition
 	private ArrayList<MusicNote> notes; // les notes de musique de l'échantillon
-	private Track track; // la track dans laquelle l'échantillon sera créé (une track par échantillon)
+	private transient Track track; // la track dans laquelle l'échantillon sera créé (une track par échantillon)
 	
 	public MusicSample() {
 		notes = new ArrayList<MusicNote>();
-		velocity = 64;
-	}
-	
-	public MusicSample(int velocity) {
-		notes = new ArrayList<MusicNote>();
-		this.velocity = velocity;
+		System.out.println("MusicSample()");
 	}
 	
 	public void setTrack(Track track) {
@@ -47,7 +41,7 @@ public class MusicSample implements Serializable {
 		ticks = startTick;
 	}
 	
-	public int getTicksLength() {
+	public long getTicksLength() {
 		return ticks;
 	}
 	
@@ -79,7 +73,7 @@ public class MusicSample implements Serializable {
 	 * Bâtir la track de l'échantillon au temps donné dans la séquence
 	 * @throws InvalidMidiDataException 
 	 */
-	public void buildTrack(Sequence sequence, AbstractInstrument instrument, int startTick) 
+	public void buildTrack(Sequence sequence, AbstractInstrument instrument, long startTick) 
 			throws InvalidMidiDataException {
 		track = sequence.createTrack(); // créer la track
 		ticks = 0;
@@ -89,7 +83,6 @@ public class MusicSample implements Serializable {
 		instrumentMessage.setMessage(ShortMessage.PROGRAM_CHANGE, 0, instrument.getProgram(), instrument.getBank());
 		track.add(new MidiEvent(instrumentMessage, startTick));
 		startTick++; // incrémenter le tick de 1
-				
 		
 		for (MusicNote note : notes) {
 			try {
@@ -98,8 +91,8 @@ public class MusicSample implements Serializable {
 				System.out.println("build track note key = " + note.getKey() + ", startTick = " + startTick + ", ticks = " + 
 						ticks + ", noteLength = " + note.getNoteLength()); // tempo
 				
-				on.setMessage(ShortMessage.NOTE_ON, 0, note.getKey(), this.velocity);
-				off.setMessage(ShortMessage.NOTE_OFF, 0, note.getKey(), this.velocity);
+				on.setMessage(ShortMessage.NOTE_ON, 0, note.getKey(), note.getVelocity());
+				off.setMessage(ShortMessage.NOTE_OFF, 0, note.getKey(), note.getVelocity());
 				
 				track.add(new MidiEvent(on, startTick + ticks)); // message pour jouer la note
 				track.add(new MidiEvent(off, startTick + ticks + note.getNoteLength())); // message pour arrêter la note

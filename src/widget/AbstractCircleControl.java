@@ -41,5 +41,5 @@ public abstract class AbstractCircleControl extends AbstractControl {
 		gw.drawPartOfCircle(position.x(), position.y(), radius, 0, (int)value, true);
 		gw.setColor(1, 1, 1);
 	}
-
+	
 }

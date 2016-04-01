@@ -18,7 +18,7 @@ import scene.MusicVertex;
  */
 public class MusicSequenceBuilder {
 	
-	private int ticks; // temps en ticks (millisecondes) pour la composition de la séquence
+	private long ticks; // temps en ticks (millisecondes) pour la composition de la séquence
 	private ArrayList<MusicVertex> lMv;
 	
 	public MusicSequenceBuilder(ArrayList<MusicVertex> lMv) {
@@ -59,7 +59,7 @@ public class MusicSequenceBuilder {
 					System.out.println("si enfant non visité");
 					if (!mvChild.getMusicSample().getMusicNotes().isEmpty()) { // si échantillon pas vide
 						System.out.println("échantillon pas vide");
-						addMusicSample(mvChild.getMusicSample(), musicSequence, mvChild.getInstrument(), ticks + (Math.round(c.getLength()) * 5));
+						addMusicSample(mvChild.getMusicSample(), musicSequence, mvChild.getInstrument(), ticks + (Math.round(c.getLength()) * 10));
 						mvChild.setTimePosition(Math.round(c.getLength()) * 10);
 						System.out.println("Longueur du connecteur * 10 (millisecondes) : " + (Math.round(c.getLength()) * 10));
 						queue.add(mvChild);
@@ -73,7 +73,7 @@ public class MusicSequenceBuilder {
 		return musicSequence;
 	}
 	
-	private void addMusicSample(MusicSample musicSample, Sequence sequence, AbstractInstrument instrument, int startTick) {
+	private void addMusicSample(MusicSample musicSample, Sequence sequence, AbstractInstrument instrument, long startTick) {
 		try {
 			musicSample.buildTrack(sequence, instrument, startTick);
 		} catch (InvalidMidiDataException e) {
@@ -85,7 +85,7 @@ public class MusicSequenceBuilder {
 	private void resetVisitedMusicVertex() {
 		for (MusicVertex mv : lMv) {
 			mv.setVisited(false);
-			System.out.println("false");
+			System.out.println("resetVisitedMusicVertex()");
 		}
 	}
 

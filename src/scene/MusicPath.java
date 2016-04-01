@@ -97,9 +97,9 @@ public class MusicPath implements Runnable, ActionListener {
 				cc.addCursor(new Cursor(type, x, y));
 				cursors.put(id, cc);
 				
-				app.touchDown(id, pause, cursors);
+				app.touchDown(id, pause / 1000000, cursors);
 				
-				// réinitialiser pour pas avoir des effets inatt
+				// réinitialiser pour pas avoir des effets inattendus
 				if (pause != 0) {
 					startTime = 0;
 					pause = 0;
