@@ -60,6 +60,7 @@ public class SoundBoard {
 	private AbstractInstrument instrument;
 	private MusicSamplePlayer musicSamplePlayer;
 	private int index;
+	private SoundBoard duplicate;
 	
 	public SoundBoard(float x, float y, MusicVertex mv) {
 		position = new Point2D(x - width / 2, y - height / 2);
@@ -238,7 +239,8 @@ public class SoundBoard {
 		}
 		
 		if (dupliControl.isInside(x, y, position)) {
-			dupliControl.duplicate(app, new SoundBoard(width / 2, height / 2, mv));
+			duplicate = new SoundBoard(width / 2, height / 2, mv);
+			dupliControl.duplicate(app, duplicate);
 			return true;
 		}
 		
