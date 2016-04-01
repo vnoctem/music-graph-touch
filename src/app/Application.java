@@ -39,7 +39,7 @@ public class Application implements Serializable {
 	private MusicVertex selectedMV = null;
 	
 	private MusicVertex startMV = null; // noeud de départ
-	private MusicSequencePlayer msp;
+	private transient MusicSequencePlayer msp;
 	
 	public void draw(GraphicsWrapper gw) {
 		// tous les composants graphiques et musicals
@@ -100,11 +100,10 @@ public class Application implements Serializable {
 				MusicSequenceBuilder seqBuilder = new MusicSequenceBuilder(lMv);
 				
 				try {
-					MusicSequencePlayer msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(startMV, Sequence.PPQ, 250));
+					msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(startMV, Sequence.PPQ, 250));
 					msp.play();
 					System.out.println("AFTER PLAY();*********************************************");
 					startMV.getMusicSample().printMusicNotes();
-					
 				} catch (InvalidMidiDataException e) {
 					e.printStackTrace();
 					System.out.println("Paramètres de séquence invalide.");

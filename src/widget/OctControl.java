@@ -20,4 +20,6 @@ public class OctControl extends AbstractCircleControl {
 		float fixedLevel = value / range;
 		super.value = range * ((int) fixedLevel + 1);
 	}
+	
+	
 }
