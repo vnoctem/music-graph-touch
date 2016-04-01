@@ -1,3 +1,4 @@
+package scene;
 
 import java.awt.Container;
 import java.awt.Component;
@@ -39,7 +40,7 @@ public class MultitouchFramework
 	public static final int TOUCH_EVENT_UP = 2;
 
 	private GraphicsWrapper gw = new GraphicsWrapper();
-	private SimpleWhiteboard client = null;
+	private MusicPath client = null;
 	private Component rootComponent = null; // used to convert between coordinate systems
 
 	private int preferredWidth, preferredHeight;
@@ -51,7 +52,7 @@ public class MultitouchFramework
 	}
 
 	private void createClient() {
-		client = new SimpleWhiteboard(this,gw);
+		client = new MusicPath(this,gw);
 	}
 
 	public MultitouchFramework( GLCapabilities caps ) {

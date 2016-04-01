@@ -1,9 +1,9 @@
 package scene;
 
-import java.util.ArrayList;
-
 import java.awt.Container;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -25,71 +25,23 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 //import com.sun.opengl.util.GLUT;
 
+import jwinpointer.JWinPointerReader;
+import jwinpointer.JWinPointerReader.PointerEventListener;
 
-class Finger {
-	public static final int FINGER_RADIUS = 15;
-	public Point2D position = new Point2D(); // in pixel coordinates
-	public int id;
-}
-class FingerContainer {
-	private ArrayList< Finger > fingers = new ArrayList< Finger >();
 
-	public int getNumFingers() { return fingers.size(); }
-	public Finger getFingerByIndex( int index ) { return fingers.get( index ); }
-
-	// returns -1 if no finger is under the given position
-	public int getIndexOfFingerUnderCursorPosition( int x, int y ) {
-		for ( int i = fingers.size()-1; i >= 0; --i ) {
-			Finger f = fingers.get(i);
-			float dx = f.position.x() - x;
-			float dy = f.position.y() - y;
-			float distanceSquared = dx*dx + dy*dy;
-			if ( distanceSquared < Finger.FINGER_RADIUS*Finger.FINGER_RADIUS )
-				return i;
-		}
-		return -1;
-	}
-	// returns index of newly created finger
-	public int createFinger( int x, int y ) {
-		Finger f = new Finger();
-		f.id = fingers.isEmpty() ? 0 : ( fingers.get(fingers.size()-1).id + 1 );
-		f.position.get()[0] = x;
-		f.position.get()[1] = y;
-		fingers.add( f );
-		return fingers.size()-1;
-	}
-	public void deleteFingerByIndex( int index ) {
-		fingers.remove( index );
-	}
-	public void drawFingers(
-		GraphicsWrapper gw,
-		int indexOfFingerToHilite // -1 if no finger is to be hilited
-	) {
-		gw.enableAlphaBlending();
-		gw.setCoordinateSystemToPixels();
-		for ( int i = 0; i < fingers.size(); ++i ) {
-			Finger f = fingers.get(i);
-			gw.setColor( 0, 0.5f, 0.5f, i==indexOfFingerToHilite ? 0.8f : 0.35f );
-			gw.drawCircle( f.position.x()-Finger.FINGER_RADIUS, f.position.y()-Finger.FINGER_RADIUS, Finger.FINGER_RADIUS );
-		}
-	}
-}
 
 
 public class MultitouchFramework
 	extends GLJPanel
-	implements KeyListener, MouseListener, MouseMotionListener, GLEventListener
+	implements KeyListener, MouseListener, MouseMotionListener, PointerEventListener, GLEventListener
 {
-	FingerContainer fingerContainer = new FingerContainer();
-	private boolean isFingerDraggingModeActive = false;
-	private int indexOfFingerUnderMouse = -1;
-	private int mouse_x, mouse_y;
 	public static final int TOUCH_EVENT_DOWN = 0;
 	public static final int TOUCH_EVENT_MOVE = 1;
 	public static final int TOUCH_EVENT_UP = 2;
 
 	private GraphicsWrapper gw = new GraphicsWrapper();
 	private MusicPath client = null;
+	private Component rootComponent = null; // used to convert between coordinate systems
 
 	private int preferredWidth, preferredHeight;
 	private int width, height;
@@ -147,79 +99,17 @@ public class MultitouchFramework
 	public void mouseClicked( MouseEvent e ) {
 		client.mouseClicked(e);
 	}
-	private void updateHiliting( int x, int y ) {
-		int newIndexOfFingerUnderMouse = fingerContainer.getIndexOfFingerUnderCursorPosition( x, y );
-		if ( newIndexOfFingerUnderMouse != indexOfFingerUnderMouse ) {
-			indexOfFingerUnderMouse = newIndexOfFingerUnderMouse;
-			requestRedraw();
-		}
-	}
 	public void mousePressed( MouseEvent e ) {
-		mouse_x = e.getX();
-		mouse_y = e.getY();
-		if ( e.isControlDown() ) {
-			if ( indexOfFingerUnderMouse == -1 ) {
-				indexOfFingerUnderMouse = fingerContainer.createFinger( e.getX(), e.getY() );
-				Finger f = fingerContainer.getFingerByIndex( indexOfFingerUnderMouse );
-				client.processMultitouchInputEvent(
-					f.id,
-					f.position.x(),
-					f.position.y(),
-					TOUCH_EVENT_DOWN
-				);
-			}
-			isFingerDraggingModeActive = true;
-		}
-		else {
-			client.mousePressed(e);
-		}
+		client.mousePressed(e);
 	}
 	public void mouseReleased( MouseEvent e ) {
-		mouse_x = e.getX();
-		mouse_y = e.getY();
-		if ( isFingerDraggingModeActive ) {
-			if ( SwingUtilities.isRightMouseButton(e) ) {
-				Finger f = fingerContainer.getFingerByIndex( indexOfFingerUnderMouse );
-				client.processMultitouchInputEvent(
-					f.id,
-					f.position.x(),
-					f.position.y(),
-					TOUCH_EVENT_UP
-				);
-				fingerContainer.deleteFingerByIndex( indexOfFingerUnderMouse );
-			}
-			isFingerDraggingModeActive = false;
-			indexOfFingerUnderMouse = -1;
-			updateHiliting( e.getX(), e.getY() );
-			requestRedraw();
-		}
-		else {
-			client.mouseReleased( e );
-		}
+		client.mouseReleased( e );
 	}
 	public void mouseMoved( MouseEvent e ) {
-		mouse_x = e.getX();
-		mouse_y = e.getY();
 		client.mouseMoved( e );
-		updateHiliting( e.getX(), e.getY() );
 	}
 	public void mouseDragged( MouseEvent e ) {
-		if ( isFingerDraggingModeActive ) {
-			Finger f = fingerContainer.getFingerByIndex( indexOfFingerUnderMouse );
-			f.position.get()[0] += e.getX() - mouse_x;
-			f.position.get()[1] += e.getY() - mouse_y;
-			client.processMultitouchInputEvent(
-				f.id,
-				f.position.x(),
-				f.position.y(),
-				TOUCH_EVENT_MOVE
-			);
-		}
-		else {
-			client.mouseDragged( e );
-		}
-		mouse_x = e.getX();
-		mouse_y = e.getY();
+		client.mouseDragged( e );
 	}
 
 	public void requestRedraw() {
@@ -246,8 +136,49 @@ public class MultitouchFramework
 	public void display( GLAutoDrawable drawable ) {
 		gw.set( drawable );
 		client.draw();
-		fingerContainer.drawFingers( gw, indexOfFingerUnderMouse );
 		// gl.glFlush(); // I don't think this is necessary
+	}
+
+	private static final int JWINPOINTER_EVENT_TYPE_DRAG = 1;
+	private static final int JWINPOINTER_EVENT_TYPE_HOVER = 2;
+	private static final int JWINPOINTER_EVENT_TYPE_DOWN = 3;
+	private static final int JWINPOINTER_EVENT_TYPE_UP = 4;
+	private static final int JWINPOINTER_EVENT_TYPE_BUTTON_DOWN = 5;
+	private static final int JWINPOINTER_EVENT_TYPE_BUTTON_UP = 6;
+	private static final int JWINPOINTER_EVENT_TYPE_IN_RANGE = 7;
+	private static final int JWINPOINTER_EVENT_TYPE_OUT_OF_RANGE = 8;
+
+
+	public void pointerXYEvent(int deviceType, int pointerID, int eventType, boolean inverted, int x, int y, int pressure) {
+		//System.out.println("Pointer coordinates before conversion: "+x+","+y);
+		Point p = SwingUtilities.convertPoint(rootComponent, x, y, this);
+		x = p.x;
+		y = p.y;
+		//System.out.println("Pointer coordinates: "+x+","+y);
+		int touchEvent = 0;
+		switch ( eventType ) {
+		case JWINPOINTER_EVENT_TYPE_DRAG:
+			touchEvent = TOUCH_EVENT_MOVE;
+			break;
+		case JWINPOINTER_EVENT_TYPE_DOWN:
+		case JWINPOINTER_EVENT_TYPE_BUTTON_DOWN:
+			touchEvent = TOUCH_EVENT_DOWN;
+			break;
+		case JWINPOINTER_EVENT_TYPE_UP:
+		case JWINPOINTER_EVENT_TYPE_BUTTON_UP:
+			touchEvent = TOUCH_EVENT_UP;
+			break;
+		case JWINPOINTER_EVENT_TYPE_HOVER:
+		case JWINPOINTER_EVENT_TYPE_IN_RANGE:
+		case JWINPOINTER_EVENT_TYPE_OUT_OF_RANGE:
+			return;
+		}
+		client.processMultitouchInputEvent( pointerID, x, y, touchEvent );
+		repaint();
+	}
+	public void pointerButtonEvent(int deviceType, int pointerID, int eventType, boolean inverted, int buttonIndex) {
+	}
+	public void pointerEvent(int deviceType, int pointerID, int eventType, boolean inverted) {
 	}
 
 	// For thread safety, this should be invoked
@@ -268,10 +199,13 @@ public class MultitouchFramework
 		JFrame frame = new JFrame( Constant.PROGRAM_NAME );
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 
+		mf.rootComponent = mf;
 		if ( Constant.HAS_MENUBAR ) {
 			JMenuBar menuBar = mf.client.createMenuBar();
-			if ( menuBar != null )
+			if ( menuBar != null ) {
 				frame.setJMenuBar(menuBar);
+				mf.rootComponent = menuBar; // for some reason, when there's a menubar, the frame doesn't work properly for converting between coordinate systems, but the menubar does work for this
+			}
 		}
 
 		// Need to set visible first before starting the rendering thread due
@@ -286,8 +220,11 @@ public class MultitouchFramework
 		pane.setLayout( new BorderLayout() );
 		if ( Constant.HAS_PANEL_OF_WIDGETS ) {
 			JPanel panelOfWidgets = mf.client.createPanelOfWidgets();
-			if ( panelOfWidgets != null )
+			if ( panelOfWidgets != null ) {
 				pane.add( panelOfWidgets, BorderLayout.LINE_START );
+				if ( ! Constant.HAS_MENUBAR )
+					mf.rootComponent = panelOfWidgets;
+			}
 		}
 		pane.add( mf, BorderLayout.CENTER );
 
@@ -295,6 +232,9 @@ public class MultitouchFramework
 		frame.setVisible( true );
 
 		mf.start();
+
+		JWinPointerReader jWinPointerReader = new JWinPointerReader(frame);
+		jWinPointerReader.addPointerEventListener(mf);
 	}
 
 	public static void main( String[] args ) {
