@@ -5,7 +5,7 @@ import scene.GraphicsWrapper;
 public class RecordControl extends AbstractControl {
 	private boolean recording = false;
 	private float[] colorIcon = new float[]{1, 0, 0};
-	private float radiusIcon = 30;
+	private float radiusIcon = 20;
 	
 	public RecordControl(float x, float y, float radius, float[] color) {
 		super(x, y, radius, color);

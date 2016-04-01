@@ -11,8 +11,8 @@ public class CloseControl extends AbstractControl {
 		super(x, y, radius, color);
 	}
 	
-	public void close(Application app) {
-		app.resetSB();
+	public void close(Application app, int index) {
+		app.resetSB(index);
 	}
 	
 	public void draw(GraphicsWrapper gw) {
@@ -20,7 +20,7 @@ public class CloseControl extends AbstractControl {
 		
 		gw.setColor(colorIcon[0], colorIcon[1], colorIcon[2]);
 			gw.setLineWidth(4);
-			int length = 50;
+			int length = 30;
 			gw.drawLine(position.x() - length / 2, position.y() - length / 2, position.x() + length / 2, position.y() + length / 2);
 			gw.drawLine(position.x() + length / 2, position.y() - length / 2, position.x() - length / 2, position.y() + length / 2);
 			gw.setLineWidth(1);

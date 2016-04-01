@@ -30,8 +30,8 @@ public class PlayControl extends AbstractControl {
 		super.draw(gw);
 		
 		gw.setColor(colorIcon[0], colorIcon[1], colorIcon[2]);
-		int triHeight = 40;
-		int triWidth = 40;
+		int triHeight = 25;
+		int triWidth = 25;
 		int gap = 5;
 		if (!playing) {
 			gw.drawTriangle( 

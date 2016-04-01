@@ -30,8 +30,9 @@ public abstract class AbstractCircleControl extends AbstractControl {
 		gw.setColor(1, 1, 1);
 		int gapHoriz = 20;
 		int gapVerti = 15;
+		int gapText = 8;
 		gw.drawString(position.x() - radius - gapHoriz, position.y() - radius, label);
-		gw.drawString(position.x() - radius - gapHoriz, position.y() - radius + gapVerti, String.valueOf((int)getValue()));
+		gw.drawString(position.x() - radius - gapHoriz + gapText, position.y() - radius + gapVerti, String.valueOf((int)getValue()));
 		
 		gw.setColor(colorIcon[0], colorIcon[1], colorIcon[2]);
 		gw.drawPartOfCircle(position.x(), position.y(), radius, 0, (int)value, true);

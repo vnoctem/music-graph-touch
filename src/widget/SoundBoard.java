@@ -19,15 +19,16 @@ import scene.MusicVertex;
 public class SoundBoard {
 	// entire panel
 	private int width = 800;
-	private int height = 400;
+	private int height = 300;
 	// piano
-	private int pianoHeight = 250;
-	private int heightSharp = 180;
+	private int pianoHeight = 200;
+	private int heightSharp = 120;
 	private int widthSharp = 80;
 	private int nbKeys = 8;
 	private int nbSharpKeys = 5;
-	private int controlStart = 90;
-	private int gapBetweenControls = 20;
+	private int controlStart = 70;
+	private int gapBetweenControls = 15;
+	private int gapBetweenSection = -50;
 	
 	private Point2D position;
 	private ArrayList<Sound> sounds;
@@ -37,6 +38,9 @@ public class SoundBoard {
 	
 	// contrôle pour jouer
 	private PlayControl playControl;
+	
+	// contrôle pour dupliquer
+	private DupliControl dupliControl;
 	
 	// contrôle pour déplacer
 	private MoveControl moveControl;
@@ -55,6 +59,7 @@ public class SoundBoard {
 	private MusicSample musicSample;
 	private AbstractInstrument instrument;
 	private MusicSamplePlayer musicSamplePlayer;
+	private int index;
 	
 	public SoundBoard(float x, float y, MusicVertex mv) {
 		position = new Point2D(x - width / 2, y - height / 2);
@@ -179,15 +184,19 @@ public class SoundBoard {
 		}
 		
 		// contrôles
-		int gapBetweenSection = 50;
-		recordControl = new RecordControl(controlStart, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
-		playControl = new PlayControl(controlStart * 2 + gapBetweenControls, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
-		moveControl = new MoveControl(controlStart * 3 + gapBetweenControls * 2, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
-		closeControl = new CloseControl(controlStart * 4 + gapBetweenControls * 3, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
-		volControl = new VolControl(controlStart * 6 + gapBetweenControls * 5 - gapBetweenSection, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Vol.");
-		octControl = new OctControl(controlStart * 7 + gapBetweenControls * 6 - gapBetweenSection, (height - pianoHeight) / 2, 50, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Oct.", new int[] {5, 6, 7, 8, 9, 10});
+		recordControl = new RecordControl(controlStart, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		playControl = new PlayControl(controlStart * 2 + gapBetweenControls, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		dupliControl = new DupliControl(controlStart * 3 + gapBetweenControls * 2, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		moveControl = new MoveControl(controlStart * 4 + gapBetweenControls * 3, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		closeControl = new CloseControl(controlStart * 5 + gapBetweenControls * 4, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		volControl = new VolControl(controlStart * 7 + gapBetweenControls * 6 - gapBetweenSection, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Vol.");
+		octControl = new OctControl(controlStart * 8 + gapBetweenControls * 7 - gapBetweenSection, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Oct.", new int[] {5, 6, 7, 8, 9, 10});
 	}
 	
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
 	private int getOctaveFactor() {
 		if (octControl.getValue() < 0.2) {
 			return -22;
@@ -211,7 +220,7 @@ public class SoundBoard {
 		position = new Point2D(x, y);
 	}
 	
-	public void onClick(Application app, Cursor c, long timeBetweenClick) {
+	public boolean onClick(Application app, Cursor c, long timeBetweenClick) {
 		float x = c.getPos().x();
 		float y = c.getPos().y();
 		
@@ -224,8 +233,13 @@ public class SoundBoard {
 				if (recordControl.isRecording()) {
 					musicSample.addMusicNote(new MusicNote(60, timeBetweenClick, 0)); // add a note without volume to simulate a pause
 				}
-				return;
+				return true;
 			}
+		}
+		
+		if (dupliControl.isInside(x, y, position)) {
+			dupliControl.duplicate(app, new SoundBoard(width / 2, height / 2, mv));
+			return true;
 		}
 		
 		if (recordControl.isInside(x, y, position)) {
@@ -237,6 +251,7 @@ public class SoundBoard {
 				musicSample = new MusicSample(); // faire un nouvel échantillon
 			}
 			recordControl.record(); // start or stop recording
+			return true;
 		}
 		
 		if (playControl.isInside(x, y, position)) {
@@ -252,20 +267,29 @@ public class SoundBoard {
 				System.out.println("Aucun échantillon enregistré.");
 			}
 			playControl.play();
+			return true;
 		}
 		
 		if (closeControl.isInside(x, y, position)) {
-			closeControl.close(app);
+			closeControl.close(app, index);
+			return true;
 		}
 		
-		if (volControl.isInside(x, y, position))
+		if (volControl.isInside(x, y, position)) {
 			volControl.adjust(x, y, position);
+			return true;
+		}
 		
-		if (octControl.isInside(x, y, position))
+		if (octControl.isInside(x, y, position)) {
 			octControl.adjust(x, y, position);
+			return true;
+		}
+		
+		// l'événement non consommé
+		return false;
 	}
 	
-	public void onRelease(float x, float y, long duration, Cursor cDown) {
+	public boolean onRelease(float x, float y, long duration, Cursor cDown) {
 		if (cDown.getData() != null) {
 			MusicData data = (MusicData)cDown.getData();
 			data.getSound().setSelected(false);
@@ -278,18 +302,30 @@ public class SoundBoard {
 				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
 				System.out.println("onRelease : note key=" + musicNote.getKey() + ", length=" + musicNote.getNoteLength());
 			}
+			
+			return true;
 		}
+		
+		return false;
 	}
 	
-	public void onMove(float x, float y) {
-		if (moveControl.isInside(x, y, position))
+	public boolean onMove(float x, float y) {
+		if (moveControl.isInside(x, y, position)) {
 			moveControl.move(x, y, this);
+			return true;
+		}
 		
-		if (volControl.isInside(x, y, position))
+		if (volControl.isInside(x, y, position)) {
 			volControl.adjust(x, y, position);
+			return true;
+		}
 		
-		if (octControl.isInside(x, y, position))
+		if (octControl.isInside(x, y, position)) {
 			octControl.adjust(x, y, position);
+			return true;
+		}
+		
+		return false;
 	}
 
 	public void draw(GraphicsWrapper gw) {
@@ -305,6 +341,7 @@ public class SoundBoard {
 			// contrôles
 			recordControl.draw(gw);
 			playControl.draw(gw);
+			dupliControl.draw(gw);
 			moveControl.draw(gw);
 			closeControl.draw(gw);
 			volControl.draw(gw);

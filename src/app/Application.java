@@ -32,7 +32,7 @@ public class Application implements Serializable {
 	private RadialMusicVertex menuMV;
 	
 	// panneau pour jouer des sons
-	private SoundBoard sb;
+	private ArrayList<SoundBoard> lSb =new ArrayList<SoundBoard>();
 	
 	// liste des composant graphique et musical
 	private ArrayList<MusicVertex> lMv = new ArrayList<MusicVertex>(); 
@@ -49,8 +49,10 @@ public class Application implements Serializable {
 		}
 		
 		// panneau de son
-		if (sb != null)
-			sb.draw(gw);
+		if (!lSb.isEmpty()) {
+			for (SoundBoard sb : lSb)
+				sb.draw(gw);
+		}
 		
 		// menu des composants
 		if (menuMV != null)
@@ -62,8 +64,13 @@ public class Application implements Serializable {
 			menu.draw(gw);
 	}
 	
-	public void resetSB() {
-		sb = null;
+	public void add(SoundBoard sb) {
+		lSb.add(sb);
+		sb.setIndex(lSb.size() - 1);
+	}
+	
+	public void resetSB(int index) {
+		lSb.remove(index);
 	}
 	
 	public void touchDown(int id, long pauseBetweenClick, LinkedHashMap<Integer, CursorController> cursors) {
@@ -72,8 +79,11 @@ public class Application implements Serializable {
 		
 		// détecte s'il y a une clé cliquée
 		// permet pas de faire d'autres choses avant de fermer le panneau
-		if (sb != null) {
-			sb.onClick(this, cCursor.last(), pauseBetweenClick);
+		if (!lSb.isEmpty()) {
+			for (SoundBoard sb : lSb) {
+				if (sb.onClick(this, cCursor.last(), pauseBetweenClick))
+					break;
+			}
 		} else {
 			if (cursors.size() >= 3)
 				// jouer la séquence
@@ -111,7 +121,7 @@ public class Application implements Serializable {
 	// lorsqu'il y a plus de 3 clics
 	public void specialAction() {
 		// jouer seulement on n'est pas en mode de piano
-		if (sb == null) {
+		if (lSb.isEmpty()) {
 			System.out.println("PLAY THE MUSIC**********************************************************");
 			startMV = getStartMusicVertex();
 			if (startMV != null) {
@@ -161,12 +171,16 @@ public class Application implements Serializable {
 		Point2D pos = cursors.last().getPos();
 		
 		// passer aussi la durée entre touch down et touch up
-		if (sb != null) {
-			sb.onRelease(pos.x(), pos.y(), cursors.getDuration(), cursors.first());
+		if (!lSb.isEmpty()) {
+			for (SoundBoard sb : lSb) {
+				if (sb.onRelease(pos.x(), pos.y(), cursors.getDuration(), cursors.first()))
+					break;
+			}
 		} else {
 			if (selectedMV != null) {
 				// garder le sound board
-				sb = menuMV.getSB();
+				lSb.add(menuMV.getSB());
+				menuMV.getSB().setIndex(lSb.size() - 1);
 				
 				// si déposé sur un autre noeud, donc relie-les
 				for (MusicVertex mv : lMv) {
@@ -202,8 +216,12 @@ public class Application implements Serializable {
 		
 		// pas besoin de les mettre dans un if
 		// parce que dans touch down ils subissent déjà une restriction
-		if (sb != null)
-			sb.onMove(pos.x(), pos.y());
+		if (!lSb.isEmpty()) {
+			for (SoundBoard sb : lSb) {
+				if (sb.onMove(pos.x(), pos.y()))
+					break;
+			}
+		}
 		
 		if (menu != null)
 			menu.onMove(pos.x(), pos.y());

@@ -19,8 +19,8 @@ public class MoveControl extends AbstractControl {
 		
 		gw.setColor(colorIcon[0], colorIcon[1], colorIcon[2]);
 			int gap = 20;
-			int triHeight = 20;
-			int triWidth = 20;
+			int triHeight = 10;
+			int triWidth = 10;
 			gw.setLineWidth(4);
 			gw.drawLine(position.x(), position.y() - radius + gap, position.x(), position.y() + radius - gap);
 			gw.drawLine(position.x() - radius + gap, position.y(), position.x() + radius - gap, position.y());
@@ -35,15 +35,16 @@ public class MoveControl extends AbstractControl {
 					position.x() - triWidth / 2, position.y() + radius - gap - triHeight / 2,
 					position.x(), position.y() + radius - gap + 5
 			);
+			int horizGap = 2;
 			gw.drawTriangle( 
-					position.x() - radius + gap, position.y(),
-					position.x() - radius + gap + triWidth / 2, position.y() + triHeight / 2,
-					position.x() - radius + gap + triWidth / 2, position.y() - triHeight / 2
+					position.x() - radius + gap - horizGap, position.y(),
+					position.x() - radius + gap + triWidth / 2 - horizGap, position.y() + triHeight / 2,
+					position.x() - radius + gap + triWidth / 2 - horizGap, position.y() - triHeight / 2
 			);
 			gw.drawTriangle( 
-					position.x() + radius - gap, position.y(),
-					position.x() + radius - gap - triWidth / 2, position.y() - triHeight / 2,
-					position.x() + radius - gap - triWidth / 2, position.y() + triHeight / 2
+					position.x() + radius - gap + horizGap, position.y(),
+					position.x() + radius - gap - triWidth / 2 + horizGap, position.y() - triHeight / 2,
+					position.x() + radius - gap - triWidth / 2 + horizGap, position.y() + triHeight / 2
 			);
 			gw.setLineWidth(1);
 		gw.setColor(1, 1, 1);
