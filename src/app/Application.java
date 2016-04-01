@@ -32,18 +32,18 @@ public class Application implements Serializable {
 	private RadialMusicVertex menuMV;
 	
 	// panneau pour jouer des sons
-	private ArrayList<SoundBoard> lSb =new ArrayList<SoundBoard>();
+	private ArrayList<SoundBoard> lSb = new ArrayList<SoundBoard>();
 	
 	// liste des composant graphique et musical
 	private ArrayList<MusicVertex> lMv = new ArrayList<MusicVertex>(); 
-	
 	private MusicVertex selectedMV = null;
-	
 	private MusicVertex startMV = null; // noeud de départ
+	
 	private transient MusicSequencePlayer msp;
+	public int channelCounter = 0;
 	
 	public void draw(GraphicsWrapper gw) {
-		// tous les composants graphiques et musicals
+		// tous les composants graphiques et musicaux
 		for (MusicVertex mv : lMv) {
 			mv.draw(gw);
 		}
@@ -93,7 +93,7 @@ public class Application implements Serializable {
 					// si clic sur un des composants graphiques, fait l'action
 					for (MusicVertex mv : lMv) {
 						if (mv.isInside(pos.x(), pos.y())) {
-							menuMV = new RadialMusicVertex(mv, mv.getPosition().x(), mv.getPosition().y(), lMv);
+							menuMV = new RadialMusicVertex(mv, mv.getPosition().x(), mv.getPosition().y(), lMv, this);
 							selectedMV = mv;
 							selectedMV.select();
 							break;
@@ -102,7 +102,7 @@ public class Application implements Serializable {
 					
 					// sinon, afficher le menu
 					if (selectedMV == null) {
-						menu = new RadialMenu(pos.x(), pos.y());
+						menu = new RadialMenu(pos.x(), pos.y(), this);
 					}
 				} else { // mode de Play
 					// tout effacer
@@ -154,6 +154,14 @@ public class Application implements Serializable {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public int getChannelCounter() {
+		return channelCounter;
+	}
+	
+	public void setChannelCounter(int channelCounter) {
+		this.channelCounter = channelCounter;
 	}
 	
 	private MusicVertex getStartMusicVertex() {

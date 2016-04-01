@@ -8,6 +8,11 @@ public class Clarinet extends AbstractInstrument {
 		this.setBank(0);
 		this.setProgram(71);
 	}
+	
+	@Override
+	public String getName() {
+		return "Clarinet";
+	}
 
 	@Override
 	public void drawIcon(GraphicsWrapper gw, float transX, float transY, float scaleX, float scaleY) {

@@ -49,7 +49,7 @@ public class MusicPath implements Runnable, ActionListener {
 		gw.frame( new AlignedRectangle2D( new Point2D(-100,-100), new Point2D(100,100) ), true );
 		
 		// charge la scène si celle-ci a été créée
-		/*try {
+		try {
 			// chemin
 			File fichier =  new File("scene.ser") ;
 			if (fichier.exists()) {
@@ -64,7 +64,7 @@ public class MusicPath implements Runnable, ActionListener {
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 	}
 	
 	// méthode pour dessiner dans la scène

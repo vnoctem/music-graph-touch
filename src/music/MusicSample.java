@@ -9,6 +9,7 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
+import app.Application;
 import music.instruments.AbstractInstrument;
 
 /**
@@ -23,10 +24,15 @@ public class MusicSample implements Serializable {
 	private long ticks; // temps en ticks pour la composition
 	private ArrayList<MusicNote> notes; // les notes de musique de l'échantillon
 	private transient Track track; // la track dans laquelle l'échantillon sera créé (une track par échantillon)
+	private int channel = 0; // le channel de l'échantillon
 	
 	public MusicSample() {
 		notes = new ArrayList<MusicNote>();
-		System.out.println("MusicSample()");
+	}
+	
+	public MusicSample(int channel) {
+		notes = new ArrayList<MusicNote>();
+		this.channel = channel;
 	}
 	
 	public void setTrack(Track track) {
@@ -47,6 +53,11 @@ public class MusicSample implements Serializable {
 	
 	public ArrayList<MusicNote> getMusicNotes() {
 		return notes;
+	}
+	
+	public void setChannel(int channel, Application app) {
+		this.channel = channel;
+		System.out.println("setChannel channel : " + channel + ", channelCounter : " + app.getChannelCounter());
 	}
 	
 	public void printMusicNotes() {
@@ -75,12 +86,15 @@ public class MusicSample implements Serializable {
 	 */
 	public void buildTrack(Sequence sequence, AbstractInstrument instrument, long startTick) 
 			throws InvalidMidiDataException {
+		System.out.println("===========================================Début buildTrack");
+		System.out.println("Channel : " + channel);
 		track = sequence.createTrack(); // créer la track
-		ticks = 0;
+		ticks = 0; // les ticks interne de la track à 0
 		
 		// modifier l'instrument qui va jouer la track
 		ShortMessage instrumentMessage = new ShortMessage();
-		instrumentMessage.setMessage(ShortMessage.PROGRAM_CHANGE, 0, instrument.getProgram(), instrument.getBank());
+		instrumentMessage.setMessage(ShortMessage.PROGRAM_CHANGE, channel, instrument.getProgram(), instrument.getBank());
+		System.out.println("change instrument to " + instrument.getName());
 		track.add(new MidiEvent(instrumentMessage, startTick));
 		startTick++; // incrémenter le tick de 1
 		
@@ -88,21 +102,25 @@ public class MusicSample implements Serializable {
 			try {
 				ShortMessage on = new ShortMessage();
 				ShortMessage off = new ShortMessage();
-				System.out.println("build track note key = " + note.getKey() + ", startTick = " + startTick + ", ticks = " + 
-						ticks + ", noteLength = " + note.getNoteLength()); // tempo
 				
-				on.setMessage(ShortMessage.NOTE_ON, 0, note.getKey(), note.getVelocity());
-				off.setMessage(ShortMessage.NOTE_OFF, 0, note.getKey(), note.getVelocity());
+				on.setMessage(ShortMessage.NOTE_ON, channel, note.getKey(), note.getVelocity());
+				off.setMessage(ShortMessage.NOTE_OFF, channel, note.getKey(), note.getVelocity());
 				
-				track.add(new MidiEvent(on, startTick + ticks)); // message pour jouer la note
-				track.add(new MidiEvent(off, startTick + ticks + note.getNoteLength())); // message pour arrêter la note
+				track.add(new MidiEvent(on, (long)(startTick + ticks))); // message pour jouer la note
+				track.add(new MidiEvent(off, (long)(startTick + ticks + note.getNoteLength()))); // message pour arrêter la note
+				
+				if (note.getVelocity() > 0) {
+					System.out.println("build track note key = " + note.getKey() + ", startTick = " + startTick + ", ticks = " + 
+							ticks + ", noteLength = " + note.getNoteLength() + ", volume : " + note.getVelocity() + ", fixedTicks = " + (startTick + ticks));
+					System.out.println("sequence.getTickLength() = " + sequence.getTickLength());
+				}
+				
 				ticks += note.getNoteLength(); // incrémenter les ticks avec la durée de la note jouée
-				
-				System.out.println("sequence.getTickLength() = " + sequence.getTickLength());
 			} catch (InvalidMidiDataException e) {
 				e.printStackTrace();
 			}
 		}
+		System.out.println("===========================================Fin buildTrack");
 	}
 	
 }

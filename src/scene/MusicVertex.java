@@ -22,7 +22,7 @@ public class MusicVertex implements Serializable {
 	private MusicSample musicSample; // l'échantillon de musique du noeud
 	private boolean visited; // pour déterminer si le noeud a été visité ou non
 	private int timePosition; // position de départ en millisecondes dans la séquence
-	
+	private int channel = -1; // le channel du noeud (un maximum de 15 noeuds, 16 - 1 noeud de percurssion)
 	
 	public MusicVertex(AbstractInstrument mi, float radius) {
 		this.radius = radius;
@@ -30,7 +30,16 @@ public class MusicVertex implements Serializable {
 		
 		conn = new ArrayList<Connector>();
 		
-		musicSample = new MusicSample();
+		timePosition = 0;
+	}
+	
+	public MusicVertex(AbstractInstrument mi, float radius, int channel) {
+		this.radius = radius;
+		this.mi = mi;
+		this.channel = channel;
+		
+		conn = new ArrayList<Connector>();
+		
 		timePosition = 0;
 	}
 	
@@ -48,6 +57,14 @@ public class MusicVertex implements Serializable {
 	
 	public void setVisited(boolean visited) {
 		this.visited = visited;
+	}
+	
+	public int getChannel() {
+		return channel;
+	}
+	
+	public void setChannel(int channel) {
+		this.channel = channel;
 	}
 	
 	public AbstractInstrument getInstrument() {
@@ -150,7 +167,7 @@ public class MusicVertex implements Serializable {
 	public void draw(GraphicsWrapper gw) {
 		if (start)
 			gw.setColor(colorStart[0],colorStart[1],colorStart[2]);
-		else if (!musicSample.getMusicNotes().isEmpty())
+		else if (musicSample != null && !musicSample.getMusicNotes().isEmpty())
 			gw.setColor(colorSample[0],colorSample[1],colorSample[2]);
 		else
 			gw.setColor(color[0],color[1],color[2]);

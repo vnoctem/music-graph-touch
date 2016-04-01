@@ -2,6 +2,7 @@ package widget;
 
 import java.util.ArrayList;
 
+import app.Application;
 import scene.GraphicsWrapper;
 import scene.Point2D;
 import scene.MusicVertex;
@@ -12,13 +13,16 @@ public class RadialMusicVertex extends AbstractRadial {
 	private boolean action = false;
 	private ArrayList<MusicVertex> lMv;
 	private SoundBoard sb;
+	private Application app;
 
-	public RadialMusicVertex(MusicVertex mv, float x, float y, ArrayList<MusicVertex> lMv) {
+	public RadialMusicVertex(MusicVertex mv, float x, float y, ArrayList<MusicVertex> lMv, Application app) {
 		super(43, 100, 5, new float[] {0, 0, 0.5f});
 		
 		position = new Point2D(x, y);
 		this.mv = mv;
 		this.lMv = lMv;
+		this.app = app;
+		System.out.println("channel est " + mv.getChannel() + " et channelCounter est " + app.getChannelCounter());
 	}
 	
 	@Override
@@ -147,6 +151,13 @@ public class RadialMusicVertex extends AbstractRadial {
 				}
 				// enlever le noeud
 				lMv.remove(mv);
+				
+				// réorganiser les channels
+				for (int i = mv.getChannel(); i < lMv.size(); i++) {
+					lMv.get(i).setChannel(lMv.get(i).getChannel() - 1);
+					lMv.get(i).getMusicSample().setChannel(lMv.get(i).getChannel(), app);
+				}
+				app.setChannelCounter(app.getChannelCounter() - 1);
 				break;
 			case 2: // noeud de départ
 				for (MusicVertex mv : lMv) { // si un autre noeud est le noeud de départ, modifier pour qu'il ne le soit plus
@@ -154,19 +165,6 @@ public class RadialMusicVertex extends AbstractRadial {
 				}
 				mv.setStart(true);
 				System.out.println("Set noeud de départ");
-//				MusicSequenceBuilder seqBuilder = new MusicSequenceBuilder();
-//				
-//				try {
-//					MusicSequencePlayer msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(mv, Sequence.PPQ, 960));
-//					msp.play();
-//					System.out.println("Jouer******************************************");
-//					mv.getMusicSample().printMusicNotes();
-//					
-//				} catch (InvalidMidiDataException e) {
-//					e.printStackTrace();
-//					System.out.println("Paramètres de séquence invalide.");
-//				}
-				
 				break;
 			case 3: // afficher le panneau de son
 				sb = new SoundBoard(x, y, mv);

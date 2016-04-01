@@ -69,7 +69,6 @@ public class SoundBoard {
 		
 		this.mv = mv;
 		musicNotePlayer = new MusicNotePlayer();
-		//musicSample = new MusicSample();
 		instrument = mv.getInstrument();
 		musicSamplePlayer = new MusicSamplePlayer();
 		
@@ -191,7 +190,7 @@ public class SoundBoard {
 		moveControl = new MoveControl(controlStart * 4 + gapBetweenControls * 3, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
 		closeControl = new CloseControl(controlStart * 5 + gapBetweenControls * 4, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
 		volControl = new VolControl(controlStart * 7 + gapBetweenControls * 6 - gapBetweenSection, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Vol.");
-		octControl = new OctControl(controlStart * 8 + gapBetweenControls * 7 - gapBetweenSection, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Oct.", new int[] {5, 6, 7, 8, 9, 10});
+		octControl = new OctControl(controlStart * 8 + gapBetweenControls * 7 - gapBetweenSection, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Oct.", new int[] {2, 3, 4, 5, 6});
 	}
 	
 	public void setIndex(int index) {
@@ -225,8 +224,6 @@ public class SoundBoard {
 		float x = c.getPos().x();
 		float y = c.getPos().y();
 		
-		System.out.println("timeBetweenClick (milliseconds) : " + timeBetweenClick);
-		
 		for (Sound s : sounds) {
 			if (s.isInside(x, y, position)) {
 				s.setSelected(true);
@@ -247,10 +244,15 @@ public class SoundBoard {
 		if (recordControl.isInside(x, y, position)) {
 			if (recordControl.isRecording()) {
 				System.out.println("Stop recording!");
-				mv.setMusicSample(musicSample); // assigner le musicSample lorqu'on arrête d'enregistrer
+				if (!musicSample.getMusicNotes().isEmpty()) { // si échantillon n'est pas vide
+					mv.setMusicSample(musicSample); // assigner le musicSample au noeud
+					musicSample.setChannel(mv.getChannel(), app); // assigner le bon channel au musicSample
+				} else { // si échantillon est vide
+					System.out.println("échantillon vide");
+				}
 			} else {
 				System.out.println("Start recording!");
-				musicSample = new MusicSample(); // faire un nouvel échantillon
+				musicSample = new MusicSample(); // créer un nouvel échantillon
 			}
 			recordControl.record(); // start or stop recording
 			return true;
@@ -302,7 +304,6 @@ public class SoundBoard {
 			if (recordControl.isRecording()) { // si recording
 				musicNote.setNoteLength(Math.round(duration / 1000000)); // assigner la durée de la note
 				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
-				System.out.println("onRelease : note key=" + musicNote.getKey() + ", length=" + musicNote.getNoteLength());
 			}
 			
 			return true;
