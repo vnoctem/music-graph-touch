@@ -22,6 +22,10 @@ public class CursorController {
 		return cursors.get(0);
 	}
 	
+	public Integer getSize() {
+		return cursors.size();
+	}
+	
 	public long getDuration() {
 		return last().getTime() - cursors.get(0).getTime();
 	}
