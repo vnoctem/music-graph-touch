@@ -15,6 +15,7 @@ public class MusicVertex implements Serializable {
 	private float radius;
 	private float[] color = {0.7f,0.7f,0f};
 	private float[] colorStart = {0.7f,0,0.7f};
+	private float[] colorSample = {0.0f,0.7f,0.0f};
 	private Point2D posConnector = null; // connecteur utilisé pour esquisser
 	private ArrayList<Connector> conn; // le composant connecté
 	private boolean start = false; // identifier si c'est le noeud de départ
@@ -54,10 +55,6 @@ public class MusicVertex implements Serializable {
 	}
 	
 	public ArrayList<Connector> getConnectors() {
-//		ArrayList<Connector> connIn = new ArrayList<Connector>();
-//		for (Connector c : conn) {
-//			
-//		}
 		return conn;
 	}
 	
@@ -153,6 +150,8 @@ public class MusicVertex implements Serializable {
 	public void draw(GraphicsWrapper gw) {
 		if (start)
 			gw.setColor(colorStart[0],colorStart[1],colorStart[2]);
+		else if (!musicSample.getMusicNotes().isEmpty())
+			gw.setColor(colorSample[0],colorSample[1],colorSample[2]);
 		else
 			gw.setColor(color[0],color[1],color[2]);
 		gw.setLineWidth(3);
