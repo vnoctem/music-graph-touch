@@ -236,7 +236,7 @@ public class SoundBoard {
 		}
 		
 		if (dupliControl.isInside(x, y, position)) {
-			duplicate = new SoundBoard(width / 2, height / 2, mv);
+			duplicate = new SoundBoard(x, y, mv);
 			dupliControl.duplicate(app, duplicate);
 			return true;
 		}
@@ -289,6 +289,10 @@ public class SoundBoard {
 			return true;
 		}
 		
+		if (moveControl.isInside(x, y, position)) {
+			return true;
+		}
+		
 		// l'événement non consommé
 		return false;
 	}
@@ -309,6 +313,12 @@ public class SoundBoard {
 			return true;
 		}
 		
+		//plus besoin de bouger le nouveau panneau
+		if (duplicate != null) {
+			duplicate = null;
+			return true;
+		}
+		
 		return false;
 	}
 	
@@ -325,6 +335,11 @@ public class SoundBoard {
 		
 		if (octControl.isInside(x, y, position)) {
 			octControl.adjust(x, y, position);
+			return true;
+		}
+		
+		if (duplicate != null) {
+			duplicate.setPosition(x, y);
 			return true;
 		}
 		

@@ -38,6 +38,7 @@ public class Application implements Serializable {
 	private ArrayList<MusicVertex> lMv = new ArrayList<MusicVertex>(); 
 	private MusicVertex selectedMV = null;
 	private MusicVertex startMV = null; // noeud de départ
+	private int selectedSB;
 	
 	private transient MusicSequencePlayer msp;
 	public int channelCounter = 0;
@@ -80,14 +81,17 @@ public class Application implements Serializable {
 		// détecte s'il y a une clé cliquée
 		// permet pas de faire d'autres choses avant de fermer le panneau
 		if (!lSb.isEmpty()) {
-			for (SoundBoard sb : lSb) {
-				if (sb.onClick(this, cCursor.last(), pauseBetweenClick))
+			for (int i = lSb.size() - 1; i >= 0; i--) {
+				SoundBoard sb = lSb.get(i);
+				if (sb.onClick(this, cCursor.last(), pauseBetweenClick)) {
+					selectedSB = i;
 					break;
+				}
 			}
 		} else {
 			if (cursors.size() >= 3)
 				// jouer la séquence
-				specialAction();
+				playMusic();
 			else {
 				if (cursors.size() == 1) {
 					// si clic sur un des composants graphiques, fait l'action
@@ -119,7 +123,7 @@ public class Application implements Serializable {
 	}
 	
 	// lorsqu'il y a plus de 3 clics
-	public void specialAction() {
+	public void playMusic() {
 		// jouer seulement on n'est pas en mode de piano
 		if (lSb.isEmpty()) {
 			System.out.println("PLAY THE MUSIC**********************************************************");
@@ -180,19 +184,22 @@ public class Application implements Serializable {
 		
 		// passer aussi la durée entre touch down et touch up
 		if (!lSb.isEmpty()) {
-			for (SoundBoard sb : lSb) {
-				if (sb.onRelease(pos.x(), pos.y(), cursors.getDuration(), cursors.first()))
+			for (int i = lSb.size() - 1; i >= 0; i--) {
+				SoundBoard sb = lSb.get(i);
+				if (selectedSB == i && sb.onRelease(pos.x(), pos.y(), cursors.getDuration(), cursors.first()))
 					break;
 			}
 		} else {
 			if (selectedMV != null) {
 				// garder le sound board
-				lSb.add(menuMV.getSB());
-				menuMV.getSB().setIndex(lSb.size() - 1);
+				if (menuMV.getSB() != null) {
+					lSb.add(menuMV.getSB());
+					menuMV.getSB().setIndex(lSb.size() - 1);
+				}
 				
 				// si déposé sur un autre noeud, donc relie-les
 				for (MusicVertex mv : lMv) {
-					if (mv.isInside(pos.x(), pos.y()) && mv != selectedMV) {
+					if (mv.isInside(pos.x(), pos.y()) && mv != selectedMV && lMv.contains(selectedMV)) {
 						menuMV = null;
 						selectedMV.deselect();
 						selectedMV.doneConnect(mv);
@@ -225,9 +232,12 @@ public class Application implements Serializable {
 		// pas besoin de les mettre dans un if
 		// parce que dans touch down ils subissent déjà une restriction
 		if (!lSb.isEmpty()) {
-			for (SoundBoard sb : lSb) {
-				if (sb.onMove(pos.x(), pos.y()))
+			for (int i = lSb.size() - 1; i >= 0; i--) {
+				SoundBoard sb = lSb.get(i);
+				if (selectedSB == i && sb.onMove(pos.x(), pos.y())) {
+					System.out.println(i);
 					break;
+				}
 			}
 		}
 		
