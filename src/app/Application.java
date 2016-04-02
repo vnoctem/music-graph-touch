@@ -14,6 +14,7 @@ import javax.sound.midi.Sequence;
 import music.MusicSequenceBuilder;
 import music.MusicSequencePlayer;
 import scene.GraphicsWrapper;
+import scene.MultitouchFramework;
 import scene.Point2D;
 import scene.MusicVertex;
 import widget.RadialMenu;
@@ -39,11 +40,13 @@ public class Application implements Serializable {
 	private MusicVertex selectedMV = null;
 	private MusicVertex startMV = null; // noeud de départ
 	private int selectedSB;
+	private boolean playingWholeScene = false;
+	private Thread updateThread = null;
 	
 	private transient MusicSequencePlayer msp;
 	public int channelCounter = 0;
 	
-	public void draw(GraphicsWrapper gw) {
+	public void draw(GraphicsWrapper gw, MultitouchFramework mf) {
 		// tous les composants graphiques et musicaux
 		for (MusicVertex mv : lMv) {
 			mv.draw(gw);
@@ -63,6 +66,46 @@ public class Application implements Serializable {
 		// doit toujours être la dernière à dessiner pour qu'il soit toujours par dessus de tout
 		if (menu != null)
 			menu.draw(gw);
+		
+		// si en train de jouer 
+		// réappeler lui-même pour faire l'animation
+		if (playingWholeScene && updateThread == null) {
+			update(gw, mf);
+		}
+	}
+	
+	private int index = 0; // à enlever juste pour tester
+	private void update(GraphicsWrapper gw, MultitouchFramework mf) {
+		updateThread = new Thread() {
+			public void run() {
+				// continuer jusqu'à tant que c'est fini (thread tué)
+				while (true) {
+					try {
+						Thread.sleep(1000); // attendre 1 seconde
+						
+						// arrêter l'animation
+						if (index == lMv.size()) {
+							playingWholeScene = false;
+							updateThread = null;
+							// tuer le thread
+							Thread.currentThread().interrupt();
+							return;
+						}
+						
+						// update l'interface
+						lMv.get(index).select();
+						index++;
+						
+						// redessiner
+						mf.requestRedraw();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+		updateThread.start();
 	}
 	
 	public void add(SoundBoard sb) {
@@ -127,6 +170,7 @@ public class Application implements Serializable {
 		// jouer seulement on n'est pas en mode de piano
 		if (lSb.isEmpty()) {
 			System.out.println("PLAY THE MUSIC**********************************************************");
+			playingWholeScene = true;
 			startMV = getStartMusicVertex();
 			if (startMV != null) {
 				MusicSequenceBuilder seqBuilder = new MusicSequenceBuilder(lMv);

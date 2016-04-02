@@ -79,7 +79,7 @@ public class MusicPath implements Runnable, ActionListener {
 
 		gw.setCoordinateSystemToPixels();
 		
-		app.draw(gw);
+		app.draw(gw, multitouchFramework);
 	}
 
 	// écouteur pour tous les événements de multitouch
