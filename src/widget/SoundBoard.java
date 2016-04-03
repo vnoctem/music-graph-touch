@@ -2,6 +2,8 @@ package widget;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Observable;
+import java.util.Observer;
 
 import app.Application;
 import app.Cursor;
@@ -16,7 +18,7 @@ import scene.Point2D;
 import scene.MusicData;
 import scene.MusicVertex;
 
-public class SoundBoard {
+public class SoundBoard extends Observable implements Observer {
 	// entire panel
 	private int width = 800;
 	private int height = 300;
@@ -62,12 +64,43 @@ public class SoundBoard {
 	private int index;
 	private SoundBoard duplicate;
 	
+	// sound board esclave
+	public SoundBoard(float x, float y, MusicVertex mv, MusicSample musicSample, RecordControl recordControl) {
+		this.mv = mv;
+		this.musicSample = musicSample; // utilise le même
+		this.recordControl = recordControl;
+		
+		createUI(x, y);
+		
+		// contrôles
+		moveControl = new MoveControl(controlStart * 2 + gapBetweenControls * 2, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		closeControl = new CloseControl(controlStart * 3 + gapBetweenControls * 3, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		volControl = new VolControl(controlStart * 7 + gapBetweenControls * 6 - gapBetweenSection, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Vol.");
+		octControl = new OctControl(controlStart * 8 + gapBetweenControls * 7 - gapBetweenSection, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Oct.", new int[] {2, 3, 4, 5, 6});
+	}
+	
+	// sound board maître
 	public SoundBoard(float x, float y, MusicVertex mv) {
+		this.mv = mv;
+		musicSample = new MusicSample(); // créer un nouvel échantillon
+		
+		createUI(x, y);
+		
+		// contrôles
+		recordControl = new RecordControl(controlStart, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		playControl = new PlayControl(controlStart * 2 + gapBetweenControls, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		dupliControl = new DupliControl(controlStart * 3 + gapBetweenControls * 2, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		moveControl = new MoveControl(controlStart * 4 + gapBetweenControls * 3, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		closeControl = new CloseControl(controlStart * 5 + gapBetweenControls * 4, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		volControl = new VolControl(controlStart * 7 + gapBetweenControls * 6 - gapBetweenSection, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Vol.");
+		octControl = new OctControl(controlStart * 8 + gapBetweenControls * 7 - gapBetweenSection, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Oct.", new int[] {2, 3, 4, 5, 6});
+	}
+	
+	private void createUI(float x, float y) {
 		position = new Point2D(x - width / 2, y - height / 2);
 		
 		int keyWidth = width / nbKeys;
 		
-		this.mv = mv;
 		musicNotePlayer = new MusicNotePlayer();
 		instrument = mv.getInstrument();
 		musicSamplePlayer = new MusicSamplePlayer();
@@ -183,15 +216,6 @@ public class SoundBoard {
 			);
 			sounds.get(sounds.size() - 1).setPosition(keyWidth * i, height - pianoHeight);
 		}
-		
-		// contrôles
-		recordControl = new RecordControl(controlStart, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
-		playControl = new PlayControl(controlStart * 2 + gapBetweenControls, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
-		dupliControl = new DupliControl(controlStart * 3 + gapBetweenControls * 2, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
-		moveControl = new MoveControl(controlStart * 4 + gapBetweenControls * 3, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
-		closeControl = new CloseControl(controlStart * 5 + gapBetweenControls * 4, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
-		volControl = new VolControl(controlStart * 7 + gapBetweenControls * 6 - gapBetweenSection, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Vol.");
-		octControl = new OctControl(controlStart * 8 + gapBetweenControls * 7 - gapBetweenSection, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Oct.", new int[] {2, 3, 4, 5, 6});
 	}
 	
 	public void setIndex(int index) {
@@ -221,8 +245,9 @@ public class SoundBoard {
 			}
 		}
 		
-		if (dupliControl.isInside(x, y, position)) {
-			duplicate = new SoundBoard(x, y, mv);
+		if (dupliControl != null && dupliControl.isInside(x, y, position)) {
+			duplicate = new SoundBoard(x, y, mv, musicSample, recordControl);
+			this.addObserver(duplicate);
 			dupliControl.duplicate(app, duplicate);
 			return true;
 		}
@@ -239,12 +264,13 @@ public class SoundBoard {
 			} else {
 				System.out.println("Start recording!");
 				musicSample = new MusicSample(); // créer un nouvel échantillon
+				notifyObservers(musicSample);
 			}
 			recordControl.record(); // start or stop recording sample
 			return true;
 		}
 		
-		if (playControl.isInside(x, y, position)) {
+		if (playControl != null && playControl.isInside(x, y, position)) {
 			if (this.mv.getMusicSample() != null) {
 				if (playControl.isPlaying()) {
 					System.out.println("Stop playing!");
@@ -345,8 +371,10 @@ public class SoundBoard {
 			
 			// contrôles
 			recordControl.draw(gw);
-			playControl.draw(gw);
-			dupliControl.draw(gw);
+			if (playControl != null)
+				playControl.draw(gw);
+			if (dupliControl != null)
+				dupliControl.draw(gw);
 			moveControl.draw(gw);
 			closeControl.draw(gw);
 			volControl.draw(gw);
@@ -354,5 +382,11 @@ public class SoundBoard {
 			
 			gw.setColor(1, 1, 1);
 		gw.popMatrix();
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		musicSample = (MusicSample) arg;
+		
 	}
 }
