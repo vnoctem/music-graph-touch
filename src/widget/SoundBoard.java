@@ -72,85 +72,86 @@ public class SoundBoard {
 		instrument = mv.getInstrument();
 		musicSamplePlayer = new MusicSamplePlayer();
 		
+		
 		// initialiser les actions pour chaque note
 		// les actions sont associées en ordre avec ceux d'ajouter dans le panneau
 		// donc même order que l'insertion des notes
 		LinkedList<ISoundAction> actions = new LinkedList<ISoundAction>();
 		actions.add((as, c) -> {
 			System.out.println("c#");
-			MusicNote musicNote = new MusicNote(61 + getOctaveFactor(), (int) Math.round(((volControl.getValue() *100) / 127) * 100)); // hauteur de la note = 61, durée de la note (millisecondes) = 1000
+			MusicNote musicNote = new MusicNote(61 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue()) / 127) * 100)); // hauteur de la note = 61, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
 		});
 		actions.add((as, c) -> {
 			System.out.println("d#");
-			MusicNote musicNote = new MusicNote(63 + getOctaveFactor(), (int) Math.round(((volControl.getValue() *100) / 127) * 100)); // hauteur de la note = 63, durée de la note (millisecondes) = 1000
+			MusicNote musicNote = new MusicNote(63 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue()) / 127) * 100)); // hauteur de la note = 63, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
 		});
 		actions.add((as, c) -> {
 			System.out.println("f#");
-			MusicNote musicNote = new MusicNote(66 + getOctaveFactor(), (int) Math.round(((volControl.getValue() *100) / 127) * 100)); // hauteur de la note = 66, durée de la note (millisecondes) = 1000
+			MusicNote musicNote = new MusicNote(66 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue()) / 127) * 100)); // hauteur de la note = 66, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
 		});
 		actions.add((as, c) -> {
 			System.out.println("g#");
-			MusicNote musicNote = new MusicNote(68 + getOctaveFactor(), (int) Math.round(((volControl.getValue() *100) / 127) * 100)); // hauteur de la note = 68, durée de la note (millisecondes) = 1000
+			MusicNote musicNote = new MusicNote(68 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue()) / 127) * 100)); // hauteur de la note = 68, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
 		});
 		actions.add((as, c) -> {
 			System.out.println("a#");
-			MusicNote musicNote = new MusicNote(70 + getOctaveFactor(), (int) Math.round(((volControl.getValue() *100) / 127) * 100)); // hauteur de la note = 70, durée de la note (millisecondes) = 1000
+			MusicNote musicNote = new MusicNote(70 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue()) / 127) * 100)); // hauteur de la note = 70, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
 		});
 		actions.add((as, c) -> {
 			System.out.println("C");
-			MusicNote musicNote = new MusicNote(60 + getOctaveFactor(), (int) Math.round(((volControl.getValue() *100) / 127) * 100)); // hauteur de la note = 60, durée de la note (millisecondes) = 1000
+			MusicNote musicNote = new MusicNote(60 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue() ) / 127) * 100)); // hauteur de la note = 60, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
 		});
 		actions.add((as, c) -> {
 			System.out.println("D");
-			MusicNote musicNote = new MusicNote(62 + getOctaveFactor(), (int) Math.round(((volControl.getValue() *100) / 127) * 100)); // hauteur de la note = 62, durée de la note (millisecondes) = 1000
+			MusicNote musicNote = new MusicNote(62 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue() ) / 127) * 100)); // hauteur de la note = 62, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
 		});
 		actions.add((as, c) -> {
 			System.out.println("E");
-			MusicNote musicNote = new MusicNote(64 + getOctaveFactor(), (int) Math.round(((volControl.getValue() *100) / 127) * 100)); // hauteur de la note = 64, durée de la note (millisecondes) = 1000
+			MusicNote musicNote = new MusicNote(64 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue() ) / 127) * 100)); // hauteur de la note = 64, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
 		});
 		actions.add((as, c) -> {
 			System.out.println("F");
-			MusicNote musicNote = new MusicNote(65 + getOctaveFactor(), (int) Math.round(((volControl.getValue() *100) / 127) * 100)); // hauteur de la note = 65, durée de la note (millisecondes) = 1000
+			MusicNote musicNote = new MusicNote(65 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue() ) / 127) * 100)); // hauteur de la note = 65, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
 		});
 		actions.add((as, c) -> {
 			System.out.println("G");
-			MusicNote musicNote = new MusicNote(67 + getOctaveFactor(), (int) Math.round(((volControl.getValue() *100) / 127) * 100)); // hauteur de la note = 67, durée de la note (millisecondes) = 1000
+			MusicNote musicNote = new MusicNote(67 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue() ) / 127) * 100)); // hauteur de la note = 67, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
 		});
 		actions.add((as, c) -> {
 			System.out.println("A");
-			MusicNote musicNote = new MusicNote(69 + getOctaveFactor(), (int) Math.round(((volControl.getValue() *100) / 127) * 100)); // hauteur de la note = 69, durée de la note (millisecondes) = 1000
+			MusicNote musicNote = new MusicNote(69 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue() ) / 127) * 100)); // hauteur de la note = 69, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
 		});
 		actions.add((as, c) -> {
 			System.out.println("B");
-			MusicNote musicNote = new MusicNote(71 + getOctaveFactor(), (int) Math.round(((volControl.getValue() *100) / 127) * 100)); // hauteur de la note = 71, durée de la note (millisecondes) = 1000
+			MusicNote musicNote = new MusicNote(71 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue() ) / 127) * 100)); // hauteur de la note = 71, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
 		});
 		actions.add((as, c) -> {
 			System.out.println("C2");
-			MusicNote musicNote = new MusicNote(72 + getOctaveFactor(), (int) Math.round(((volControl.getValue() *100) / 127) * 100)); // hauteur de la note = 72, durée de la note (millisecondes) = 1000
+			MusicNote musicNote = new MusicNote(72 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue() ) / 127) * 100)); // hauteur de la note = 72, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
 		});
@@ -196,21 +197,6 @@ public class SoundBoard {
 	public void setIndex(int index) {
 		this.index = index;
 	}
-
-	private int getOctaveFactor() {
-		if (octControl.getValue() < 0.2) {
-			return -22;
-		} else if (octControl.getValue() >= 0.2 && octControl.getValue() < 0.4) {
-			return -11;
-		} else if (octControl.getValue() >= 0.4 && octControl.getValue() < 0.6) {
-			return 0;
-		} else if (octControl.getValue() >= 0.6 && octControl.getValue() < 0.8) {
-			return 11;
-		} else if (octControl.getValue() >= 0.8 && octControl.getValue() <= 1.0) {
-			return 22;
-		}
-		return 0;
-	}
 	
 	public void setPosition(float x, float y) {
 		position = new Point2D(x - width / 2, y - height / 2);
@@ -254,23 +240,24 @@ public class SoundBoard {
 				System.out.println("Start recording!");
 				musicSample = new MusicSample(); // créer un nouvel échantillon
 			}
-			recordControl.record(); // start or stop recording
+			recordControl.record(); // start or stop recording sample
 			return true;
 		}
 		
 		if (playControl.isInside(x, y, position)) {
-			if (musicSample != null) {
+			if (this.mv.getMusicSample() != null) {
 				if (playControl.isPlaying()) {
 					System.out.println("Stop playing!");
 					musicSamplePlayer.stopPlaying(); // arrêter de jouer
 				} else {
 					System.out.println("Start playing!");
-					musicSamplePlayer.playMusicSample(musicSample, instrument); // jouer l'échantillon
+					musicSamplePlayer.playMusicSample(mv.getMusicSample(), instrument); // jouer l'échantillon					
 				}
 			} else {
 				System.out.println("Aucun échantillon enregistré.");
 			}
-			playControl.play();
+			playControl.play(); // start or stop playing sample
+			System.out.println("playControl playing : " + playControl.isPlaying());
 			return true;
 		}
 		

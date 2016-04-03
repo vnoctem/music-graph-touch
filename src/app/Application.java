@@ -70,7 +70,7 @@ public class Application implements Serializable {
 		// si en train de jouer 
 		// réappeler lui-même pour faire l'animation
 		if (playingWholeScene && updateThread == null) {
-			update(gw, mf);
+			//update(gw, mf);
 		}
 	}
 	

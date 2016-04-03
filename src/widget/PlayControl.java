@@ -5,7 +5,7 @@ import scene.GraphicsWrapper;
 public class PlayControl extends AbstractControl {
 	
 	private float[] colorIcon = new float[]{0.5f, 0.5f, 0.5f};
-	private float radiusIcon = 30;
+	private float radiusIcon = 20;
 	
 	private boolean playing = false;
 	
@@ -18,7 +18,6 @@ public class PlayControl extends AbstractControl {
 	}
 	
 	public void play() {
-		System.out.println("play");
 		playing = !playing;
 	}
 	

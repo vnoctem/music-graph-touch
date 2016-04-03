@@ -25,12 +25,22 @@ public class OctControl extends AbstractCircleControl {
 	public void adjust(float x, float y, Point2D panelPos) {
 		super.adjust(x, y, panelPos);
 		
-		System.out.println("angle" + value);
+		System.out.println("angle : " + value);
 		// utilise plutôt les valeurs discrètes
 		float range = 360 / LEVEL;
 		float fixedLevel = value / range;
 		super.value = range * ((int) fixedLevel + 1);
 	}
 	
+	public int getOctaveFactor() {
+		 switch((int)Math.round(getValue())) {
+		 	case 2: return -22;
+		 	case 3: return -11;
+		 	case 4: return 0;
+		 	case 5: return 11;
+		 	case 6: return 22;
+		 }
+		 return 0;
+	}
 	
 }

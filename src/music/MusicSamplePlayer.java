@@ -13,6 +13,7 @@ public class MusicSamplePlayer {
 	
 	private Sequencer sequencer;
 	private Sequence sequence;
+	private Thread thread;
 
 	public MusicSamplePlayer() {
 		try {
@@ -24,34 +25,42 @@ public class MusicSamplePlayer {
 	}
 	
 	public void playMusicSample(MusicSample musicSample, AbstractInstrument instrument) {
-		try {
-			sequencer.open();
-			System.out.println("playMusicSample sequencer.open()");
-			sequence = new Sequence(Sequence.PPQ, 250);
-			musicSample.buildTrack(sequence, instrument, 0);
-			sequencer.setSequence(sequence);
-		} catch (InvalidMidiDataException e1) {
-			e1.printStackTrace();
-		} catch (MidiUnavailableException e) {
-			e.printStackTrace();
-		}
-		
-		sequencer.start();
-		System.out.println("playMusicSample sequencer.start()");
-		try {
-			Thread.sleep(Math.round((sequencer.getMicrosecondLength() / 1000))); // attendre que la séquence joue avant de fermer le séquenceur
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		sequencer.close();
-		System.out.println("playMusicSample sequencer.stop()");
+		thread = new Thread() {
+			public void run() {
+				try {
+					sequencer.open();
+					System.out.println("playMusicSample sequencer.open()");
+					sequence = new Sequence(Sequence.PPQ, 250);
+					musicSample.buildTrack(sequence, instrument, 0);
+					sequencer.setSequence(sequence);
+				} catch (InvalidMidiDataException e1) {
+					e1.printStackTrace();
+				} catch (MidiUnavailableException e) {
+					e.printStackTrace();
+				}
+				
+				sequencer.start();
+				System.out.println("playMusicSample sequencer.start()");
+				try {
+					thread.sleep(Math.round((sequencer.getMicrosecondLength() / 1000))); // attendre que la séquence joue avant de fermer le séquenceur
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				sequencer.close();
+				System.out.println("playMusicSample sequencer.close()");
+			}
+		};
+		thread.start();
 	}
 	
 	public void stopPlaying() {
-		sequencer.stop();
-		System.out.println("stopPlaying sequencer.stop()");
-		sequencer.close();
+		if (sequencer.isOpen()) {
+			sequencer.stop();
+			System.out.println("stopPlaying sequencer.stop()");
+			sequencer.close();
+		}
 		System.out.println("stopPlaying sequencer.close()");
+		thread.interrupt();
 	}
 	
 }
