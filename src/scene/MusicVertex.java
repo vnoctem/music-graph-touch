@@ -16,6 +16,7 @@ public class MusicVertex implements Serializable {
 	private float[] color = {0.7f,0.7f,0f};
 	private float[] colorStart = {0.7f,0,0.7f};
 	private float[] colorSample = {0.0f,0.7f,0.0f};
+	private float[] colorSelected = {0f,0f,0.8f};
 	private Point2D posConnector = null; // connecteur utilisé pour esquisser
 	private ArrayList<Connector> conn; // le composant connecté
 	private boolean start = false; // identifier si c'est le noeud de départ
@@ -23,6 +24,7 @@ public class MusicVertex implements Serializable {
 	private boolean visited; // pour déterminer si le noeud a été visité ou non
 	private int timePosition; // position de départ en millisecondes dans la séquence
 	private int channel = -1; // le channel du noeud (un maximum de 15 noeuds, 16 - 1 noeud de percurssion)
+	private boolean selected;
 	
 	public MusicVertex(AbstractInstrument mi, float radius) {
 		this.radius = radius;
@@ -121,16 +123,8 @@ public class MusicVertex implements Serializable {
 		return start;
 	}
 	
-	public void deselect() {
-		color[0] = 0.7f;
-		color[1] = 0.7f;
-		color[2] = 0f;
-	}
-	
-	public void select() {
-		color[0] = 0f;
-		color[1] = 0f;
-		color[2] = 0.8f;
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 	
 	public void doneConnect(MusicVertex mv) {
@@ -165,7 +159,9 @@ public class MusicVertex implements Serializable {
 	}
 	
 	public void draw(GraphicsWrapper gw) {
-		if (start)
+		if (selected)
+			gw.setColor(colorSelected[0],colorSelected[1],colorSelected[2]);
+		else if (start)
 			gw.setColor(colorStart[0],colorStart[1],colorStart[2]);
 		else if (musicSample != null && !musicSample.getMusicNotes().isEmpty())
 			gw.setColor(colorSample[0],colorSample[1],colorSample[2]);
