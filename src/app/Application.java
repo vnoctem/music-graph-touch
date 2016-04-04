@@ -87,6 +87,8 @@ public class Application implements Serializable {
 						if (index == lMv.size()) {
 							playingWholeScene = false;
 							updateThread = null;
+							// remettre la couleur du dernier noeud
+							lMv.get(index - 1).setSelected(false);
 							// tuer le thread
 							Thread.currentThread().interrupt();
 							return;
