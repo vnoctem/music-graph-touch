@@ -70,7 +70,7 @@ public class Application implements Serializable {
 		// si en train de jouer 
 		// réappeler lui-même pour faire l'animation
 		if (playingWholeScene && updateThread == null) {
-			//update(gw, mf);
+			update(gw, mf);
 		}
 	}
 	
@@ -93,7 +93,7 @@ public class Application implements Serializable {
 						}
 						
 						// update l'interface
-						lMv.get(index).select();
+						lMv.get(index).setSelected(true);
 						index++;
 						
 						// redessiner
@@ -142,7 +142,7 @@ public class Application implements Serializable {
 						if (mv.isInside(pos.x(), pos.y())) {
 							menuMV = new RadialMusicVertex(mv, mv.getPosition().x(), mv.getPosition().y(), lMv, this);
 							selectedMV = mv;
-							selectedMV.select();
+							selectedMV.setSelected(true);
 							break;
 						}
 					}
@@ -155,7 +155,7 @@ public class Application implements Serializable {
 					// tout effacer
 					if (selectedMV != null) {
 						menuMV = null;
-						selectedMV.deselect();
+						selectedMV.setSelected(false);
 						selectedMV.doneConnect(null);
 						selectedMV = null;
 					}
@@ -245,7 +245,7 @@ public class Application implements Serializable {
 				for (MusicVertex mv : lMv) {
 					if (mv.isInside(pos.x(), pos.y()) && mv != selectedMV && lMv.contains(selectedMV)) {
 						menuMV = null;
-						selectedMV.deselect();
+						selectedMV.setSelected(false);
 						selectedMV.doneConnect(mv);
 						selectedMV = null;
 						break;
@@ -254,7 +254,7 @@ public class Application implements Serializable {
 				
 				if (selectedMV != null) {
 					menuMV = null;
-					selectedMV.deselect();
+					selectedMV.setSelected(false);
 					selectedMV.doneConnect(null);
 					selectedMV = null;
 				}
