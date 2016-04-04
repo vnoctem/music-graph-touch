@@ -83,7 +83,6 @@ public class RadialMenu extends AbstractRadial {
 					app.setChannelCounter(app.getChannelCounter() + 1);
 					break;
 			}
-			System.out.println("New instrument, channel=" + mv.getChannel() + ", channelCounter=" + app.getChannelCounter());
 		} else {
 			System.out.println("Nombre maximal de noeuds atteint! (15 noeuds)");
 		}

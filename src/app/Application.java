@@ -44,7 +44,7 @@ public class Application implements Serializable {
 	private Thread updateThread = null;
 	
 	private transient MusicSequencePlayer msp;
-	public int channelCounter = 0;
+	private int channelCounter = 0;
 	
 	public void draw(GraphicsWrapper gw, MultitouchFramework mf) {
 		// tous les composants graphiques et musicaux
@@ -54,8 +54,9 @@ public class Application implements Serializable {
 		
 		// panneau de son
 		if (!lSb.isEmpty()) {
-			for (SoundBoard sb : lSb)
+			for (SoundBoard sb : lSb) {
 				sb.draw(gw);
+			}
 		}
 		
 		// menu des composants
@@ -111,6 +112,7 @@ public class Application implements Serializable {
 	}
 	
 	public void add(SoundBoard sb) {
+		System.out.println("ajouter sb");
 		lSb.add(sb);
 		sb.setIndex(lSb.size() - 1);
 	}
@@ -281,7 +283,6 @@ public class Application implements Serializable {
 			for (int i = lSb.size() - 1; i >= 0; i--) {
 				SoundBoard sb = lSb.get(i);
 				if (selectedSB == i && sb.onMove(pos.x(), pos.y())) {
-					System.out.println(i);
 					break;
 				}
 			}

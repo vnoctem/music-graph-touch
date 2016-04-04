@@ -57,15 +57,16 @@ public class MusicSample implements Serializable {
 	
 	public void setChannel(int channel, Application app) {
 		this.channel = channel;
-		System.out.println("setChannel channel : " + channel + ", channelCounter : " + app.getChannelCounter());
+		//System.out.println("setChannel channel : " + channel + ", channelCounter : " + app.getChannelCounter()); //vgr
 	}
 	
 	public void printMusicNotes() {
 		String notes = "Notes : ";
 		for (MusicNote note : getMusicNotes()) {
-			notes += note.getKey() + ", ";
+			if (note.getVelocity() > 0)
+				notes += note.getKey() + ", ";
 		}
-		if (notes.length() > 0) {
+		if (!getMusicNotes().isEmpty()) {
 			notes = notes.substring(0, notes.length() - 2);
 		}
 		System.out.println(notes);
@@ -110,7 +111,7 @@ public class MusicSample implements Serializable {
 				track.add(new MidiEvent(off, (long)(startTick + ticks + note.getNoteLength()))); // message pour arrêter la note
 				
 				//if (note.getVelocity() > 0) {
-					System.out.println("build track note key = " + note.getKey() + ", startTick = " + startTick + ", ticks = " + 
+					System.out.println("note key = " + note.getKey() + ", startTick = " + startTick + ", ticks = " + 
 							ticks + ", noteLength = " + note.getNoteLength() + ", volume : " + note.getVelocity() + ", fixedTicks = " + (startTick + ticks));
 					System.out.println("sequence.getTickLength() = " + sequence.getTickLength());
 				//}

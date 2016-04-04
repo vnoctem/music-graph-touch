@@ -63,13 +63,21 @@ public class SoundBoard extends Observable implements Observer {
 	private MusicSamplePlayer musicSamplePlayer;
 	private int index;
 	private SoundBoard duplicate;
+	private boolean master;
 	
 	// sound board esclave
 	public SoundBoard(float x, float y, MusicVertex mv, MusicSample musicSample, RecordControl recordControl) {
+		master = false;
 		this.mv = mv;
-		this.musicSample = musicSample; // utilise le même
+		
+		// quand on met en commentaire, on peut record les sons des deux claviers. MAIS, pendant le mode de record
+		// le deuxième clavier joue les notes plus longtemps : À RÉGLER
+		//this.musicSample = musicSample; // utilise le même
+		
 		this.recordControl = recordControl;
 		
+		//System.out.println("Création duplicate, musicSample notes : ");
+		//musicSample.printMusicNotes();
 		createUI(x, y);
 		
 		// contrôles
@@ -81,6 +89,7 @@ public class SoundBoard extends Observable implements Observer {
 	
 	// sound board maître
 	public SoundBoard(float x, float y, MusicVertex mv) {
+		master = true;
 		this.mv = mv;
 		musicSample = new MusicSample(); // créer un nouvel échantillon
 		
@@ -101,9 +110,12 @@ public class SoundBoard extends Observable implements Observer {
 		
 		int keyWidth = width / nbKeys;
 		
+		if (master) {
+			
+		}
+		musicSamplePlayer = new MusicSamplePlayer();
 		musicNotePlayer = new MusicNotePlayer();
 		instrument = mv.getInstrument();
-		musicSamplePlayer = new MusicSamplePlayer();
 		
 		
 		// initialiser les actions pour chaque note
@@ -111,31 +123,31 @@ public class SoundBoard extends Observable implements Observer {
 		// donc même order que l'insertion des notes
 		LinkedList<ISoundAction> actions = new LinkedList<ISoundAction>();
 		actions.add((as, c) -> {
-			System.out.println("c#");
+			System.out.println("C#");
 			MusicNote musicNote = new MusicNote(61 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue()) / 127) * 100)); // hauteur de la note = 61, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
 		});
 		actions.add((as, c) -> {
-			System.out.println("d#");
+			System.out.println("D#");
 			MusicNote musicNote = new MusicNote(63 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue()) / 127) * 100)); // hauteur de la note = 63, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
 		});
 		actions.add((as, c) -> {
-			System.out.println("f#");
+			System.out.println("F#");
 			MusicNote musicNote = new MusicNote(66 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue()) / 127) * 100)); // hauteur de la note = 66, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
 		});
 		actions.add((as, c) -> {
-			System.out.println("g#");
+			System.out.println("G#");
 			MusicNote musicNote = new MusicNote(68 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue()) / 127) * 100)); // hauteur de la note = 68, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
 		});
 		actions.add((as, c) -> {
-			System.out.println("a#");
+			System.out.println("A#");
 			MusicNote musicNote = new MusicNote(70 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue()) / 127) * 100)); // hauteur de la note = 70, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
@@ -145,6 +157,7 @@ public class SoundBoard extends Observable implements Observer {
 			MusicNote musicNote = new MusicNote(60 + octControl.getOctaveFactor(), (int) Math.round(((volControl.getValue() ) / 127) * 100)); // hauteur de la note = 60, durée de la note (millisecondes) = 1000
 			musicNotePlayer.playMusicNote(musicNote, instrument); // jouer la note
 			c.setData(new MusicData(musicNote, as));
+			//System
 		});
 		actions.add((as, c) -> {
 			System.out.println("D");
@@ -246,18 +259,20 @@ public class SoundBoard extends Observable implements Observer {
 		}
 		
 		if (dupliControl != null && dupliControl.isInside(x, y, position)) {
+			System.out.println("duplicate========================================");
 			duplicate = new SoundBoard(x, y, mv, musicSample, recordControl);
 			this.addObserver(duplicate);
 			dupliControl.duplicate(app, duplicate);
 			return true;
 		}
 		
-		if (recordControl.isInside(x, y, position)) {
+		if (recordControl != null && recordControl.isInside(x, y, position)) {
+			System.out.println("click record");
 			if (recordControl.isRecording()) {
 				System.out.println("Stop recording!");
 				if (!musicSample.getMusicNotes().isEmpty()) { // si échantillon n'est pas vide
-					mv.setMusicSample(musicSample); // assigner le musicSample au noeud
 					musicSample.setChannel(mv.getChannel(), app); // assigner le bon channel au musicSample
+					mv.setMusicSample(musicSample); // assigner le musicSample au noeud
 				} else { // si échantillon est vide
 					System.out.println("échantillon vide");
 				}
@@ -277,13 +292,14 @@ public class SoundBoard extends Observable implements Observer {
 					musicSamplePlayer.stopPlaying(); // arrêter de jouer
 				} else {
 					System.out.println("Start playing!");
+					musicSample.printMusicNotes();
 					musicSamplePlayer.playMusicSample(mv.getMusicSample(), instrument); // jouer l'échantillon					
 				}
 			} else {
 				System.out.println("Aucun échantillon enregistré.");
 			}
 			playControl.play(); // start or stop playing sample
-			System.out.println("playControl playing : " + playControl.isPlaying());
+			//System.out.println("playControl playing : " + playControl.isPlaying());
 			return true;
 		}
 		
@@ -321,6 +337,8 @@ public class SoundBoard extends Observable implements Observer {
 			if (recordControl.isRecording()) { // si recording
 				musicNote.setNoteLength(Math.round(duration / 1000000)); // assigner la durée de la note
 				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
+				System.out.println("==========================Note ajoutée=============================================");
+				System.out.println("note key : " + musicNote.getKey() + ", length : " + musicNote.getNoteLength());
 			}
 			
 			return true;
@@ -370,7 +388,8 @@ public class SoundBoard extends Observable implements Observer {
 				sounds.get(i).draw(gw);
 			
 			// contrôles
-			recordControl.draw(gw);
+			if (recordControl != null)
+				recordControl.draw(gw);
 			if (playControl != null)
 				playControl.draw(gw);
 			if (dupliControl != null)
