@@ -109,11 +109,11 @@ public class MusicSample implements Serializable {
 				track.add(new MidiEvent(on, (long)(startTick + ticks))); // message pour jouer la note
 				track.add(new MidiEvent(off, (long)(startTick + ticks + note.getNoteLength()))); // message pour arrêter la note
 				
-				if (note.getVelocity() > 0) {
+				//if (note.getVelocity() > 0) {
 					System.out.println("build track note key = " + note.getKey() + ", startTick = " + startTick + ", ticks = " + 
 							ticks + ", noteLength = " + note.getNoteLength() + ", volume : " + note.getVelocity() + ", fixedTicks = " + (startTick + ticks));
 					System.out.println("sequence.getTickLength() = " + sequence.getTickLength());
-				}
+				//}
 				
 				ticks += note.getNoteLength(); // incrémenter les ticks avec la durée de la note jouée
 			} catch (InvalidMidiDataException e) {
