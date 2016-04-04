@@ -274,20 +274,16 @@ public class SoundBoard extends Observable implements Observer {
 			if (this.mv.getMusicSample() != null) {
 				if (playControl.isPlaying()) {
 					System.out.println("Stop playing!");
-					playControl.play(); // start or stop playing sample
-					app.mf.requestRedraw();
 					musicSamplePlayer.stopPlaying(); // arrêter de jouer
 				} else {
 					System.out.println("Start playing!");
-					playControl.play(); // start or stop playing sample
-					app.mf.requestRedraw();
 					musicSamplePlayer.playMusicSample(mv.getMusicSample(), instrument); // jouer l'échantillon
 					
 				}
 			} else {
 				System.out.println("Aucun échantillon enregistré.");
 			}
-			
+			playControl.play(); // start or stop playing sample
 			System.out.println("playControl playing : " + playControl.isPlaying());
 			return true;
 		}
