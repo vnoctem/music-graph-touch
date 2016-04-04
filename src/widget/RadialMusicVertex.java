@@ -22,7 +22,8 @@ public class RadialMusicVertex extends AbstractRadial {
 		this.mv = mv;
 		this.lMv = lMv;
 		this.app = app;
-		System.out.println("channel est " + mv.getChannel() + " et channelCounter est " + app.getChannelCounter());
+		//vgr
+		//System.out.println("channel est " + mv.getChannel() + " et channelCounter est " + app.getChannelCounter());
 	}
 	
 	@Override

@@ -34,11 +34,14 @@ public class OctControl extends AbstractCircleControl {
 	
 	public int getOctaveFactor() {
 		 switch((int)Math.round(getValue())) {
-		 	case 2: return -22;
-		 	case 3: return -11;
+		 	case 1: return -36;
+		 	case 2: return -24;
+		 	case 3: return -12;
 		 	case 4: return 0;
-		 	case 5: return 11;
-		 	case 6: return 22;
+		 	case 5: return 12;
+		 	case 6: return 24;
+		 	case 7: return 36;
+		 	case 8: return 48;
 		 }
 		 return 0;
 	}

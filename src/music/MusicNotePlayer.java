@@ -32,6 +32,7 @@ public class MusicNotePlayer {
 	  * @param musicNote
 	  */
 	public void playMusicNote(MusicNote musicNote, AbstractInstrument instrument) {
+		System.out.println("playMusicNote key : " + musicNote.getKey() + ", length : " + musicNote.getNoteLength() + ", velocity : " + musicNote.getVelocity());
 		midiChannels[0].programChange(instrument.getBank(), instrument.getProgram());
 		midiChannels[0].noteOn(musicNote.getKey(), musicNote.getVelocity());
 	}
@@ -41,6 +42,7 @@ public class MusicNotePlayer {
 	 * @param musicNote
 	 */
 	public void stopMusicNote(MusicNote musicNote) {
+		System.out.println("stopMusicNote key : " + musicNote.getKey() + ", length : " + musicNote.getNoteLength() + ", velocity : " + musicNote.getVelocity());
 		midiChannels[0].noteOff(musicNote.getKey(), musicNote.getVelocity());
 	}
 
