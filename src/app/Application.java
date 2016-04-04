@@ -46,6 +46,12 @@ public class Application implements Serializable {
 	private transient MusicSequencePlayer msp;
 	public int channelCounter = 0;
 	
+	public MultitouchFramework mf;
+	
+	public Application(MultitouchFramework mf) {
+		this.mf = mf;
+	}
+	
 	public void draw(GraphicsWrapper gw, MultitouchFramework mf) {
 		// tous les composants graphiques et musicaux
 		for (MusicVertex mv : lMv) {

@@ -43,7 +43,7 @@ public class MusicPath implements Runnable, ActionListener {
 
 		gw.setFontHeight( Constant.TEXT_HEIGHT );
 		
-		app = new Application();
+		app = new Application(mf);
 		cursors = new LinkedHashMap<Integer, CursorController>();
 
 		gw.frame( new AlignedRectangle2D( new Point2D(-100,-100), new Point2D(100,100) ), true );
