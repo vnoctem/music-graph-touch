@@ -114,10 +114,10 @@ public class MusicSample implements Serializable {
 				} else {
 					System.out.println("SILENCE startTick = " + note.getStartTick() + ", noteLength = " + note.getNoteLength());
 				}
-				
 			} catch (InvalidMidiDataException e) {
 				e.printStackTrace();
 			}
+			
 		}
 		System.out.println("===========================================Fin buildTrack");
 	}

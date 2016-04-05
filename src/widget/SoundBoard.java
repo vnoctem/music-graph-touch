@@ -12,7 +12,6 @@ import music.MusicNotePlayer;
 import music.MusicSample;
 import music.MusicSamplePlayer;
 import music.instruments.AbstractInstrument;
-
 import scene.GraphicsWrapper;
 import scene.Point2D;
 import scene.MusicData;
@@ -342,17 +341,20 @@ public class SoundBoard extends Observable implements Observer {
 			if (this.mv.getMusicSample() != null) {
 				if (playControl.isPlaying()) {
 					System.out.println("Stop playing!");
-					musicSamplePlayer.stopPlaying(); // arrêter de jouer
+					playControl.stop(); // stop playing sample
+					musicSamplePlayer.stopPlaying(playControl); // arrêter de jouer
 				} else {
+					System.out.println("avant app.getMF().requestRedraw()");
+					playControl.play(); // start playing sample
+					app.getMF().requestRedraw();
 					System.out.println("Start playing!");
 					musicSample.printMusicNotes();
-					musicSamplePlayer.playMusicSample(mv.getMusicSample(), instrument); // jouer l'échantillon					
+					
+					musicSamplePlayer.playMusicSample(mv.getMusicSample(), instrument, app, playControl); // jouer l'échantillon
 				}
 			} else {
 				System.out.println("Aucun échantillon enregistré.");
 			}
-			playControl.play(); // start or stop playing sample
-			//System.out.println("playControl playing : " + playControl.isPlaying());
 			return true;
 		}
 		
