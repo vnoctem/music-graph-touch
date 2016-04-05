@@ -3,6 +3,7 @@ package app;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.NotSerializableException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -205,12 +206,16 @@ public class Application implements Serializable {
 				File fichier =  new File("scene.ser") ;
 				// sérialise
 				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fichier));
+				try {
 				oos.writeObject(this);
+				} catch (NotSerializableException e) {
+					
+				}
 				oos.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			} 
 		}
 	}
 	

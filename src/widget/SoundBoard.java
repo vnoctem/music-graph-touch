@@ -255,7 +255,7 @@ public class SoundBoard extends Observable implements Observer {
 		
 		// initialiser les clés
 		// commencer avec les clés de dièse
-		// ils vont être détecté en premier afin de simplifier les dessins
+		// ils vont être détectés en premier afin de simplifier les dessins
 		sounds = new ArrayList<Sound>();
 		for (int i = 0; i < nbSharpKeys + 1; i++) {
 			if (i == 2)
@@ -303,7 +303,9 @@ public class SoundBoard extends Observable implements Observer {
 				s.setSelected(true);
 				s.performAction(c);
 				if (recordControl.isRecording()) {
-					musicSample.addMusicNote(new MusicNote(60, timeBetweenClick, 0)); // add a note without volume to simulate a pause
+					System.out.println("pause : " + timeBetweenClick);
+					// add a note without volume to simulate a pause
+					musicSample.addMusicNote(new MusicNote(60, timeBetweenClick, 0, (long) (System.nanoTime() / 1000000) - recordControl.getStartTime()));
 				}
 				return true;
 			}
@@ -318,7 +320,7 @@ public class SoundBoard extends Observable implements Observer {
 		}
 		
 		if (recordControl != null && recordControl.isInside(x, y, position)) {
-			System.out.println("click record");
+			//System.out.println("click record");
 			if (recordControl.isRecording()) {
 				System.out.println("Stop recording!");
 				if (!musicSample.getMusicNotes().isEmpty()) { // si échantillon n'est pas vide

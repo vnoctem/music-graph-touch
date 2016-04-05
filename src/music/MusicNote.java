@@ -35,6 +35,13 @@ public class MusicNote implements Serializable {
 		this.startTick = startTick;
 	}
 	
+	public MusicNote(int key, long noteLength, int velocity, long startTick) {
+		this.key = key;
+		this.noteLength = noteLength;
+		this.velocity = velocity;
+		this.startTick = startTick;
+	}
+	
 	public int getKey() {
 		return key;
 	}
