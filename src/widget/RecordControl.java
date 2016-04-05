@@ -6,6 +6,7 @@ public class RecordControl extends AbstractControl {
 	private boolean recording = false;
 	private float[] colorIcon = new float[]{1, 0, 0};
 	private float radiusIcon = 20;
+	private long startTime = -1;
 	
 	public RecordControl(float x, float y, float radius, float[] color) {
 		super(x, y, radius, color);
@@ -13,6 +14,14 @@ public class RecordControl extends AbstractControl {
 	
 	public void record() {
 		recording = !recording;
+		
+		if (recording) {
+			startTime = System.nanoTime();
+		}
+	}
+	
+	public long getStartTime() {
+		return startTime / 1000000;
 	}
 	
 	public boolean isRecording() {

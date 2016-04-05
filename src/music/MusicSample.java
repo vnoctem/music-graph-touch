@@ -88,7 +88,6 @@ public class MusicSample implements Serializable {
 	public void buildTrack(Sequence sequence, AbstractInstrument instrument, long startTick) 
 			throws InvalidMidiDataException {
 		System.out.println("===========================================Début buildTrack");
-		System.out.println("Channel : " + channel);
 		track = sequence.createTrack(); // créer la track
 		ticks = 0; // les ticks interne de la track à 0
 		
@@ -97,9 +96,9 @@ public class MusicSample implements Serializable {
 		instrumentMessage.setMessage(ShortMessage.PROGRAM_CHANGE, channel, instrument.getProgram(), instrument.getBank());
 		System.out.println("change instrument to " + instrument.getName());
 		track.add(new MidiEvent(instrumentMessage, startTick));
-		startTick++; // incrémenter le tick de 1
+		startTick++; // incrémenter le tick de 1 après avoir changer l'instrument
 		
-		for (MusicNote note : notes) {
+		for (MusicNote note : notes) { // créer un MidiEvent pour chaque note
 			try {
 				ShortMessage on = new ShortMessage();
 				ShortMessage off = new ShortMessage();
@@ -111,12 +110,13 @@ public class MusicSample implements Serializable {
 				track.add(new MidiEvent(off, (long)(startTick + ticks + note.getNoteLength()))); // message pour arrêter la note
 				
 				//if (note.getVelocity() > 0) {
-					System.out.println("note key = " + note.getKey() + ", startTick = " + startTick + ", ticks = " + 
-							ticks + ", noteLength = " + note.getNoteLength() + ", volume : " + note.getVelocity() + ", fixedTicks = " + (startTick + ticks));
-					System.out.println("sequence.getTickLength() = " + sequence.getTickLength());
+					System.out.println("note key = " + note.getKey() + ", note startTick = " + note.getStartTick() + ", ticks interne = " + 
+							ticks + ", noteLength = " + note.getNoteLength() + ", volume : " + note.getVelocity() + ", startTick + ticks = " + (startTick + ticks));
 				//}
-				
-				ticks += note.getNoteLength(); // incrémenter les ticks avec la durée de la note jouée
+				if (notes.indexOf(note) > 0) {
+					ticks += note.getStartTick() - notes.get(notes.indexOf(note) - 1).getStartTick(); // incrémenter les ticks interne avec le startTick de la dernière note jouée
+					System.out.println("différence entre la note actuelle et précédente : " + (note.getStartTick() - notes.get(notes.indexOf(note) - 1).getStartTick()));
+				}
 			} catch (InvalidMidiDataException e) {
 				e.printStackTrace();
 			}
