@@ -16,6 +16,7 @@ public class MusicNote implements Serializable {
 	private int key; // la hauteur de la note, entre 21 et 108 pour un piano standard
 	private long noteLength; // la durée en millisecondes de la note
 	private int velocity; // la vitesse à laquelle la note est jouée (représente le volume)
+	private long startTick; // temps à laquelle la note va jouer dans l'échantillon
 	
 	public MusicNote(int key, int velocity) {
 		this.key = key;
@@ -26,6 +27,19 @@ public class MusicNote implements Serializable {
 		this.key = key;
 		this.noteLength = noteLength;
 		this.velocity = velocity;
+	}
+	
+	public MusicNote(int key, int velocity, long startTick) {
+		this.key = key;
+		this.velocity = velocity;
+		this.startTick = startTick;
+	}
+	
+	public MusicNote(int key, long noteLength, int velocity, long startTick) {
+		this.key = key;
+		this.noteLength = noteLength;
+		this.velocity = velocity;
+		this.startTick = startTick;
 	}
 	
 	public int getKey() {
@@ -46,5 +60,13 @@ public class MusicNote implements Serializable {
 	
 	public int getVelocity() {
 		return velocity;
+	}
+	
+	public void setStartTick(long startTick) {
+		this.startTick = startTick;
+	}
+	
+	public long getStartTick() {
+		return startTick;
 	}
 }
