@@ -7,8 +7,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
+import java.io.WriteAbortedException;
 import java.util.LinkedHashMap;
 
 import javax.swing.JMenuBar;
@@ -56,11 +56,7 @@ public class MusicPath implements Runnable, ActionListener {
 			if (fichier.exists()) {
 				ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(fichier)) ;
 				// désérialization de l'objet
-				try {
-					app = (Application) ois.readObject();
-				} catch (NotSerializableException e) {
-					
-				}
+				app = (Application) ois.readObject();
 				
 				ois.close();
 			}

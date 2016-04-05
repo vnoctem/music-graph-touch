@@ -47,7 +47,7 @@ public class Application implements Serializable {
 	private transient MusicSequencePlayer msp;
 	private int channelCounter = 0;
 	
-	private MultitouchFramework mf;
+	private transient MultitouchFramework mf;
 	
 	public Application(MultitouchFramework mf) {
 		this.mf = mf;
