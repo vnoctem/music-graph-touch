@@ -18,7 +18,11 @@ public class PlayControl extends AbstractControl {
 	}
 	
 	public void play() {
-		playing = !playing;
+		playing = true;
+	}
+	
+	public void stop() {
+		playing = false;
 	}
 	
 	public boolean isPlaying() {
@@ -32,6 +36,7 @@ public class PlayControl extends AbstractControl {
 		int triHeight = 25;
 		int triWidth = 25;
 		int gap = 5;
+		
 		if (!playing) {
 			gw.drawTriangle( 
 					position.x() - triWidth / 2 + gap, position.y() - triHeight / 2,

@@ -56,19 +56,16 @@ public class SBMaster extends SoundBoard {
 		if (playControl != null && playControl.isInside(x, y, position)) {
 			if (this.mv.getMusicSample() != null) {
 				if (playControl.isPlaying()) {
-					System.out.println("Stop playing!");
-					musicSamplePlayer.stopPlaying(); // arrêter de jouer
+					playControl.stop(); // stop playing sample
+					musicSamplePlayer.stopPlaying(playControl); // arrêter de jouer
 				} else {
-					System.out.println("Start playing!");
-					recordControl.getMusicSample().printMusicNotes();
-					musicSamplePlayer.playMusicSample(mv.getMusicSample(), instrument); // jouer l'échantillon					
+					playControl.play(); // start playing sample
+					app.getMF().requestRedraw(); // redraw 
+					musicSamplePlayer.playMusicSample(mv.getMusicSample(), instrument, app, playControl); // jouer l'échantillon
 				}
 			} else {
 				System.out.println("Aucun échantillon enregistré.");
 			}
-			playControl.play(); // start or stop playing sample
-			//System.out.println("playControl playing : " + playControl.isPlaying());
-			return true;
 		}
 		
 		return false;
