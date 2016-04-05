@@ -2,8 +2,6 @@ package widget;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Observable;
-import java.util.Observer;
 
 import app.Application;
 import app.Cursor;
@@ -12,72 +10,55 @@ import music.MusicNotePlayer;
 import music.MusicSample;
 import music.MusicSamplePlayer;
 import music.instruments.AbstractInstrument;
-
 import scene.GraphicsWrapper;
 import scene.Point2D;
 import scene.MusicData;
 import scene.MusicVertex;
 
-public class SoundBoard extends Observable implements Observer {
+public abstract class SoundBoard {
 	// entire panel
-	private int width = 800;
-	private int height = 300;
+	protected int width = 800;
+	protected int height = 300;
 	// piano
-	private int pianoHeight = 200;
-	private int heightSharp = 120;
-	private int widthSharp = 80;
-	private int nbKeys = 8;
-	private int nbSharpKeys = 5;
-	private int controlStart = 70;
-	private int gapBetweenControls = 15;
-	private int gapBetweenSection = -50;
+	protected int pianoHeight = 200;
+	protected int heightSharp = 120;
+	protected int widthSharp = 80;
+	protected int nbKeys = 8;
+	protected int nbSharpKeys = 5;
+	protected int controlStart = 70;
+	protected int gapBetweenControls = 15;
+	protected int gapBetweenSection = -50;
 	
-	private Point2D position;
-	private ArrayList<Sound> sounds;
+	protected Point2D position;
+	protected ArrayList<Sound> sounds;
 	
 	// contrôle pour enregistrer
-	private RecordControl recordControl;
-	
-	// contrôle pour jouer
-	private PlayControl playControl;
-	
-	// contrôle pour dupliquer
-	private DupliControl dupliControl;
+	protected RecordControl recordControl;
 	
 	// contrôle pour déplacer
-	private MoveControl moveControl;
+	protected MoveControl moveControl;
 	
 	// contrôle pour fermer
-	private CloseControl closeControl;
+	protected CloseControl closeControl;
 	
 	// contrôle pour changer le volume
-	private VolControl volControl;
+	protected VolControl volControl;
 	
 	// contrôle pour changer l'octave
-	private OctControl octControl;
+	protected OctControl octControl;
 	
-	private MusicVertex mv;
-	private MusicNotePlayer musicNotePlayer;
-	private MusicSample musicSample;
-	private AbstractInstrument instrument;
-	private MusicSamplePlayer musicSamplePlayer;
-	private int index;
-	private SoundBoard duplicate;
-	private boolean master;
+	protected MusicVertex mv;
+	protected MusicNotePlayer musicNotePlayer;
+	protected AbstractInstrument instrument;
+	protected MusicSamplePlayer musicSamplePlayer;
+	// identifier le no du panneau dans application
+	protected int index;
 	
-	// sound board esclave
-	public SoundBoard(float x, float y, MusicVertex mv, MusicSample musicSample, RecordControl recordControl) {
-		master = false;
+	// sound board
+	protected SoundBoard(float x, float y, MusicVertex mv) {
 		this.mv = mv;
 		
-		// quand on met en commentaire, on peut record les sons des deux claviers. MAIS, pendant le mode de record
-		// le deuxième clavier joue les notes plus longtemps : À RÉGLER
-		//this.musicSample = musicSample; // utilise le même
-		
-		this.recordControl = recordControl;
-		
-		//System.out.println("Création duplicate, musicSample notes : ");
-		//musicSample.printMusicNotes();
+		// créer le clabier
 		createUI(x, y);
 		
 		// contrôles
@@ -87,32 +68,11 @@ public class SoundBoard extends Observable implements Observer {
 		octControl = new OctControl(controlStart * 8 + gapBetweenControls * 7 - gapBetweenSection, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Oct.", new int[] {2, 3, 4, 5, 6});
 	}
 	
-	// sound board maître
-	public SoundBoard(float x, float y, MusicVertex mv) {
-		master = true;
-		this.mv = mv;
-		musicSample = new MusicSample(); // créer un nouvel échantillon
-		
-		createUI(x, y);
-		
-		// contrôles
-		recordControl = new RecordControl(controlStart, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
-		playControl = new PlayControl(controlStart * 2 + gapBetweenControls, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
-		dupliControl = new DupliControl(controlStart * 3 + gapBetweenControls * 2, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
-		moveControl = new MoveControl(controlStart * 4 + gapBetweenControls * 3, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
-		closeControl = new CloseControl(controlStart * 5 + gapBetweenControls * 4, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
-		volControl = new VolControl(controlStart * 7 + gapBetweenControls * 6 - gapBetweenSection, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Vol.");
-		octControl = new OctControl(controlStart * 8 + gapBetweenControls * 7 - gapBetweenSection, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f}, "Oct.", new int[] {2, 3, 4, 5, 6});
-	}
-	
 	private void createUI(float x, float y) {
 		position = new Point2D(x - width / 2, y - height / 2);
 		
 		int keyWidth = width / nbKeys;
 		
-		if (master) {
-			
-		}
 		musicSamplePlayer = new MusicSamplePlayer();
 		musicNotePlayer = new MusicNotePlayer();
 		instrument = mv.getInstrument();
@@ -252,54 +212,31 @@ public class SoundBoard extends Observable implements Observer {
 				s.setSelected(true);
 				s.performAction(c);
 				if (recordControl.isRecording()) {
-					musicSample.addMusicNote(new MusicNote(60, timeBetweenClick, 0)); // add a note without volume to simulate a pause
+					recordControl.getMusicSample().addMusicNote(new MusicNote(60, timeBetweenClick, 0)); // add a note without volume to simulate a pause
 				}
 				return true;
 			}
-		}
-		
-		if (dupliControl != null && dupliControl.isInside(x, y, position)) {
-			System.out.println("duplicate========================================");
-			duplicate = new SoundBoard(x, y, mv, musicSample, recordControl);
-			this.addObserver(duplicate);
-			dupliControl.duplicate(app, duplicate);
-			return true;
 		}
 		
 		if (recordControl != null && recordControl.isInside(x, y, position)) {
 			System.out.println("click record");
 			if (recordControl.isRecording()) {
 				System.out.println("Stop recording!");
-				if (!musicSample.getMusicNotes().isEmpty()) { // si échantillon n'est pas vide
-					musicSample.setChannel(mv.getChannel(), app); // assigner le bon channel au musicSample
-					mv.setMusicSample(musicSample); // assigner le musicSample au noeud
+				if (!recordControl.getMusicSample().getMusicNotes().isEmpty()) { // si échantillon n'est pas vide
+					recordControl.getMusicSample().setChannel(mv.getChannel(), app); // assigner le bon channel au musicSample
+					mv.setMusicSample(recordControl.getMusicSample()); // assigner le musicSample au noeud
 				} else { // si échantillon est vide
 					System.out.println("échantillon vide");
 				}
 			} else {
 				System.out.println("Start recording!");
-				musicSample = new MusicSample(); // créer un nouvel échantillon
-				notifyObservers(musicSample);
+				recordControl.setMusicSample(new MusicSample()); // créer un nouvel échantillon
 			}
 			recordControl.record(); // start or stop recording sample
 			return true;
 		}
 		
-		if (playControl != null && playControl.isInside(x, y, position)) {
-			if (this.mv.getMusicSample() != null) {
-				if (playControl.isPlaying()) {
-					System.out.println("Stop playing!");
-					musicSamplePlayer.stopPlaying(); // arrêter de jouer
-				} else {
-					System.out.println("Start playing!");
-					musicSample.printMusicNotes();
-					musicSamplePlayer.playMusicSample(mv.getMusicSample(), instrument); // jouer l'échantillon					
-				}
-			} else {
-				System.out.println("Aucun échantillon enregistré.");
-			}
-			playControl.play(); // start or stop playing sample
-			//System.out.println("playControl playing : " + playControl.isPlaying());
+		if (subOnClick(app, c, timeBetweenClick, x, y)) {
 			return true;
 		}
 		
@@ -336,7 +273,7 @@ public class SoundBoard extends Observable implements Observer {
 			
 			if (recordControl.isRecording()) { // si recording
 				musicNote.setNoteLength(Math.round(duration / 1000000)); // assigner la durée de la note
-				musicSample.addMusicNote(musicNote); // ajouter la note à l'échantillon
+				recordControl.getMusicSample().addMusicNote(musicNote); // ajouter la note à l'échantillon
 				System.out.println("==========================Note ajoutée=============================================");
 				System.out.println("note key : " + musicNote.getKey() + ", length : " + musicNote.getNoteLength());
 			}
@@ -344,9 +281,7 @@ public class SoundBoard extends Observable implements Observer {
 			return true;
 		}
 		
-		//plus besoin de bouger le nouveau panneau
-		if (duplicate != null) {
-			duplicate = null;
+		if (subOnRelease(x, y, duration, cDown)) {
 			return true;
 		}
 		
@@ -369,16 +304,20 @@ public class SoundBoard extends Observable implements Observer {
 			return true;
 		}
 		
-		if (duplicate != null) {
-			duplicate.setPosition(x, y);
+		if (subOnMove(x, y))
 			return true;
-		}
 		
 		return false;
 	}
+	
+	public abstract boolean subOnClick(Application app, Cursor c, long timeBetweenClick, float x, float y);
+	public abstract boolean subOnRelease(float x, float y, long duration, Cursor cDown);
+	public abstract boolean subOnMove(float x, float y);
+	public abstract void subDraw(GraphicsWrapper gw);
 
 	public void draw(GraphicsWrapper gw) {
 		gw.localWorldTrans(position.x(), position.y());
+			gw.setLineWidth(3);
 			gw.setColor(0.2f, 0.2f, 0.2f, 0.5f);
 			// le panneau
 			gw.drawRect(0, 0, width, height, true);
@@ -387,25 +326,16 @@ public class SoundBoard extends Observable implements Observer {
 			for (int i = sounds.size() - 1; i >= 0; i--)
 				sounds.get(i).draw(gw);
 			
-			// contrôles
-			if (recordControl != null)
-				recordControl.draw(gw);
-			if (playControl != null)
-				playControl.draw(gw);
-			if (dupliControl != null)
-				dupliControl.draw(gw);
+			subDraw(gw);
+			
+			recordControl.draw(gw);
 			moveControl.draw(gw);
 			closeControl.draw(gw);
 			volControl.draw(gw);
 			octControl.draw(gw);
 			
+			gw.setLineWidth(1);
 			gw.setColor(1, 1, 1);
 		gw.popMatrix();
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		musicSample = (MusicSample) arg;
-		
 	}
 }
