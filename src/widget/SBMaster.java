@@ -59,7 +59,7 @@ public class SBMaster extends SoundBoard {
 		}
 		
 		if (playControl != null && playControl.isInside(x, y, position)) {
-			if (this.mv.getMusicSample() != null) {
+			if (mv.getMusicSample() != null) {
 				if (playControl.isPlaying()) {
 					playControl.stop(); // stop playing sample
 					musicSamplePlayer.stopPlaying(playControl); // arrêter de jouer

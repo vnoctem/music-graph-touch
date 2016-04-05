@@ -52,6 +52,10 @@ public class Application implements Serializable {
 		this.mf = mf;
 	}
 	
+	public void setMultitouchFramework(MultitouchFramework mf) {
+		this.mf = mf;
+	}
+	
 	public MultitouchFramework getMF() {
 		return mf;
 	}
