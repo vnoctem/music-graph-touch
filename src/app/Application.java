@@ -124,8 +124,8 @@ public class Application implements Serializable {
 		sb.setIndex(lSb.size() - 1);
 	}
 	
-	public void resetSB(int index) {
-		lSb.remove(index);
+	public void resetSB(SoundBoard toClose) {
+		lSb.remove(toClose);
 	}
 	
 	public void touchDown(int id, long pauseBetweenClick, LinkedHashMap<Integer, CursorController> cursors) {

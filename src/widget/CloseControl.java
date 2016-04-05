@@ -11,8 +11,8 @@ public class CloseControl extends AbstractControl {
 		super(x, y, radius, color);
 	}
 	
-	public void close(Application app, int index) {
-		app.resetSB(index);
+	public void close(Application app, SoundBoard toClose) {
+		app.resetSB(toClose);
 	}
 	
 	public void draw(GraphicsWrapper gw) {

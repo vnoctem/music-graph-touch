@@ -292,7 +292,7 @@ public abstract class SoundBoard {
 		}
 		
 		if (closeControl.isInside(x, y, position)) {
-			closeControl.close(app, index);
+			closeControl.close(app, this);
 			return true;
 		}
 		
@@ -320,7 +320,6 @@ public abstract class SoundBoard {
 			data.getSound().setSelected(false);
 			
 			MusicNote musicNote = data.getMusicNote(); // récupérer la note qui joue
-			System.out.println(musicNote);
 			musicNotePlayer.stopMusicNote(musicNote); // arrêter de jouer la note lorsqu'on enlève notre doigt
 			
 			if (recordControl.isRecording()) { // si recording
