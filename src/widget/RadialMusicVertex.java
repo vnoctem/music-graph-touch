@@ -168,7 +168,7 @@ public class RadialMusicVertex extends AbstractRadial {
 				System.out.println("Set noeud de départ");
 				break;
 			case 3: // afficher le panneau de son
-				sb = new SoundBoard(x, y, mv);
+				sb = new SBMaster(x, y, mv);
 				break;
 		}
 		

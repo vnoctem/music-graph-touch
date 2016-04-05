@@ -1,13 +1,23 @@
 package widget;
 
+import music.MusicSample;
 import scene.GraphicsWrapper;
 
 public class RecordControl extends AbstractControl {
 	private boolean recording = false;
 	private float[] colorIcon = new float[]{1, 0, 0};
 	private float radiusIcon = 20;
+	protected MusicSample musicSample;
 	private long startTime = -1;
 	
+	public MusicSample getMusicSample() {
+		return musicSample;
+	}
+
+	public void setMusicSample(MusicSample musicSample) {
+		this.musicSample = musicSample;
+	}
+
 	public RecordControl(float x, float y, float radius, float[] color) {
 		super(x, y, radius, color);
 	}
