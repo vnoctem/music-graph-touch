@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.WriteAbortedException;
 import java.util.LinkedHashMap;
 
 import javax.swing.JMenuBar;
@@ -28,9 +27,6 @@ public class MusicPath implements Runnable, ActionListener {
 	private Application app;
 	// track les curseurs
 	private LinkedHashMap<Integer, CursorController> cursors;
-	private long startTime = 0;
-	// pause entre les touches
-	private long pause = 0;
 
 	Thread thread = null;
 	boolean threadSuspended;
@@ -90,24 +86,12 @@ public class MusicPath implements Runnable, ActionListener {
 	public synchronized void processMultitouchInputEvent( int id, float x, float y, int type ) {
 		switch (type) {
 			case MultitouchFramework.TOUCH_EVENT_DOWN:
-				// vérifier si c'est la première touche
-				// et un temps a été sauvegardé (touch up)
-				if (cursors.isEmpty() && startTime != 0) {
-					pause = System.nanoTime() - startTime;
-				}
-				
 				// créer un nouveau tracker pour les curseurs
 				CursorController cc = new CursorController();
 				cc.addCursor(new Cursor(type, x, y));
 				cursors.put(id, cc);
 				
-				app.touchDown(id, pause / 1000000, cursors);
-				
-				// réinitialiser pour pas avoir des effets inattendus
-				if (pause != 0) {
-					startTime = 0;
-					pause = 0;
-				}
+				app.touchDown(id, cursors);
 				
 				// forcer le rafraîchissement pour faire apparaître le menu
 				multitouchFramework.requestRedraw();
@@ -120,11 +104,6 @@ public class MusicPath implements Runnable, ActionListener {
 				
 				// une fois traité, enlève le tracker
 				cursors.remove(id);
-				
-				// vérifier si c'est la dernière touche
-				if (cursors.isEmpty()) {
-					startTime = System.nanoTime();
-				}
 			break;
 			case MultitouchFramework.TOUCH_EVENT_MOVE:
 				// garder le curseur dans le propre contrôleur

@@ -16,8 +16,7 @@ public class SBSlave extends SoundBoard {
 	}
 
 	@Override
-	public boolean subOnClick(Application app, Cursor c, long timeBetweenClick,
-			float x, float y) {
+	public boolean subOnClick(Application app, Cursor c, float x, float y) {
 		// TODO Auto-generated method stub
 		return false;
 	}

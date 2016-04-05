@@ -50,7 +50,7 @@ public class SBMaster extends SoundBoard {
 		return false;
 	}
 	
-	public boolean subOnClick(Application app, Cursor c, long timeBetweenClick, float x, float y) {
+	public boolean subOnClick(Application app, Cursor c, float x, float y) {
 		if (dupliControl != null && dupliControl.isInside(x, y, position)) {
 			System.out.println("duplicate========================================");
 			duplicate = new SBSlave(x, y, mv, recordControl, musicNotePlayer);

@@ -252,7 +252,7 @@ public abstract class SoundBoard {
 		position = new Point2D(x, y);
 	}
 	
-	public boolean onClick(Application app, Cursor c, long timeBetweenClick) {
+	public boolean onClick(Application app, Cursor c) {
 		float x = c.getPos().x();
 		float y = c.getPos().y();
 		
@@ -260,9 +260,6 @@ public abstract class SoundBoard {
 			if (s.isInside(x, y, position)) {
 				s.setSelected(true);
 				s.performAction(c);
-				if (recordControl.isRecording()) {
-					recordControl.getMusicSample().addMusicNote(new MusicNote(60, timeBetweenClick, 0)); // add a note without volume to simulate a pause
-				}
 				return true;
 			}
 		}
@@ -285,7 +282,7 @@ public abstract class SoundBoard {
 			return true;
 		}
 		
-		if (subOnClick(app, c, timeBetweenClick, x, y)) {
+		if (subOnClick(app, c, x, y)) {
 			return true;
 		}
 		
@@ -359,7 +356,7 @@ public abstract class SoundBoard {
 		return false;
 	}
 	
-	public abstract boolean subOnClick(Application app, Cursor c, long timeBetweenClick, float x, float y);
+	public abstract boolean subOnClick(Application app, Cursor c, float x, float y);
 	public abstract boolean subOnRelease(float x, float y, long duration, Cursor cDown);
 	public abstract boolean subOnMove(float x, float y);
 	public abstract void subDraw(GraphicsWrapper gw);

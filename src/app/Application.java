@@ -135,7 +135,7 @@ public class Application implements Serializable {
 		lSb.remove(toClose);
 	}
 	
-	public void touchDown(int id, long pauseBetweenClick, LinkedHashMap<Integer, CursorController> cursors) {
+	public void touchDown(int id, LinkedHashMap<Integer, CursorController> cursors) {
 		CursorController cCursor = cursors.get(id);
 		Point2D pos = cCursor.last().getPos();
 		
@@ -144,7 +144,7 @@ public class Application implements Serializable {
 		if (!lSb.isEmpty()) {
 			for (int i = lSb.size() - 1; i >= 0; i--) {
 				SoundBoard sb = lSb.get(i);
-				if (sb.onClick(this, cCursor.last(), pauseBetweenClick)) {
+				if (sb.onClick(this, cCursor.last())) {
 					selectedSB = i;
 					break;
 				}
