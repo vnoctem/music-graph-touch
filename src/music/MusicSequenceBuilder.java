@@ -20,10 +20,15 @@ public class MusicSequenceBuilder {
 	
 	private long ticks; // temps en ticks (millisecondes) pour la composition de la séquence
 	private ArrayList<MusicVertex> lMv;
+	private ArrayList<Object[]> lTimedMV;
 	
 	public MusicSequenceBuilder(ArrayList<MusicVertex> lMv) {
 		ticks = 0; // on débute à 0
 		this.lMv = lMv;
+	}
+	
+	public ArrayList<Object[]> getLTimedMV() {
+		return lTimedMV;
 	}
 	
 	/**
@@ -38,10 +43,15 @@ public class MusicSequenceBuilder {
 		Sequence sequence = new Sequence(tempoTimingType, timingResolution); // music sequence
 		Queue<MusicVertex> queue = new LinkedList<MusicVertex>();
 		
+		lTimedMV = new ArrayList<Object[]>();
+		
 		resetVisitedMusicVertex(); // remettre les noeuds à non visité
 		
 		// ajouter l'échantillon de musique au temps donné
 		addMusicSample(mvRoot.getMusicSample(), sequence, mvRoot.getInstrument(), ticks);
+		lTimedMV.add(new Object[]{ mvRoot, ticks });
+		//System.out.println("test object " + ((MusicVertex)lTimedMV.get(0)[0]).getInstrument().getName());
+		
 		queue.add(mvRoot);
 		mvRoot.setVisited(true);
 		
@@ -61,14 +71,18 @@ public class MusicSequenceBuilder {
 						if (!mvChild.getMusicSample().getMusicNotes().isEmpty()) { // si échantillon pas vide
 							System.out.println("échantillon pas vide");
 							addMusicSample(mvChild.getMusicSample(), sequence, mvChild.getInstrument(), ticks + (Math.round(c.getLength()) * 5));
+							lTimedMV.add(new Object[]{ mvChild, ticks + (Math.round(c.getLength()) * 5) });
 							mvChild.setTimePosition(Math.round(c.getLength()) * 5);
 							System.out.println("Longueur du connecteur * 5 (millisecondes) : " + (Math.round(c.getLength()) * 5));
+							System.out.println("ticks add : " + ticks);
+							
 							queue.add(mvChild);
 							mvChild.setVisited(true);
-						} else {
+						} else { // échantillon vide, continuer quand même au prochain
 							System.out.println("échantillon vide, continuer quand même au prochain");
 							mvChild.setTimePosition(Math.round(c.getLength()) * 5);
 							System.out.println("Longueur du connecteur * 5 (millisecondes) : " + (Math.round(c.getLength()) * 5));
+							System.out.println("ticks add : " + ticks);
 							queue.add(mvChild);
 							mvChild.setVisited(true);
 						}

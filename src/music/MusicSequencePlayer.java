@@ -22,7 +22,6 @@ public class MusicSequencePlayer {
 			open(); // ouvrir le séquenceur
 			sequencer.setSequence(sequence);
 			sequencer.setTempoInBPM(240);
-			System.out.println("init MusicSequencePlayer");
 		} catch (MidiUnavailableException e) {
 			e.printStackTrace();
 		} catch (InvalidMidiDataException e) {
@@ -64,13 +63,11 @@ public class MusicSequencePlayer {
 			
 			sequencer.setSequence(sequence); // assigner la séquence au séquenceur
 			sequencer.start();
-			//sequencer.setTickPosition(0);
-			//Thread.sleep((sequencer.getMicrosecondLength() / 1000) + 1000);
+
 		} catch (InvalidMidiDataException e) {
-			e.printStackTrace(); }
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		} 
+			e.printStackTrace(); 
+		}
+
 	}
 
 }

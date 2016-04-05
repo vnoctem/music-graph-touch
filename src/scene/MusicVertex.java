@@ -43,6 +43,7 @@ public class MusicVertex implements Serializable {
 		conn = new ArrayList<Connector>();
 		
 		timePosition = 0;
+		musicSample = new MusicSample();
 	}
 	
 	public void setTimePosition(int ticks) {
@@ -159,7 +160,7 @@ public class MusicVertex implements Serializable {
 	}
 	
 	public void draw(GraphicsWrapper gw) {
-		if (selected)
+		if (selected) // si en lecture
 			gw.setColor(colorSelected[0],colorSelected[1],colorSelected[2]);
 		else if (start)
 			gw.setColor(colorStart[0],colorStart[1],colorStart[2]);

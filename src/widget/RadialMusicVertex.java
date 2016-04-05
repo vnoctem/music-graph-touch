@@ -23,7 +23,7 @@ public class RadialMusicVertex extends AbstractRadial {
 		this.lMv = lMv;
 		this.app = app;
 		//vgr
-		//System.out.println("channel est " + mv.getChannel() + " et channelCounter est " + app.getChannelCounter());
+		System.out.println("channel est " + mv.getChannel() + " et channelCounter est " + app.getChannelCounter());
 	}
 	
 	@Override
@@ -150,15 +150,22 @@ public class RadialMusicVertex extends AbstractRadial {
 				for (MusicVertex s : lMv) {
 					s.deleteConnIfLinked(mv);
 				}
+				
 				// enlever le noeud
 				lMv.remove(mv);
 				
 				// réorganiser les channels
 				for (int i = mv.getChannel(); i < lMv.size(); i++) {
+					System.out.println("i : " + i);
 					lMv.get(i).setChannel(lMv.get(i).getChannel() - 1);
 					lMv.get(i).getMusicSample().setChannel(lMv.get(i).getChannel(), app);
+					System.out.println("size : " + lMv.size());
 				}
+				System.out.println("réorganiser channels : ");
+				System.out.println(app.getChannelCounter() - 1);
 				app.setChannelCounter(app.getChannelCounter() - 1);
+				
+				
 				break;
 			case 2: // noeud de départ
 				for (MusicVertex mv : lMv) { // si un autre noeud est le noeud de départ, modifier pour qu'il ne le soit plus

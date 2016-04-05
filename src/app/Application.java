@@ -43,6 +43,7 @@ public class Application implements Serializable {
 	private transient boolean playingWholeScene = false;
 	private transient Thread updateThread = null;
 	
+	private transient MusicSequenceBuilder seqBuilder;
 	private transient MusicSequencePlayer msp;
 	private int channelCounter = 0;
 	
@@ -89,28 +90,31 @@ public class Application implements Serializable {
 		}
 	}
 	
-	private int index = 0; // à enlever juste pour tester
+	private transient int index = 0;
 	private void update(GraphicsWrapper gw, MultitouchFramework mf) {
 		updateThread = new Thread() {
 			public void run() {
 				// continuer jusqu'à tant que c'est fini (thread tué)
 				while (true) {
 					try {
-						Thread.sleep(1000); // attendre 1 seconde
+						if (index > 0 && index < seqBuilder.getLTimedMV().size() - 1) {
+							System.out.println("soust : " + ((long)seqBuilder.getLTimedMV().get(index)[1] - (long)seqBuilder.getLTimedMV().get(index - 1)[1]));
+							Thread.sleep((long)seqBuilder.getLTimedMV().get(index)[1] - (long)seqBuilder.getLTimedMV().get(index - 1)[1]); // attendre 1 seconde
+						}
 						
 						// arrêter l'animation
-						if (index == lMv.size()) {
+						if (index == seqBuilder.getLTimedMV().size() - 1) {
 							playingWholeScene = false;
 							updateThread = null;
 							// remettre la couleur du dernier noeud
-							lMv.get(index - 1).setSelected(false);
+							((MusicVertex)seqBuilder.getLTimedMV().get(index)[0]).setSelected(false);
 							// tuer le thread
 							Thread.currentThread().interrupt();
 							return;
 						}
 						
 						// update l'interface
-						lMv.get(index).setSelected(true);
+						((MusicVertex)seqBuilder.getLTimedMV().get(index)[0]).setSelected(true);
 						index++;
 						
 						// redessiner
@@ -191,10 +195,15 @@ public class Application implements Serializable {
 			playingWholeScene = true;
 			startMV = getStartMusicVertex();
 			if (startMV != null) {
-				MusicSequenceBuilder seqBuilder = new MusicSequenceBuilder(lMv);
+				seqBuilder = new MusicSequenceBuilder(lMv);
 				
 				try {
 					msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(startMV, Sequence.PPQ, 250));
+					for (Object[] obj : seqBuilder.getLTimedMV()) {
+						System.out.println("obj MusicVertex instrument : " + ((MusicVertex)obj[0]).getInstrument().getName() + " , ticks " + (Long)obj[1]);
+					}
+					
+					
 					msp.play();
 					System.out.println("AFTER PLAY();*********************************************");
 					startMV.getMusicSample().printMusicNotes();

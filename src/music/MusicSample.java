@@ -88,6 +88,7 @@ public class MusicSample implements Serializable {
 	public void buildTrack(Sequence sequence, AbstractInstrument instrument, long startTick) 
 			throws InvalidMidiDataException {
 		System.out.println("===========================================Début buildTrack");
+		System.out.println("channel : " + channel);
 		track = sequence.createTrack(); // créer la track
 		//ticks = 0; // les ticks interne de la track commence 0
 		
@@ -109,11 +110,7 @@ public class MusicSample implements Serializable {
 				track.add(new MidiEvent(on, (long)(startTick + note.getStartTick()))); // message pour jouer la note
 				track.add(new MidiEvent(off, (long)(startTick + note.getStartTick() + note.getNoteLength()))); // message pour arrêter la note
 				
-				if (note.getVelocity() > 0) {
-					System.out.println("NOTE key = " + note.getKey() + ", note startTick = " + note.getStartTick() + ", noteLength = " + note.getNoteLength() + ", volume : " + note.getVelocity());
-				} else {
-					System.out.println("SILENCE startTick = " + note.getStartTick() + ", noteLength = " + note.getNoteLength());
-				}
+				System.out.println("NOTE key = " + note.getKey() + ", note startTick = " + note.getStartTick() + ", noteLength = " + note.getNoteLength() + ", volume : " + note.getVelocity());
 			} catch (InvalidMidiDataException e) {
 				e.printStackTrace();
 			}

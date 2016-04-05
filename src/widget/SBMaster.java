@@ -1,7 +1,6 @@
 package widget;
 
 import music.MusicNotePlayer;
-import music.MusicSamplePlayer;
 import app.Application;
 import app.Cursor;
 import scene.GraphicsWrapper;
@@ -52,7 +51,6 @@ public class SBMaster extends SoundBoard {
 	
 	public boolean subOnClick(Application app, Cursor c, float x, float y) {
 		if (dupliControl != null && dupliControl.isInside(x, y, position)) {
-			System.out.println("duplicate========================================");
 			duplicate = new SBSlave(x, y, mv, recordControl, musicNotePlayer);
 			dupliControl.duplicate(app, duplicate);
 			return true;

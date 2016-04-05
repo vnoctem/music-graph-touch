@@ -46,10 +46,6 @@ public class MusicSamplePlayer {
 					sequencer.close();
 					System.out.println("playMusicSample sequencer.close()");
 					
-					//System.out.println("avant app.getMF().requestRedraw()");
-					//app.getMF().requestRedraw();
-					//System.out.println("après app.getMF().requestRedraw();");
-					
 					playControl.stop();
 					app.getMF().requestRedraw();
 				} catch (InterruptedException e) {
