@@ -3,7 +3,6 @@ package app;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.NotSerializableException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,18 +30,18 @@ public class Application implements Serializable {
 	private transient RadialMenu menu;
 	
 	// menu pour les composants graphiques
-	private RadialMusicVertex menuMV;
+	private transient RadialMusicVertex menuMV;
 	
 	// panneau pour jouer des sons
 	private ArrayList<SoundBoard> lSb = new ArrayList<SoundBoard>();
 	
 	// liste des composant graphique et musical
 	private ArrayList<MusicVertex> lMv = new ArrayList<MusicVertex>(); 
-	private MusicVertex selectedMV = null;
+	private transient MusicVertex selectedMV = null;
 	private MusicVertex startMV = null; // noeud de départ
-	private int selectedSB;
-	private boolean playingWholeScene = false;
-	private Thread updateThread = null;
+	private transient int selectedSB;
+	private transient boolean playingWholeScene = false;
+	private transient Thread updateThread = null;
 	
 	private transient MusicSequencePlayer msp;
 	private int channelCounter = 0;
@@ -210,11 +209,7 @@ public class Application implements Serializable {
 				File fichier =  new File("scene.ser") ;
 				// sérialise
 				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fichier));
-				try {
 				oos.writeObject(this);
-				} catch (NotSerializableException e) {
-					
-				}
 				oos.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

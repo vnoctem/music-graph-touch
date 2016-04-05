@@ -1,5 +1,6 @@
 package widget;
 
+import music.MusicNotePlayer;
 import app.Application;
 import app.Cursor;
 import scene.GraphicsWrapper;
@@ -7,9 +8,10 @@ import scene.MusicVertex;
 
 public class SBSlave extends SoundBoard {
 	
-	public SBSlave(float x, float y, MusicVertex mv, RecordControl recordControl) {
+	public SBSlave(float x, float y, MusicVertex mv, RecordControl recordControl, MusicNotePlayer musicNotePlayer) {
 		super(x, y, mv);
 		
+		super.musicNotePlayer = musicNotePlayer;
 		super.recordControl = recordControl;
 	}
 

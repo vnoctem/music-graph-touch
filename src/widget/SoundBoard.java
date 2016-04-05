@@ -74,9 +74,7 @@ public abstract class SoundBoard {
 		int keyWidth = width / nbKeys;
 		
 		musicSamplePlayer = new MusicSamplePlayer();
-		musicNotePlayer = new MusicNotePlayer();
 		instrument = mv.getInstrument();
-		
 		
 		// initialiser les actions pour chaque note
 		// les actions sont associées en ordre avec ceux d'ajouter dans le panneau
