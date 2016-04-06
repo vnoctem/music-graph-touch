@@ -28,6 +28,7 @@ public class MusicVertex implements Serializable {
 	private boolean selected;
 	private boolean playing;
 	private MusicVertex previousMV; // le noeud précédent
+	private float progress;
 	
 	public MusicVertex(AbstractInstrument mi, float radius) {
 		this.radius = radius;
@@ -47,6 +48,10 @@ public class MusicVertex implements Serializable {
 		
 		timePosition = 0;
 		musicSample = new MusicSample();
+	}
+	
+	public void setProgress(float progress) {
+		this.progress = progress;
 	}
 	
 	public void setPreviousMV(MusicVertex mv) {
@@ -187,6 +192,7 @@ public class MusicVertex implements Serializable {
 			gw.setColor(color[0],color[1],color[2]);
 		gw.setLineWidth(3);
 		gw.drawCircle(position.x() - radius, position.y() - radius, radius);
+		gw.drawPartOfCircle(position.x(), position.y(), radius, 0, (int) (progress * 360), true);
 		mi.drawIcon(gw, position.x(), position.y(), 0.4f, 0.4f);
 		gw.setLineWidth(3);
 		gw.setColor(1f,1f,1f);

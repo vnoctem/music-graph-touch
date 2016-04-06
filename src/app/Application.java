@@ -125,7 +125,23 @@ public class Application implements Serializable {
 							
 						} else {
 							// update l'interface
-							seqBuilder.getLTimedMV().get(index).setPlaying(true);;
+							seqBuilder.getLTimedMV().get(index).setPlaying(true);
+							Thread updateVertex = new Thread() {
+								private long startTime = System.nanoTime(); 
+								public void run() {
+									while (true) {
+										long milli = (System.nanoTime() - startTime) / 1000000l;
+										if (milli > seqBuilder.getLTimedMV().get(index).getMusicSample().getDuration()) {
+											Thread.currentThread().interrupt();
+											return;
+										}
+										
+										seqBuilder.getLTimedMV().get(index).setProgress(milli / seqBuilder.getLTimedMV().get(index).getMusicSample().getDuration());
+										System.out.println(milli);
+									}
+								}
+							}; 
+							updateVertex.start();
 							index++;
 						}
 						
