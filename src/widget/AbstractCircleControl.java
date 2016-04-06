@@ -21,6 +21,14 @@ public abstract class AbstractCircleControl extends AbstractControl {
 		value = (float) Math.toDegrees(v.angle());
 	}
 	
+	public void setBrutValue(float value) {
+		this.value = value;
+	}
+	
+	public float getBrutValue() {
+		return value;
+	}
+	
 	public double getValue() {
 		return value / 360;
 	}

@@ -104,12 +104,6 @@ public class Application implements Serializable {
 							System.out.println(seqBuilder.getLTimedMV().get(index).getInstrument().getName() + " - timePosition précédent : " + seqBuilder.getLTimedMV().get(index - 1).getTimePosition());
 							System.out.println("différence temps : " + (seqBuilder.getLTimedMV().get(index).getTimePosition() - seqBuilder.getLTimedMV().get(index - 1).getTimePosition()));
 							Thread.sleep(seqBuilder.getLTimedMV().get(index).getTimePosition() - seqBuilder.getLTimedMV().get(index - 1).getTimePosition());
-						
-//							System.out.println(seqBuilder.getLTimedMV().get(index).getInstrument().getName() + " - timePosition actuel : " + seqBuilder.getLTimedMV().get(index).getTimePosition());
-//							System.out.println(seqBuilder.getLTimedMV().get(index).getInstrument().getName() + " - timePosition précédent : " + seqBuilder.getLTimedMV().get(index).getPreviousMV().getTimePosition());
-//							System.out.println("nouvelle différence temps " + 
-//									(seqBuilder.getLTimedMV().get(index).getTimePosition() - seqBuilder.getLTimedMV().get(index).getPreviousMV().getTimePosition()));
-							//Thread.sleep(seqBuilder.getLTimedMV().get(index).getTimePosition() - seqBuilder.getLTimedMV().get(index).getPreviousMV().getTimePosition());
 						}
 						
 						// arrêter l'animation
@@ -117,7 +111,6 @@ public class Application implements Serializable {
 							
 							// si la séquence a fini
 							if (!msp.getSequencer().isRunning()) {
-								System.out.println("index : " + index + ", size : " + seqBuilder.getLTimedMV().size());
 								playingWholeScene = false;
 								updateThread = null;
 								for (MusicVertex mv : seqBuilder.getLTimedMV()) {
@@ -139,7 +132,11 @@ public class Application implements Serializable {
 						// redessiner
 						mf.requestRedraw();
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						playingWholeScene = false;
+						updateThread = null;
+						Thread.currentThread().interrupt();
+						index = 0;
+						return;
 					}
 				}
 			}
@@ -148,7 +145,6 @@ public class Application implements Serializable {
 	}
 	
 	public void add(SoundBoard sb) {
-		System.out.println("ajouter sb");
 		lSb.add(sb);
 		sb.setIndex(lSb.size() - 1);
 	}
@@ -172,9 +168,20 @@ public class Application implements Serializable {
 				}
 			}
 		} else {
-			if (cursors.size() >= 3)
+			if (cursors.size() >= 3) {
 				// jouer la séquence
-				playMusic();
+				if (playingWholeScene) {
+					stopMusic();
+					updateThread.interrupt();
+					for (MusicVertex mv : seqBuilder.getLTimedMV()) {
+						mv.setPlaying(false);
+					}
+					playingWholeScene = false;
+				} else {
+					playMusic();
+					playingWholeScene = true;
+				}
+			}
 			else {
 				if (cursors.size() == 1) {
 					// si clic sur un des composants graphiques, fait l'action
@@ -205,12 +212,17 @@ public class Application implements Serializable {
 		}
 	}
 	
+	// lorsqu'il y a plus de 3 clics si en train de jouer
+	public void stopMusic() {
+		System.out.println("STOP THE MUSIC**********************************************************");
+		msp.getSequencer().stop();
+	}
+	
 	// lorsqu'il y a plus de 3 clics
 	public void playMusic() {
 		// jouer seulement on n'est pas en mode de piano
 		if (lSb.isEmpty()) {
 			System.out.println("PLAY THE MUSIC**********************************************************");
-			playingWholeScene = true;
 			startMV = getStartMusicVertex();
 			if (startMV != null) {
 				seqBuilder = new MusicSequenceBuilder(lMv);
@@ -224,7 +236,7 @@ public class Application implements Serializable {
 					
 					
 					msp.play();
-					System.out.println("AFTER PLAY();*********************************************");
+					System.out.println("AFTER PLAY*********************************************");
 					startMV.getMusicSample().printMusicNotes();
 				} catch (InvalidMidiDataException e) {
 					e.printStackTrace();

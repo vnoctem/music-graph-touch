@@ -45,7 +45,7 @@ public class Connector implements Serializable {
 		gw.setLineWidth(1);
 		gw.setColor(1f,1f,1f);
 		Point2D middle = Point2D.average(position, connected);
-		gw.drawString(middle.x(), middle.y(), String.valueOf(Math.round(length) * 5 / 1000.0));
+		gw.drawString(middle.x() + 15, middle.y() + 15, String.valueOf(Math.round(length) * 5 / 1000.0));
 	}
 	
 }

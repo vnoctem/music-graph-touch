@@ -42,7 +42,6 @@ public class MusicSequenceBuilder {
 			throws InvalidMidiDataException {
 		Sequence sequence = new Sequence(tempoTimingType, timingResolution); // music sequence
 		Queue<MusicVertex> queue = new LinkedList<MusicVertex>();
-		
 		lTimedMV = new ArrayList<MusicVertex>();
 		
 		resetVisitedMusicVertex(); // remettre les noeuds à non visité
@@ -51,7 +50,6 @@ public class MusicSequenceBuilder {
 		addMusicSample(mvRoot.getMusicSample(), sequence, mvRoot.getInstrument(), ticks);
 		lTimedMV.add(mvRoot);
 		mvRoot.setTimePosition(ticks);
-		//System.out.println("test object " + ((MusicVertex)lTimedMV.get(0)[0]).getInstrument().getName());
 		
 		queue.add(mvRoot);
 		mvRoot.setVisited(true);
@@ -59,7 +57,6 @@ public class MusicSequenceBuilder {
 		while (!queue.isEmpty()) {
 			MusicVertex mv = queue.remove(); // extraire le noeud inséré en premier
 			ticks = mv.getTimePosition(); // incrémenter les ticks avec le temps de départ du noeud courant
-			System.out.println("ticks après incrémentation : " + ticks);
 			
 			for (Connector c : mv.getConnectors()) {
 				MusicVertex mvChild = c.getTarget(mv); // récupérer la cible du connecteur
@@ -70,19 +67,12 @@ public class MusicSequenceBuilder {
 						if (!mvChild.getMusicSample().getMusicNotes().isEmpty()) { // si échantillon pas vide
 							addMusicSample(mvChild.getMusicSample(), sequence, mvChild.getInstrument(), ticks + (Math.round(c.getLength()) * 5));
 							lTimedMV.add(mvChild);
-							//sortTimedMVByTimePosition();
 							mvChild.setTimePosition(ticks + Math.round(c.getLength()) * 5);
-							System.out.println("setTimePosition : " + (ticks + Math.round(c.getLength()) * 5));
-							
-							System.out.println("ticks actuel: " + ticks);
 							queue.add(mvChild);
 							mvChild.setVisited(true);
 						} else { // échantillon vide, continuer quand même au prochain
-							System.out.println("échantillon vide, continuer quand même au prochain");
+							lTimedMV.add(mvChild);
 							mvChild.setTimePosition(ticks + Math.round(c.getLength()) * 5);
-							System.out.println("setTimePosition : " + (ticks + Math.round(c.getLength()) * 5));
-							
-							System.out.println("ticks add : " + ticks);
 							queue.add(mvChild);
 							mvChild.setVisited(true);
 						}

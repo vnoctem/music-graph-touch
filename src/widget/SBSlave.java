@@ -8,7 +8,7 @@ import scene.MusicVertex;
 
 public class SBSlave extends SoundBoard {
 	
-	public SBSlave(float x, float y, MusicVertex mv, RecordControl recordControl, MusicNotePlayer musicNotePlayer) {
+	public SBSlave(float x, float y, MusicVertex mv, RecordControl recordControl, MusicNotePlayer musicNotePlayer, float volValue, float octValue) {
 		super(x, y, mv);
 		
 		super.musicNotePlayer = musicNotePlayer;
@@ -16,6 +16,9 @@ public class SBSlave extends SoundBoard {
 		
 		moveControl = new MoveControl(controlStart * 4 + gapBetweenControls * 3, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
 		closeControl = new CloseControl(controlStart * 5 + gapBetweenControls * 4, (height - pianoHeight) / 2, 35, new float[] {0.5f, 0.5f, 0.5f, 0.5f});
+		
+		super.volControl.setBrutValue(volValue);
+		super.octControl.setBrutValue(octValue);
 	}
 
 	@Override

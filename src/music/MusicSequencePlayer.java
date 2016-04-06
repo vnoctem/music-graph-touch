@@ -52,16 +52,4 @@ public class MusicSequencePlayer {
 	public void close() {
 		sequencer.close();
 	}
-	
-	public void playAndStop() {
-		try {
-			sequencer.start();
-			Thread.sleep(sequencer.getMicrosecondLength() / 1000);
-			sequencer.close();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-	}
-
 }
