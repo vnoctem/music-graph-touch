@@ -3,35 +3,31 @@ Laboratoire 4 pour GTI745 (2016)
 
 
 Instruments (https://fr.wikipedia.org/wiki/General_MIDI)
-avec les icônes (1 point)
-Piano, Guitare classique, Violon, Clarinette, contrebasse, cor français
+Piano, Guitare classique, Violon, Clarinette, Contrebasse, Cor français
 
-2 points
-1 - Click
-  - menu radial (Chun) avec les instruments et les patrons (Vincent)
-  - Fenêtre pour définir les patrons (Vincent) (plus tard....)
+===== Points =====
+1.5 + 0.5 + 3.5 + 2 + 0.5 + 1 = 9 
+1 + 0.5 + 3 + 1.5 + 1 = 7
 
-2 points  
-2 - déroulement (Vincent)
-  - connecteurs (sens et nombre de fois et vitesse) et le point de départ (le son du composant sera produit un fois atteint sa position) (Chun)
-    - 5 connecteurs max
-    - connecteur représente le patron joué en ce moment (Vincent)
-  - jouer en boucle (Vincent) (plus tard....)
-  - parent-dossier (plus tard....)
+Menus Radiaux et chacune des options associées (delete, move, point de départ) et les icônes (1.5 pt)
 
-1 point (Chun)
-3 - contrôle (play et pause et la vitesse globale)
-  - aller à une position particulière (plus tard....)
+Noeuds et connecteurs (graphe) (0.5 pt)
 
-1 point (Vincent)
-4 - effet visuel pour représenter le chemin
+Panneau de son (3.5 pt)
+	- multitouch (1 pt)
+	- contrôles (enregistrer, jouer échantillon, arrêter échantillon, volume et octave) (1.5 pt)
+	- maître-esclave : dupliquer le panneau et enregistrer (1 pt)
 
-1 point
-5 - vue linéaire (Vincent) (plus tard....)
+Séquence (2 pt)
+	- Bâtir la séquence (1.5 pt)
+	 	- en fonction de la longueur des connecteurs
+	- Jouer/arrêter la séquence avec 3 doigts (0.5 pt)
 
-Optionnel
-6 - enregistrer la scène
+Effet visuel lorsqu'on joue (0.5 pt)
 
+Sauvegarder la scène (noeuds, connecteurs, échantillons, séquence) (1 pt)
+
+==========================
 Config pour le lab 3
 =================================================================================================================
 Une vue d'ensemble des fichiers:
