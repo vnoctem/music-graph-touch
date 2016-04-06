@@ -1,14 +1,10 @@
 package music;
 
-import java.util.ArrayList;
-
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
-
-import scene.MusicVertex;
 
 public class MusicSequencePlayer {
 	
@@ -57,15 +53,13 @@ public class MusicSequencePlayer {
 		sequencer.close();
 	}
 	
-	public void playAndStop(ArrayList<MusicVertex> sceneMusicList, MusicVertex startSM) {
+	public void playAndStop() {
 		try {
-			System.out.println(sequence.getTickLength());
-			
-			sequencer.setSequence(sequence); // assigner la séquence au séquenceur
 			sequencer.start();
-
-		} catch (InvalidMidiDataException e) {
-			e.printStackTrace(); 
+			Thread.sleep(sequencer.getMicrosecondLength() / 1000);
+			sequencer.close();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 
 	}

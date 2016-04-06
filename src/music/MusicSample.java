@@ -21,7 +21,6 @@ public class MusicSample implements Serializable {
 	
 	private static final long serialVersionUID = -7222124622093166901L;
 	
-	//private long ticks; // temps en ticks pour la composition
 	private ArrayList<MusicNote> notes; // les notes de musique de l'échantillon
 	private transient Track track; // la track dans laquelle l'échantillon sera créé (une track par échantillon)
 	private int channel = 0; // le channel de l'échantillon
@@ -43,13 +42,9 @@ public class MusicSample implements Serializable {
 		return track;
 	}
 
-//	public void setStartTick(int startTick) {
-//		ticks = startTick;
-//	}
-	
-//	public long getTicksLength() {
-//		return ticks;
-//	}
+	public long getDuration() {
+		return notes.get(notes.size() - 1).getStartTick() + notes.get(notes.size() - 1).getNoteLength();
+	}
 	
 	public ArrayList<MusicNote> getMusicNotes() {
 		return notes;
@@ -87,7 +82,7 @@ public class MusicSample implements Serializable {
 	 */
 	public void buildTrack(Sequence sequence, AbstractInstrument instrument, long startTick) 
 			throws InvalidMidiDataException {
-		System.out.println("===========================================Début buildTrack");
+		System.out.println("Début buildTrack===========================================");
 		System.out.println("channel : " + channel);
 		track = sequence.createTrack(); // créer la track
 		//ticks = 0; // les ticks interne de la track commence 0
@@ -95,7 +90,7 @@ public class MusicSample implements Serializable {
 		// modifier l'instrument qui va jouer la track
 		ShortMessage instrumentMessage = new ShortMessage();
 		instrumentMessage.setMessage(ShortMessage.PROGRAM_CHANGE, channel, instrument.getProgram(), instrument.getBank());
-		System.out.println("change instrument to " + instrument.getName());
+		System.out.println("Instrument to " + instrument.getName());
 		track.add(new MidiEvent(instrumentMessage, startTick));
 		startTick++; // incrémenter le tick de 1 après avoir changer l'instrument
 		
@@ -110,7 +105,7 @@ public class MusicSample implements Serializable {
 				track.add(new MidiEvent(on, (long)(startTick + note.getStartTick()))); // message pour jouer la note
 				track.add(new MidiEvent(off, (long)(startTick + note.getStartTick() + note.getNoteLength()))); // message pour arrêter la note
 				
-				System.out.println("NOTE key = " + note.getKey() + ", note startTick = " + note.getStartTick() + ", noteLength = " + note.getNoteLength() + ", volume : " + note.getVelocity());
+				//System.out.println("NOTE key = " + note.getKey() + ", note startTick = " + note.getStartTick() + ", noteLength = " + note.getNoteLength() + ", volume : " + note.getVelocity());
 			} catch (InvalidMidiDataException e) {
 				e.printStackTrace();
 			}

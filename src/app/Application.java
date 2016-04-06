@@ -97,25 +97,43 @@ public class Application implements Serializable {
 				// continuer jusqu'à tant que c'est fini (thread tué)
 				while (true) {
 					try {
-						if (index > 0 && index < seqBuilder.getLTimedMV().size() - 1) {
-							System.out.println("soust : " + ((long)seqBuilder.getLTimedMV().get(index)[1] - (long)seqBuilder.getLTimedMV().get(index - 1)[1]));
-							Thread.sleep((long)seqBuilder.getLTimedMV().get(index)[1] - (long)seqBuilder.getLTimedMV().get(index - 1)[1]); // attendre 1 seconde
+						if (index > 0 && index < seqBuilder.getLTimedMV().size()) {
+							
+							System.out.println(seqBuilder.getLTimedMV().get(index).getInstrument().getName() + " - timePosition actuel : " + seqBuilder.getLTimedMV().get(index).getTimePosition());
+							System.out.println(seqBuilder.getLTimedMV().get(index).getInstrument().getName() + " - timePosition précédent : " + seqBuilder.getLTimedMV().get(index - 1).getTimePosition());
+							System.out.println("différence temps : " + (seqBuilder.getLTimedMV().get(index).getTimePosition() - seqBuilder.getLTimedMV().get(index - 1).getTimePosition()));
+							Thread.sleep(seqBuilder.getLTimedMV().get(index).getTimePosition() - seqBuilder.getLTimedMV().get(index - 1).getTimePosition());
+						
+//							System.out.println(seqBuilder.getLTimedMV().get(index).getInstrument().getName() + " - timePosition actuel : " + seqBuilder.getLTimedMV().get(index).getTimePosition());
+//							System.out.println(seqBuilder.getLTimedMV().get(index).getInstrument().getName() + " - timePosition précédent : " + seqBuilder.getLTimedMV().get(index).getPreviousMV().getTimePosition());
+//							System.out.println("nouvelle différence temps " + 
+//									(seqBuilder.getLTimedMV().get(index).getTimePosition() - seqBuilder.getLTimedMV().get(index).getPreviousMV().getTimePosition()));
+							//Thread.sleep(seqBuilder.getLTimedMV().get(index).getTimePosition() - seqBuilder.getLTimedMV().get(index).getPreviousMV().getTimePosition());
 						}
 						
 						// arrêter l'animation
-						if (index == seqBuilder.getLTimedMV().size() - 1) {
-							playingWholeScene = false;
-							updateThread = null;
-							// remettre la couleur du dernier noeud
-							((MusicVertex)seqBuilder.getLTimedMV().get(index)[0]).setSelected(false);
-							// tuer le thread
-							Thread.currentThread().interrupt();
-							return;
+						if (index == seqBuilder.getLTimedMV().size()) {
+							
+							// si la séquence a fini
+							if (!msp.getSequencer().isRunning()) {
+								System.out.println("index : " + index + ", size : " + seqBuilder.getLTimedMV().size());
+								playingWholeScene = false;
+								updateThread = null;
+								for (MusicVertex mv : seqBuilder.getLTimedMV()) {
+									mv.setSelected(false);
+									// redessiner
+									mf.requestRedraw();
+								}
+								Thread.currentThread().interrupt();
+								index = 0;
+								return;
+							}
+							
+						} else {
+							// update l'interface
+							seqBuilder.getLTimedMV().get(index).setSelected(true);
+							index++;
 						}
-						
-						// update l'interface
-						((MusicVertex)seqBuilder.getLTimedMV().get(index)[0]).setSelected(true);
-						index++;
 						
 						// redessiner
 						mf.requestRedraw();
@@ -199,8 +217,8 @@ public class Application implements Serializable {
 				
 				try {
 					msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(startMV, Sequence.PPQ, 250));
-					for (Object[] obj : seqBuilder.getLTimedMV()) {
-						System.out.println("obj MusicVertex instrument : " + ((MusicVertex)obj[0]).getInstrument().getName() + " , ticks " + (Long)obj[1]);
+					for (MusicVertex mv : seqBuilder.getLTimedMV()) {
+						System.out.println("obj MusicVertex instrument : " + mv.getInstrument().getName() + " , timePosition : " + mv.getTimePosition());
 					}
 					
 					

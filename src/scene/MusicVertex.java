@@ -22,9 +22,10 @@ public class MusicVertex implements Serializable {
 	private boolean start = false; // identifier si c'est le noeud de départ
 	private MusicSample musicSample; // l'échantillon de musique du noeud
 	private boolean visited; // pour déterminer si le noeud a été visité ou non
-	private int timePosition; // position de départ en millisecondes dans la séquence
+	private long timePosition; // position de départ en millisecondes dans la séquence
 	private int channel = -1; // le channel du noeud (un maximum de 15 noeuds, 16 - 1 noeud de percurssion)
 	private boolean selected;
+	private MusicVertex previousMV; // le noeud précédent
 	
 	public MusicVertex(AbstractInstrument mi, float radius) {
 		this.radius = radius;
@@ -46,11 +47,19 @@ public class MusicVertex implements Serializable {
 		musicSample = new MusicSample();
 	}
 	
-	public void setTimePosition(int ticks) {
+	public void setPreviousMV(MusicVertex mv) {
+		this.previousMV = mv;
+	}
+	
+	public MusicVertex getPreviousMV() {
+		return previousMV;
+	}
+	
+	public void setTimePosition(long ticks) {
 		timePosition = ticks;
 	}
 	
-	public int getTimePosition() {
+	public long getTimePosition() {
 		return timePosition;
 	}
 	

@@ -20,14 +20,14 @@ public class MusicSequenceBuilder {
 	
 	private long ticks; // temps en ticks (millisecondes) pour la composition de la séquence
 	private ArrayList<MusicVertex> lMv;
-	private ArrayList<Object[]> lTimedMV;
+	private ArrayList<MusicVertex> lTimedMV;
 	
 	public MusicSequenceBuilder(ArrayList<MusicVertex> lMv) {
 		ticks = 0; // on débute à 0
 		this.lMv = lMv;
 	}
 	
-	public ArrayList<Object[]> getLTimedMV() {
+	public ArrayList<MusicVertex> getLTimedMV() {
 		return lTimedMV;
 	}
 	
@@ -43,13 +43,14 @@ public class MusicSequenceBuilder {
 		Sequence sequence = new Sequence(tempoTimingType, timingResolution); // music sequence
 		Queue<MusicVertex> queue = new LinkedList<MusicVertex>();
 		
-		lTimedMV = new ArrayList<Object[]>();
+		lTimedMV = new ArrayList<MusicVertex>();
 		
 		resetVisitedMusicVertex(); // remettre les noeuds à non visité
 		
 		// ajouter l'échantillon de musique au temps donné
 		addMusicSample(mvRoot.getMusicSample(), sequence, mvRoot.getInstrument(), ticks);
-		lTimedMV.add(new Object[]{ mvRoot, ticks });
+		lTimedMV.add(mvRoot);
+		mvRoot.setTimePosition(ticks);
 		//System.out.println("test object " + ((MusicVertex)lTimedMV.get(0)[0]).getInstrument().getName());
 		
 		queue.add(mvRoot);
@@ -57,31 +58,30 @@ public class MusicSequenceBuilder {
 		
 		while (!queue.isEmpty()) {
 			MusicVertex mv = queue.remove(); // extraire le noeud inséré en premier
-			ticks += mv.getTimePosition(); // incrémenter les ticks avec le temps de départ du noeud courant
-			System.out.println("ticks de la queue : " + ticks);
-			System.out.println("dans boucle queue pas vide");
+			ticks = mv.getTimePosition(); // incrémenter les ticks avec le temps de départ du noeud courant
+			System.out.println("ticks après incrémentation : " + ticks);
 			
 			for (Connector c : mv.getConnectors()) {
 				MusicVertex mvChild = c.getTarget(mv); // récupérer la cible du connecteur
-				System.out.println("dans boucle connecteur");
 				
 				if (!mvChild.isVisited()) {
-					System.out.println("si enfant non visité");
+					mvChild.setPreviousMV(mv); // assigner le noeud précédent
 					if (mvChild.getMusicSample() != null) { // si échantillon existe
 						if (!mvChild.getMusicSample().getMusicNotes().isEmpty()) { // si échantillon pas vide
-							System.out.println("échantillon pas vide");
 							addMusicSample(mvChild.getMusicSample(), sequence, mvChild.getInstrument(), ticks + (Math.round(c.getLength()) * 5));
-							lTimedMV.add(new Object[]{ mvChild, ticks + (Math.round(c.getLength()) * 5) });
-							mvChild.setTimePosition(Math.round(c.getLength()) * 5);
-							System.out.println("Longueur du connecteur * 5 (millisecondes) : " + (Math.round(c.getLength()) * 5));
-							System.out.println("ticks add : " + ticks);
+							lTimedMV.add(mvChild);
+							sortTimedMVByTimePosition();
+							mvChild.setTimePosition(ticks + Math.round(c.getLength()) * 5);
+							System.out.println("setTimePosition : " + (ticks + Math.round(c.getLength()) * 5));
 							
+							System.out.println("ticks actuel: " + ticks);
 							queue.add(mvChild);
 							mvChild.setVisited(true);
 						} else { // échantillon vide, continuer quand même au prochain
 							System.out.println("échantillon vide, continuer quand même au prochain");
-							mvChild.setTimePosition(Math.round(c.getLength()) * 5);
-							System.out.println("Longueur du connecteur * 5 (millisecondes) : " + (Math.round(c.getLength()) * 5));
+							mvChild.setTimePosition(ticks + Math.round(c.getLength()) * 5);
+							System.out.println("setTimePosition : " + (ticks + Math.round(c.getLength()) * 5));
+							
 							System.out.println("ticks add : " + ticks);
 							queue.add(mvChild);
 							mvChild.setVisited(true);
@@ -91,6 +91,18 @@ public class MusicSequenceBuilder {
 			}
 		}
 		return sequence;
+	}
+	
+	private void sortTimedMVByTimePosition() {
+		for (int i = 0; i < lTimedMV.size() - 1; i++) {
+			for (int j = 0; j < lTimedMV.size() - i - 1; j++) {
+				if (lTimedMV.get(j).getTimePosition() > lTimedMV.get(j + 1).getTimePosition()) {
+					MusicVertex tempMV = lTimedMV.get(j);
+					lTimedMV.set(j, lTimedMV.get(j + 1));
+					lTimedMV.set(j + 1, tempMV);
+				}
+			}
+		}
 	}
 	
 	private void addMusicSample(MusicSample musicSample, Sequence sequence, AbstractInstrument instrument, long startTick) {
