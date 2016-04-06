@@ -94,6 +94,7 @@ public class Application implements Serializable {
 	private void update(GraphicsWrapper gw, MultitouchFramework mf) {
 		updateThread = new Thread() {
 			public void run() {
+				seqBuilder.sortTimedMVByTimePosition();
 				// continuer jusqu'à tant que c'est fini (thread tué)
 				while (true) {
 					try {
@@ -120,7 +121,7 @@ public class Application implements Serializable {
 								playingWholeScene = false;
 								updateThread = null;
 								for (MusicVertex mv : seqBuilder.getLTimedMV()) {
-									mv.setSelected(false);
+									mv.setPlaying(false);
 									// redessiner
 									mf.requestRedraw();
 								}
@@ -131,14 +132,13 @@ public class Application implements Serializable {
 							
 						} else {
 							// update l'interface
-							seqBuilder.getLTimedMV().get(index).setSelected(true);
+							seqBuilder.getLTimedMV().get(index).setPlaying(true);;
 							index++;
 						}
 						
 						// redessiner
 						mf.requestRedraw();
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -217,6 +217,7 @@ public class Application implements Serializable {
 				
 				try {
 					msp = new MusicSequencePlayer(seqBuilder.buildMusicSequence(startMV, Sequence.PPQ, 250));
+					seqBuilder.sortTimedMVByTimePosition();
 					for (MusicVertex mv : seqBuilder.getLTimedMV()) {
 						System.out.println("obj MusicVertex instrument : " + mv.getInstrument().getName() + " , timePosition : " + mv.getTimePosition());
 					}
@@ -243,7 +244,6 @@ public class Application implements Serializable {
 				oos.writeObject(this);
 				oos.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
 		}

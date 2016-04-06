@@ -70,7 +70,7 @@ public class MusicSequenceBuilder {
 						if (!mvChild.getMusicSample().getMusicNotes().isEmpty()) { // si échantillon pas vide
 							addMusicSample(mvChild.getMusicSample(), sequence, mvChild.getInstrument(), ticks + (Math.round(c.getLength()) * 5));
 							lTimedMV.add(mvChild);
-							sortTimedMVByTimePosition();
+							//sortTimedMVByTimePosition();
 							mvChild.setTimePosition(ticks + Math.round(c.getLength()) * 5);
 							System.out.println("setTimePosition : " + (ticks + Math.round(c.getLength()) * 5));
 							
@@ -93,7 +93,7 @@ public class MusicSequenceBuilder {
 		return sequence;
 	}
 	
-	private void sortTimedMVByTimePosition() {
+	public void sortTimedMVByTimePosition() {
 		for (int i = 0; i < lTimedMV.size() - 1; i++) {
 			for (int j = 0; j < lTimedMV.size() - i - 1; j++) {
 				if (lTimedMV.get(j).getTimePosition() > lTimedMV.get(j + 1).getTimePosition()) {
