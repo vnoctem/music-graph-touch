@@ -125,43 +125,46 @@ public class Application implements Serializable {
 						} else {
 							// update l'interface
 							seqBuilder.getLTimedMV().get(index).setPlaying(true);
-							new Thread() {
-								private long startTime = System.nanoTime();
-								private int noMV = index;
-								
-								public void run() {
-									while (true) {
-										try {
-											double milli = (double) (System.nanoTime() - startTime) / 1000000l;
-											
-											// arrête l'animation si fini
-											if (milli > seqBuilder.getLTimedMV().get(noMV).getMusicSample().getDuration()) {
-												Thread.currentThread().interrupt();
-												return;
-											} else {
-												// pour pas trop faire travailler le CPU
-												Thread.sleep(50);
+							if (seqBuilder.getLTimedMV().get(index).getMusicSample().getMusicNotes().size() > 0) {
+								new Thread() {
+									private long startTime = System.nanoTime();
+									private int noMV = index;
+									
+									public void run() {
+										while (true) {
+											try {
+												double milli = (double) (System.nanoTime() - startTime) / 1000000l;
+												
+												// arrête l'animation si fini
+												if (milli > seqBuilder.getLTimedMV().get(noMV).getMusicSample().getDuration()) {
+													Thread.currentThread().interrupt();
+													return;
+												} else {
+													// pour pas trop faire travailler le CPU
+													Thread.sleep(50);
+												}
+												
+												// update
+												// pour gérer les confits entre les threads
+												if (playingWholeScene) {
+													seqBuilder.getLTimedMV().get(noMV).setProgress(milli / seqBuilder.getLTimedMV().get(noMV).getMusicSample().getDuration());
+													mf.requestRedraw();
+												} else { // si changé l'état, on veut probablement vouloir s'arrêter
+													Thread.currentThread().interrupt();
+													return;
+												}
+											} catch (InterruptedException e) {
+												// TODO Auto-generated catch block
+												e.printStackTrace();
 											}
-											
-											// update
-											// pour gérer les confits entre les threads
-											if (playingWholeScene) {
-												seqBuilder.getLTimedMV().get(noMV).setProgress(milli / seqBuilder.getLTimedMV().get(noMV).getMusicSample().getDuration());
-												mf.requestRedraw();
-											} else { // si changé l'état, on veut probablement vouloir s'arrêter
-												Thread.currentThread().interrupt();
-												return;
-											}
-										} catch (InterruptedException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
 										}
 									}
-								}
-							}.start(); 
+								}.start(); 
+							}
+							
 							index++;
 						}
-						
+							
 						// redessiner
 						mf.requestRedraw();
 					} catch (InterruptedException e) {
