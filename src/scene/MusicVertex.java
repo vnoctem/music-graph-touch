@@ -28,7 +28,7 @@ public class MusicVertex implements Serializable {
 	private boolean selected;
 	private boolean playing;
 	private MusicVertex previousMV; // le noeud précédent
-	private float progress;
+	private transient double progress;
 	
 	public MusicVertex(AbstractInstrument mi, float radius) {
 		this.radius = radius;
@@ -50,7 +50,7 @@ public class MusicVertex implements Serializable {
 		musicSample = new MusicSample();
 	}
 	
-	public void setProgress(float progress) {
+	public void setProgress(double progress) {
 		this.progress = progress;
 	}
 	

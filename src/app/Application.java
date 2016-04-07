@@ -49,6 +49,8 @@ public class Application implements Serializable {
 	
 	private transient MultitouchFramework mf;
 	
+	private transient int index = 0;
+	
 	public Application(MultitouchFramework mf) {
 		this.mf = mf;
 	}
@@ -85,12 +87,11 @@ public class Application implements Serializable {
 		
 		// si en train de jouer 
 		// réappeler lui-même pour faire l'animation
-		if (playingWholeScene && updateThread == null) {
+		if (playingWholeScene && updateThread == null && seqBuilder != null) {
 			update(gw, mf);
 		}
 	}
 	
-	private transient int index = 0;
 	private void update(GraphicsWrapper gw, MultitouchFramework mf) {
 		updateThread = new Thread() {
 			public void run() {
@@ -99,7 +100,6 @@ public class Application implements Serializable {
 				while (true) {
 					try {
 						if (index > 0 && index < seqBuilder.getLTimedMV().size()) {
-							
 							System.out.println(seqBuilder.getLTimedMV().get(index).getInstrument().getName() + " - timePosition actuel : " + seqBuilder.getLTimedMV().get(index).getTimePosition());
 							System.out.println(seqBuilder.getLTimedMV().get(index).getInstrument().getName() + " - timePosition précédent : " + seqBuilder.getLTimedMV().get(index - 1).getTimePosition());
 							System.out.println("différence temps : " + (seqBuilder.getLTimedMV().get(index).getTimePosition() - seqBuilder.getLTimedMV().get(index - 1).getTimePosition()));
@@ -108,13 +108,13 @@ public class Application implements Serializable {
 						
 						// arrêter l'animation
 						if (index == seqBuilder.getLTimedMV().size()) {
-							
 							// si la séquence a fini
 							if (!msp.getSequencer().isRunning()) {
 								playingWholeScene = false;
 								updateThread = null;
 								for (MusicVertex mv : seqBuilder.getLTimedMV()) {
 									mv.setPlaying(false);
+									mv.setProgress(0);
 									// redessiner
 									mf.requestRedraw();
 								}
@@ -122,32 +122,50 @@ public class Application implements Serializable {
 								index = 0;
 								return;
 							}
-							
 						} else {
 							// update l'interface
 							seqBuilder.getLTimedMV().get(index).setPlaying(true);
-							Thread updateVertex = new Thread() {
-								private long startTime = System.nanoTime(); 
+							new Thread() {
+								private long startTime = System.nanoTime();
+								private int noMV = index;
+								
 								public void run() {
 									while (true) {
-										long milli = (System.nanoTime() - startTime) / 1000000l;
-										if (milli > seqBuilder.getLTimedMV().get(index).getMusicSample().getDuration()) {
-											Thread.currentThread().interrupt();
-											return;
+										try {
+											double milli = (double) (System.nanoTime() - startTime) / 1000000l;
+											
+											// arrête l'animation si fini
+											if (milli > seqBuilder.getLTimedMV().get(noMV).getMusicSample().getDuration()) {
+												Thread.currentThread().interrupt();
+												return;
+											} else {
+												// pour pas trop faire travailler le CPU
+												Thread.sleep(50);
+											}
+											
+											// update
+											// pour gérer les confits entre les threads
+											if (playingWholeScene) {
+												seqBuilder.getLTimedMV().get(noMV).setProgress(milli / seqBuilder.getLTimedMV().get(noMV).getMusicSample().getDuration());
+												mf.requestRedraw();
+											} else { // si changé l'état, on veut probablement vouloir s'arrêter
+												Thread.currentThread().interrupt();
+												return;
+											}
+										} catch (InterruptedException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
 										}
-										
-										seqBuilder.getLTimedMV().get(index).setProgress(milli / seqBuilder.getLTimedMV().get(index).getMusicSample().getDuration());
-										System.out.println(milli);
 									}
 								}
-							}; 
-							updateVertex.start();
+							}.start(); 
 							index++;
 						}
 						
 						// redessiner
 						mf.requestRedraw();
 					} catch (InterruptedException e) {
+						// si interrompu, réinitialise tout
 						playingWholeScene = false;
 						updateThread = null;
 						Thread.currentThread().interrupt();
@@ -188,14 +206,14 @@ public class Application implements Serializable {
 				// jouer la séquence
 				if (playingWholeScene) {
 					stopMusic();
-					updateThread.interrupt();
+					if (updateThread != null)
+						updateThread.interrupt();
 					for (MusicVertex mv : seqBuilder.getLTimedMV()) {
 						mv.setPlaying(false);
+						mv.setProgress(0);
 					}
-					playingWholeScene = false;
 				} else {
 					playMusic();
-					playingWholeScene = true;
 				}
 			}
 			else {
@@ -230,6 +248,7 @@ public class Application implements Serializable {
 	
 	// lorsqu'il y a plus de 3 clics si en train de jouer
 	public void stopMusic() {
+		playingWholeScene = false;
 		System.out.println("STOP THE MUSIC**********************************************************");
 		msp.getSequencer().stop();
 	}
@@ -241,6 +260,7 @@ public class Application implements Serializable {
 			System.out.println("PLAY THE MUSIC**********************************************************");
 			startMV = getStartMusicVertex();
 			if (startMV != null) {
+				playingWholeScene = true;
 				seqBuilder = new MusicSequenceBuilder(lMv);
 				
 				try {
@@ -249,7 +269,6 @@ public class Application implements Serializable {
 					for (MusicVertex mv : seqBuilder.getLTimedMV()) {
 						System.out.println("obj MusicVertex instrument : " + mv.getInstrument().getName() + " , timePosition : " + mv.getTimePosition());
 					}
-					
 					
 					msp.play();
 					System.out.println("AFTER PLAY*********************************************");
