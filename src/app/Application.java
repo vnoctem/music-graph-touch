@@ -137,6 +137,10 @@ public class Application implements Serializable {
 												
 												// arrête l'animation si fini
 												if (milli > seqBuilder.getLTimedMV().get(noMV).getMusicSample().getDuration()) {
+													// mettre à plein à la fin
+													seqBuilder.getLTimedMV().get(noMV).setProgress(1);
+													mf.requestRedraw();
+													
 													Thread.currentThread().interrupt();
 													return;
 												} else {
