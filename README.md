@@ -1,3 +1,5 @@
+# Music Graph Touch
+
 Étapes pour le setup du projet avec Eclipse :
 
 1- Lancez Eclipse (si vous avez des problèmes au labo multimédia, utilisez la version dans le dossier C:\eclipse-log720)
